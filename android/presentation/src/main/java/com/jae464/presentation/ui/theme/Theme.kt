@@ -1,4 +1,4 @@
-package com.jae464.culinaryheaven.ui.theme
+package com.jae464.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

@@ -1,26 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-
 }
 
 android {
-    namespace = "com.jae464.culinaryheaven"
+    namespace = "com.jae464.data"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.jae464.culinaryheaven"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -39,31 +32,18 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
-    implementation(project(":domain"))
-    implementation(project(":presentation"))
-    implementation(project(":data"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.work)
-
     ksp(libs.androidx.hilt.compiler)
     ksp(libs.hilt.android.compiler)
-    implementation(libs.androidx.work.ktx)
 }
