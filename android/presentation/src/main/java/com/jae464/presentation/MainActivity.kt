@@ -8,12 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
 import com.jae464.presentation.main.MainBottomBar
 import com.jae464.presentation.main.MainNavHost
 import com.jae464.presentation.main.MainTab
@@ -29,7 +25,7 @@ class MainActivity : ComponentActivity() {
             CulinaryHeavenTheme {
                 val appState = rememberAppState()
                 Scaffold(
-                    modifier = Modifier,
+                    modifier = Modifier.fillMaxSize(),
                     content = { padding ->
                         MainNavHost(appState = appState, paddingValues = padding)
                     },
@@ -37,7 +33,7 @@ class MainActivity : ComponentActivity() {
                         MainBottomBar(
                             modifier = Modifier
                                 .navigationBarsPadding()
-                                .padding(start = 8.dp, end = 8.dp, bottom = 14.dp),
+                                .padding(bottom = 14.dp),
                             visible = appState.shouldShowBottomBar(),
                             tabs = MainTab.entries.toList(),
                             currentTab = appState.currentTab,
@@ -46,10 +42,8 @@ class MainActivity : ComponentActivity() {
                             }
 
                         )
-                    }
+                    },
                 )
-
-
             }
         }
     }
