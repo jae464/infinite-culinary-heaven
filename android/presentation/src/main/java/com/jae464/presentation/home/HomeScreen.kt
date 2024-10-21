@@ -15,6 +15,6 @@ fun HomeScreen(
     Column(
         modifier = Modifier.padding(padding).fillMaxSize()
     ) {
-        Text("This is Home Screen")
+
     }
 }
