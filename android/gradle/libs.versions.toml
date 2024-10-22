@@ -11,14 +11,15 @@ composeBom = "2024.04.01"
 androidxNavigation = "2.8.3"
 androidx-compose-lifecycle = "2.8.6"
 ksp = "1.9.21-1.0.16"
-hilt= "2.52"
-hiltExt = "1.2.0"
+hilt= "2.47"
+hiltExt = "1.1.0"
 androidx-work = "2.8.0"
 room = "2.6.1"
 coroutine = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 kotlinxSerializationJson = "1.6.1"
+coil-compose = "2.4.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -51,6 +52,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-compose-material-iconsExtended = { module = "androidx.compose.material:material-icons-extended" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

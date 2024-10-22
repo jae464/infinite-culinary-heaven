@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.jae464.presentation.home.HomeScreen
+import com.jae464.presentation.home.HomeRoute
 import com.jae464.presentation.main.MainTabRoute
 
 fun NavController.navigateHome(navOptions: NavOptions) {
@@ -16,6 +16,6 @@ fun NavGraphBuilder.homeNavGraph(
     padding: PaddingValues
 ) {
     composable<MainTabRoute.Home> {
-        HomeScreen(padding = padding)
+        HomeRoute(padding = padding)
     }
 }

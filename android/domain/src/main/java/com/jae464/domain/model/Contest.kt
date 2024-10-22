@@ -1,10 +1,11 @@
 package com.jae464.domain.model
 
-data class RecipePreview(
+import java.time.LocalDate
+
+data class Contest(
     val id: Long,
-    val title: String,
+    val ingredient: String,
     val imageUrl: String,
     val description: String,
-    val score: Float,
-    val author: String
+    val startDate: LocalDate,
 )
