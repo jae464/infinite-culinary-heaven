@@ -56,7 +56,7 @@ fun HomeScreen(
                     description = uiState.currentContest?.description ?: ""
                 )
                 Text(
-                    text = "10월 3주차 레시피",
+                    text = "10월 3주차 대회",
                     modifier = Modifier.padding(16.dp),
                     color = Color.Black,
                     fontSize = 20.sp,

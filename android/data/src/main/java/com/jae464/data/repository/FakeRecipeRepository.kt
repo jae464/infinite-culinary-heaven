@@ -9,35 +9,35 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         val mockData = listOf(
             RecipePreview(
                 id = 1L,
-                title = "감자치즈",
+                title = "감자 베이컨 말이",
                 imageUrl = "https://i.ibb.co/TbhqvXP/potate-3.jpg",
-                description = "따라쟁이로 만들었는데 맛있어요~~^^ 최고예요~!!!",
+                description = "감자와 베이컨의 조합 ㄷㄷ",
                 score = 5.0f,
-                author = "해연"
+                author = "나폴리맛피아"
             ),
             RecipePreview(
                 id = 2L,
-                title = "감자칩",
+                title = "치즈 감자구이",
                 imageUrl = "https://i.ibb.co/8Ys5Tc2/potato-1.jpg",
-                description = "식당에서 나온 밑반찬으로 먹어보고 맛있어서 바로 레시피 보고 만들었어요!",
+                description = "저는 캄자인간 입니돠~",
                 score = 5.0f,
-                author = "초파맘"
+                author = "이균"
             ),
             RecipePreview(
                 id = 3L,
-                title = "꿀맛감자",
-                imageUrl = "https://i.ibb.co/f0NDs68/potato-2.jpg",
-                description = "처음 만들어 봤는데 너무 맛있어요!! 가족들이랑 너무 맛있게 잘 먹었어요",
+                title = "감자 버터구이",
+                imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2017/08/30/4c641aaf9fe89859966922d914a3c8f51.jpg",
+                description = "요만큼에서 이만큼 느껴지는 버터향을 느껴보세요",
                 score = 5.0f,
-                author = "민지"
+                author = "트리플스타"
             ),
             RecipePreview(
                 id = 4L,
-                title = "감자짜글이",
-                imageUrl = "https://i.ibb.co/TbhqvXP/potate-3.jpg",
-                description = "간단한데 맛있게 잘 만들어 먹었습니다! 감자 돼지고기 버섯까지 넣어서 야무지게 먹었어요",
+                title = "휴게소 알감자",
+                imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2022/10/13/d0e19dee8c75fb7856df44c3b95655411.jpg",
+                description = "휴게소 알감자는 진리지",
                 score = 5.0f,
-                author = "지니잉"
+                author = "요리하는돌아이"
             )
         )
         val recipePreviews = mockData + mockData
