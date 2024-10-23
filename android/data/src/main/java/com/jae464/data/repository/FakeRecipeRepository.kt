@@ -1,5 +1,6 @@
 package com.jae464.data.repository
 
+import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.repository.RecipeRepository
 import javax.inject.Inject
@@ -42,5 +43,34 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         )
         val recipePreviews = mockData + mockData
         return recipePreviews
+    }
+
+    override suspend fun getRecipeById(id: Long): Recipe {
+        return Recipe(
+            id = 1L,
+            title = "감자 베이컨 말이",
+            imageUrl = "https://i.ibb.co/TbhqvXP/potate-3.jpg",
+            description = "감자와 베이컨의 조합 ㄷㄷ",
+            score = 5.0f,
+            author = "나폴리맛피아",
+            ingredients = listOf(
+                "감자 2개",
+                "베이컨 6장",
+                "올리브유 1큰술",
+                "소금 약간",
+                "후추 약간",
+                "파슬리 약간"
+            ),
+            steps = listOf(
+                "감자를 얇게 슬라이스한 후 끓는 물에 3분 정도 삶아줍니다.",
+                "베이컨을 감자에 말아줍니다.",
+                "팬에 올리브유를 두르고 중불에서 베이컨을 감싼 감자를 골고루 굴려가며 구워줍니다.",
+                "소금과 후추로 간을 하고, 파슬리를 뿌려 마무리합니다."
+            ),
+            cookTime = "15분",
+            servingSize = "2인분",
+            videoUrl = "https://www.youtube.com/watch?v=example"
+        )
+
     }
 }
