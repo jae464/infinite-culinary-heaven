@@ -19,20 +19,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.jae464.presentation.R
 import com.jae464.presentation.home.component.RecipeItem
 import com.jae464.presentation.home.component.WeeklyIngredientSection
 
 @Composable
 fun HomeRoute(
     padding: PaddingValues,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onClickRecipe: (Long) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     HomeScreen(
         padding = padding,
-        uiState = uiState
+        uiState = uiState,
+        onClickRecipe = onClickRecipe
     )
 
 }
@@ -40,7 +41,8 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     padding: PaddingValues,
-    uiState: HomeUiState
+    uiState: HomeUiState,
+    onClickRecipe: (Long) -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -65,7 +67,7 @@ fun HomeScreen(
             }
         }
         items(uiState.recipePreviews.size) { index ->
-            RecipeItem(uiState.recipePreviews[index])
+            RecipeItem(uiState.recipePreviews[index], onClickRecipe = onClickRecipe)
         }
     }
 }

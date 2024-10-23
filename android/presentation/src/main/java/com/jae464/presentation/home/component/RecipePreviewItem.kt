@@ -1,6 +1,7 @@
 package com.jae464.presentation.home.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,10 +27,20 @@ import coil.compose.rememberImagePainter
 import com.jae464.domain.model.RecipePreview
 
 @Composable
-fun RecipeItem(recipePreview: RecipePreview) {
+fun RecipeItem(
+    recipePreview: RecipePreview,
+    onClickRecipe: (Long) -> Unit = {}
+) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .clickable {
+                // 나중에 수정해야함
+                onClickRecipe(recipePreview.id)
+
+            },
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {

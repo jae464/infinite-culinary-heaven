@@ -4,6 +4,11 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
     val name: String
+
+    @Serializable
+    data class RecipeDetail(val recipeId: Long): Route {
+        override val name: String = "recipe_detail"
+    }
 }
 
 sealed interface MainTabRoute : Route {

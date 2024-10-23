@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import com.jae464.presentation.AppState
+import com.jae464.presentation.detail.navigation.recipeDetailNavGraph
 import com.jae464.presentation.history.navigation.contestHistoryNavGraph
 import com.jae464.presentation.home.navigation.homeNavGraph
 import com.jae464.presentation.mypage.navigation.myPageNavGraph
@@ -19,7 +20,8 @@ fun MainNavHost(
         startDestination = appState.startDestination
     ) {
         homeNavGraph(
-            padding = paddingValues
+            padding = paddingValues,
+            onClickRecipe = { appState.navigateToRecipeDetail(it) }
         )
         contestHistoryNavGraph(
             padding = paddingValues
@@ -30,5 +32,6 @@ fun MainNavHost(
         myPageNavGraph(
             padding = paddingValues
         )
+        recipeDetailNavGraph()
     }
 }

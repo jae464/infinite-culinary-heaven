@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.jae464.presentation.detail.navigation.navigateRecipeDetail
 import com.jae464.presentation.history.navigation.navigateContestHistory
 import com.jae464.presentation.home.navigation.navigateHome
 import com.jae464.presentation.main.MainTab
@@ -46,6 +47,10 @@ class AppState(
             MainTab.SCRAP -> navController.navigateScrap(navOptions)
             MainTab.MYPAGE -> navController.navigateMyPage(navOptions)
         }
+    }
+
+    fun navigateToRecipeDetail(recipeId: Long) {
+        navController.navigateRecipeDetail(recipeId)
     }
 
     @Composable
