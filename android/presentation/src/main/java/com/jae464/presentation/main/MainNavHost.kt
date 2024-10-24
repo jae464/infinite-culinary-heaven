@@ -32,6 +32,8 @@ fun MainNavHost(
         myPageNavGraph(
             padding = paddingValues
         )
-        recipeDetailNavGraph()
+        recipeDetailNavGraph(
+            onBackClick = { appState.popBackStack() }
+        )
     }
 }

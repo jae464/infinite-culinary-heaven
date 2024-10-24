@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 
 
@@ -41,8 +42,8 @@ fun WeeklyIngredientSection(title: String, imageUrl: String, description: String
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
-            Image(
-                painter = rememberImagePainter(data = imageUrl),
+            AsyncImage(
+                model = imageUrl,
                 contentDescription = "Weekly Ingredient",
                 modifier = Modifier
                     .height(200.dp)

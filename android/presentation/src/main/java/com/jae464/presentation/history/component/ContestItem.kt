@@ -1,6 +1,5 @@
 package com.jae464.presentation.history.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,10 +18,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
 import com.jae464.domain.model.Contest
 import com.jae464.presentation.toFormattedString
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ContestItem(contest: Contest) {
@@ -33,8 +31,8 @@ fun ContestItem(contest: Contest) {
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
-            Image(
-                painter = rememberImagePainter(data = contest.imageUrl),
+            AsyncImage(
+                model = contest.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(80.dp)

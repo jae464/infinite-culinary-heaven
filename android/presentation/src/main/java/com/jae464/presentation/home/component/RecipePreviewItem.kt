@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.jae464.domain.model.RecipePreview
 
@@ -45,8 +46,8 @@ fun RecipeItem(
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
-            Image(
-                painter = rememberImagePainter(data = recipePreview.imageUrl),
+            AsyncImage(
+                model = recipePreview.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(80.dp)

@@ -53,6 +53,10 @@ class AppState(
         navController.navigateRecipeDetail(recipeId)
     }
 
+    fun popBackStack() {
+        navController.popBackStack()
+    }
+
     @Composable
     fun shouldShowBottomBar() = MainTab.contains {
         currentDestination?.hasRoute(it::class) == true
