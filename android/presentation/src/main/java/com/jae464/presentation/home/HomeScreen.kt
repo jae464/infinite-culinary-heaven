@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -57,7 +60,6 @@ fun HomeScreen(
     Box {
         LazyColumn(
             modifier = Modifier.padding(padding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {
                 Column {
@@ -66,6 +68,7 @@ fun HomeScreen(
                         imageUrl = uiState.currentContest?.imageUrl ?: "",
                         description = uiState.currentContest?.description ?: ""
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "10월 3주차 대회",
                         modifier = Modifier.padding(16.dp),
@@ -73,10 +76,15 @@ fun HomeScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
             items(uiState.recipePreviews.size) { index ->
                 RecipeItem(uiState.recipePreviews[index], onClickRecipe = onClickRecipe)
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    thickness = 0.5.dp
+                )
             }
         }
         FloatingActionButton(
