@@ -13,8 +13,8 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
             RecipePreview(
                 id = 1L,
                 title = "감자 베이컨 말이",
-                imageUrl = "https://i.ibb.co/TbhqvXP/potate-3.jpg",
-                description = "감자와 베이컨의 조합 ㄷㄷ",
+                imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2019/07/12/1c5436c0bab2b8385ee134cbe60243c71.jpg",
+                description = "감자와 베이컨으로 간단하게 만들수 있는 요리입니다.",
                 score = 5.0f,
                 author = "나폴리맛피아"
             ),
@@ -22,15 +22,15 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 id = 2L,
                 title = "치즈 감자구이",
                 imageUrl = "https://i.ibb.co/8Ys5Tc2/potato-1.jpg",
-                description = "저는 캄자인간 입니돠~",
+                description = "고소한 치즈와 부드러운 감자가 어우러진 최고의 간식입니다.",
                 score = 5.0f,
-                author = "이균"
+                author = "에드워드 리"
             ),
             RecipePreview(
                 id = 3L,
                 title = "감자 버터구이",
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2017/08/30/4c641aaf9fe89859966922d914a3c8f51.jpg",
-                description = "요만큼에서 이만큼 느껴지는 버터향을 느껴보세요",
+                description = "버터로 노릇하게 구운 감자가 입안을 사로잡습니다.",
                 score = 5.0f,
                 author = "트리플스타"
             ),
@@ -38,7 +38,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 id = 4L,
                 title = "휴게소 알감자",
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2022/10/13/d0e19dee8c75fb7856df44c3b95655411.jpg",
-                description = "휴게소 알감자는 진리지",
+                description = "간단하면서도 깊은 맛을 자랑하는 휴게소 스타일의 알감자입니다.",
                 score = 5.0f,
                 author = "요리하는돌아이"
             )
@@ -51,7 +51,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         return Recipe(
             id = 1L,
             title = "감자 베이컨 말이",
-            imageUrl = "https://i.ibb.co/TbhqvXP/potate-3.jpg",
+            imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2019/07/12/1c5436c0bab2b8385ee134cbe60243c71.jpg",
             description = "감자와 베이컨으로 만들 수 있는 감자 베이컨 말이 입니다.\n" +
                     "누구나 쉽게 간편하게 만들 수 있어요.",
             score = 5.0f,
