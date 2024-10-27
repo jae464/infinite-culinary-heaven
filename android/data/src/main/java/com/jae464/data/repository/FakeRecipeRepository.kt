@@ -1,5 +1,6 @@
 package com.jae464.data.repository
 
+import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.repository.RecipeRepository
@@ -50,16 +51,17 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
             id = 1L,
             title = "감자 베이컨 말이",
             imageUrl = "https://i.ibb.co/TbhqvXP/potate-3.jpg",
-            description = "감자와 베이컨의 조합 ㄷㄷ",
+            description = "감자와 베이컨으로 만들 수 있는 감자 베이컨 말이 입니다.\n" +
+                    "누구나 쉽게 간편하게 만들 수 있어요.",
             score = 5.0f,
             author = "나폴리맛피아",
             ingredients = listOf(
-                "감자 2개",
-                "베이컨 6장",
-                "올리브유 1큰술",
-                "소금 약간",
-                "후추 약간",
-                "파슬리 약간"
+                Ingredient("감자", "2개"),
+                Ingredient("베이컨", "6개"),
+                Ingredient("올리브유", "1큰술"),
+                Ingredient("소금", "약간"),
+                Ingredient("후추", "약간"),
+                Ingredient("파슬리", "약간")
             ),
             steps = listOf(
                 "감자를 얇게 슬라이스한 후 끓는 물에 3분 정도 삶아줍니다.",

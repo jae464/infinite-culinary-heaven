@@ -1,9 +1,7 @@
 package com.jae464.presentation.detail
 
-import android.view.RoundedCorner
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,24 +16,35 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.presentation.component.HeavenTopAppBar
+import com.jae464.presentation.detail.component.RecipeDetailContentBox
+import com.jae464.presentation.ui.theme.Gray20
 
 @Composable
 fun RecipeDetailRoute(
@@ -63,6 +72,9 @@ fun RecipeDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                color = Gray20
+            )
             .statusBarsPadding()
             .verticalScroll(rememberScrollState())
     ) {
@@ -70,6 +82,14 @@ fun RecipeDetailScreen(
             title = recipe?.title ?: "",
             navigationIcon = Icons.Default.ArrowBack,
             onNavigationClick = onBackClick,
+            actions = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        imageVector = Icons.Default.BookmarkBorder,
+                        contentDescription = null
+                    )
+                }
+            }
         )
         if (recipe != null) {
             RecipeItem(recipe = recipe)
@@ -82,114 +102,76 @@ fun RecipeItem(
     recipe: Recipe
 ) {
     Column {
-        Card(
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(4.dp)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            AsyncImage(
-                model = recipe.imageUrl,
-                contentDescription = recipe.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(240.dp),
-                contentScale = ContentScale.Crop
-            )
-        }
-
-        Column(modifier = Modifier.padding(16.dp)) {
-            // Title
-            Text(
-                text = recipe.title,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Author
-            Text(text = "By ${recipe.author}")
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Score and Serving size
-            Row {
-                Text(text = "Score: ${recipe.score}")
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "Serving: ${recipe.servingSize}")
+            Card(
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                AsyncImage(
+                    model = recipe.imageUrl,
+                    contentDescription = recipe.title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp),
+                    contentScale = ContentScale.Fit
+                )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Divider
-            Divider(
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Description
-            Text(
-                text = "Description",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = recipe.description)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Divider
-            Divider(
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Ingredients
-            Text(
-                text = "Ingredients",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            recipe.ingredients.forEach { ingredient ->
-                Text(text = "- $ingredient")
+            RecipeDetailContentBox {
+                Column {
+                    Text(
+                        text = recipe.title,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = recipe.description)
+                }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            RecipeDetailContentBox {
+                Column {
+                    Text(
+                        text = "재료",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        color = Color.Black,
+                        thickness = 1.5.dp
+                    )
+                    Column(
 
-            // Divider
-            Divider(
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Steps
-            Text(
-                text = "Steps",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            recipe.steps.forEachIndexed { index, step ->
-                Text(text = "${index + 1}. $step")
+                    ) {
+                        recipe.ingredients.forEach { ingredient ->
+                            IngredientItem(ingredient)
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 16.dp),
+                                thickness = 0.5.dp
+                            )
+                        }
+                    }
+                }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Divider
-            Divider(
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
+            RecipeDetailContentBox {
+                Column {
+                    Row {
+                        Text(
+                            text = "조리순서",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    recipe.steps.forEachIndexed { index, step ->
+                        Text(text = "${index + 1}. $step")
+                    }
+                }
+            }
             // Cook Time
             Text(text = "Cook time: ${recipe.cookTime}")
 
@@ -202,6 +184,17 @@ fun RecipeItem(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun IngredientItem(ingredient: Ingredient) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(text = ingredient.name, fontSize = 16.sp)
+        Text(text = ingredient.quantity, fontSize = 16.sp)
     }
 }
 

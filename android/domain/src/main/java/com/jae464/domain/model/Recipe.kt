@@ -8,9 +8,14 @@ data class Recipe(
     val score: Float,
     val author: String,
     // 이 아래 필드들은 수정 필요
-    val ingredients: List<String>,
+    val ingredients: List<Ingredient>,
     val steps: List<String>,
     val cookTime: String,
     val servingSize: String,
     val videoUrl: String? = null
+)
+
+data class Ingredient(
+    val name: String,
+    val quantity: String
 )

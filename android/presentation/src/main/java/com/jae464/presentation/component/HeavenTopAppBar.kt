@@ -20,7 +20,7 @@ fun HeavenTopAppBar(
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = title) },
+        title = { Text(text = "") },
         navigationIcon = {
             IconButton(onClick = onNavigationClick) {
                 Icon(
