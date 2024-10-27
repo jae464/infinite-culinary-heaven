@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -75,9 +77,9 @@ fun RecipeItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(id = android.R.drawable.star_on),
+                        imageVector = Icons.Default.Star,
                         contentDescription = null,
-                        tint = Color.Yellow,
+                        tint = Color(0xffffe10b),
                         modifier = Modifier.size(16.dp)
                     )
                     Text(
