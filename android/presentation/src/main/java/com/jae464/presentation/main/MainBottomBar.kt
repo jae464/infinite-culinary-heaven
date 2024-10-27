@@ -102,7 +102,7 @@ private fun RowScope.MainBottomBarItem(
                 imageVector = tab.iconImageVector,
                 contentDescription = tab.description,
                 tint = if (selected) {
-                    Color.Black
+                    Color(0xFF4CAF50)
                 } else {
                     Color.Gray
                 },
@@ -111,7 +111,7 @@ private fun RowScope.MainBottomBarItem(
             Text(
                 text = tab.description,
                 color = if (selected) {
-                    Color.Black
+                    Color(0xFF4CAF50)
                 } else {
                     Color.Gray
                 },

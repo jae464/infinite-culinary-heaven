@@ -118,7 +118,8 @@ fun RecipeItem(
                     model = recipe.imageUrl,
                     contentDescription = recipe.title,
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .clip(RoundedCornerShape(8.dp))
                         .height(240.dp),
                     contentScale = ContentScale.Fit
                 )
