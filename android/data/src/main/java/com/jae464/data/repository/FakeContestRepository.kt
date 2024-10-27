@@ -10,7 +10,7 @@ class FakeContestRepository @Inject constructor() : ContestRepository {
         return Contest(
             id = 1L,
             ingredient = "감자",
-            imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2022/09/23/5b162b0e112427972c379f0068a49d531.jpg",
+            imageUrl = "https://nutrionemall.edge.naverncp.com/upload/mgz/46/20210723_57173.png",
             description = "이번 주 요리의 주 재료는 감자입니다! 다양한 감자 요리를 시도해보세요.",
             startDate = LocalDate.now()
         )

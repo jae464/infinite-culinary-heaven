@@ -37,14 +37,16 @@ import com.jae464.presentation.home.component.WeeklyIngredientSection
 fun HomeRoute(
     padding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
-    onClickRecipe: (Long) -> Unit
+    onClickRecipe: (Long) -> Unit,
+    onClickRegister: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     HomeScreen(
         padding = padding,
         uiState = uiState,
-        onClickRecipe = onClickRecipe
+        onClickRecipe = onClickRecipe,
+        onClickRegister = onClickRegister
     )
 
 }
@@ -53,7 +55,8 @@ fun HomeRoute(
 fun HomeScreen(
     padding: PaddingValues,
     uiState: HomeUiState,
-    onClickRecipe: (Long) -> Unit = {}
+    onClickRecipe: (Long) -> Unit = {},
+    onClickRegister: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -70,7 +73,7 @@ fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "10월 3주차 대회",
+                        text = "10월 5주차 대회",
                         modifier = Modifier.padding(16.dp),
                         color = Color.Black,
                         fontSize = 20.sp,
@@ -93,9 +96,9 @@ fun HomeScreen(
                 .padding(16.dp)
                 .align(Alignment.BottomEnd),
             shape = CircleShape,
-            containerColor = MaterialTheme.colorScheme.secondary,
+            containerColor = MaterialTheme.colorScheme.primary,
             contentColor = Color.White,
-            onClick = { /*TODO*/ }
+            onClick = onClickRegister
         ) {
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
         }

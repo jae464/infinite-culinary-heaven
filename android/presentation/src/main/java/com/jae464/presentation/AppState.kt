@@ -15,6 +15,7 @@ import com.jae464.presentation.history.navigation.navigateContestHistory
 import com.jae464.presentation.home.navigation.navigateHome
 import com.jae464.presentation.main.MainTab
 import com.jae464.presentation.mypage.navigation.navigateMyPage
+import com.jae464.presentation.register.navigation.navigateRecipeRegister
 import com.jae464.presentation.scrap.navigation.navigateScrap
 
 @Stable
@@ -51,6 +52,10 @@ class AppState(
 
     fun navigateToRecipeDetail(recipeId: Long) {
         navController.navigateRecipeDetail(recipeId)
+    }
+
+    fun navigateToRecipeRegister(recipeId: Long? = null) {
+        navController.navigateRecipeRegister(recipeId)
     }
 
     fun popBackStack() {
