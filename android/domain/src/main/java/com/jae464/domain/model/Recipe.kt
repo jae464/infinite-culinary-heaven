@@ -9,13 +9,16 @@ data class Recipe(
     val author: String,
     // 이 아래 필드들은 수정 필요
     val ingredients: List<Ingredient>,
-    val steps: List<String>,
-    val cookTime: String,
-    val servingSize: String,
-    val videoUrl: String? = null
+    val steps: List<Step>,
 )
 
 data class Ingredient(
     val name: String,
     val quantity: String
+)
+
+data class Step(
+    val step: Int,
+    val description: String,
+    val imageUrl: String? = null
 )

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -31,7 +32,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
+import com.jae464.domain.model.Step
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.detail.component.RecipeDetailContentBox
 import com.jae464.presentation.ui.theme.Gray20
@@ -108,7 +112,7 @@ fun RecipeItem(
             Card(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp)
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 AsyncImage(
                     model = recipe.imageUrl,
@@ -167,20 +171,10 @@ fun RecipeItem(
                             fontWeight = FontWeight.Bold
                         )
                     }
+                    Spacer(modifier = Modifier.padding(vertical = 16.dp))
                     recipe.steps.forEachIndexed { index, step ->
-                        Text(text = "${index + 1}. $step")
+                        StepItem(step = step)
                     }
-                }
-            }
-            // Cook Time
-            Text(text = "Cook time: ${recipe.cookTime}")
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Video Button
-            recipe.videoUrl?.let {
-                TextButton(onClick = { /* Open video */ }) {
-                    Text(text = "Watch Video")
                 }
             }
         }
@@ -195,6 +189,37 @@ fun IngredientItem(ingredient: Ingredient) {
     ) {
         Text(text = ingredient.name, fontSize = 16.sp)
         Text(text = ingredient.quantity, fontSize = 16.sp)
+    }
+}
+
+@Composable
+fun StepItem(step: Step) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Row (
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(text = "${step.step}.", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = step.description, fontSize = 16.sp, lineHeight = 20.sp)
+        }
+
+        if (step.imageUrl != null) {
+            AsyncImage(
+                model = step.imageUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 

@@ -3,6 +3,7 @@ package com.jae464.data.repository
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
+import com.jae464.domain.model.Step
 import com.jae464.domain.repository.RecipeRepository
 import javax.inject.Inject
 
@@ -64,14 +65,27 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 Ingredient("파슬리", "약간")
             ),
             steps = listOf(
-                "감자를 얇게 슬라이스한 후 끓는 물에 3분 정도 삶아줍니다.",
-                "베이컨을 감자에 말아줍니다.",
-                "팬에 올리브유를 두르고 중불에서 베이컨을 감싼 감자를 골고루 굴려가며 구워줍니다.",
-                "소금과 후추로 간을 하고, 파슬리를 뿌려 마무리합니다."
+                Step(
+                    step = 1,
+                    description = "감자를 얇게 슬라이스한 후 끓는 물에 3분 정도 삶아줍니다.",
+                    imageUrl = "https://i.ytimg.com/vi/oBFUGtO40YI/maxresdefault.jpg"
+                ),
+                Step(
+                    step = 2,
+                    description = "베이컨을 감자에 말아줍니다.",
+                    imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2021/10/28/699c41df4bd92fc73610010faacae3461.jpg"
+                ),
+                Step(
+                    step = 3,
+                    description = "팬에 올리브유를 두르고 중불에서 베이컨을 감싼 감자를 골고루 굴려가며 구워줍니다.",
+                    imageUrl = "https://mblogthumb-phinf.pstatic.net/20160626_126/sjlove321_1466914687299l4SG4_JPEG/20160626_123930111.jpg?type=w420"
+                ),
+                Step(
+                    step = 4,
+                    description = "소금과 후추로 간을 하고, 파슬리를 뿌려 마무리합니다.",
+                    imageUrl = "https://mblogthumb-phinf.pstatic.net/20140814_67/99jinga_14079837901420Jjea_JPEG/IMG_6699.JPG?type=w420"
+                )
             ),
-            cookTime = "15분",
-            servingSize = "2인분",
-            videoUrl = "https://www.youtube.com/watch?v=example"
         )
 
     }
