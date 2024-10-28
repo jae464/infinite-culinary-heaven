@@ -42,7 +42,7 @@ fun ContestHistoryScreen(
                 text = "지난 요리 대회",
                 modifier = Modifier.padding(16.dp),
                 color = Color.Black,
-                fontSize = 24.sp,
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
         }
