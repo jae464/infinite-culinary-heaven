@@ -1,4 +1,4 @@
-package com.jae464.presentation.scrap.navigation
+package com.jae464.presentation.bookmark.navigation
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.jae464.presentation.main.MainTabRoute
-import com.jae464.presentation.scrap.BookMarkRoute
+import com.jae464.presentation.bookmark.BookMarkRoute
 import com.jae464.presentation.util.navigation.getMainTabDirection
 
 fun NavController.navigateBookMark(navOptions: NavOptions) {
@@ -15,7 +15,8 @@ fun NavController.navigateBookMark(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.bookMarkNavGraph(
-    padding: PaddingValues
+    padding: PaddingValues,
+    onClickRecipe: (Long) -> Unit
 ) {
     composable<MainTabRoute.BookMark>(
         enterTransition = {
@@ -41,6 +42,9 @@ fun NavGraphBuilder.bookMarkNavGraph(
             }
         },
     ) {
-        BookMarkRoute(padding = padding)
+        BookMarkRoute(
+            padding = padding,
+            onClickRecipe = onClickRecipe
+        )
     }
 }

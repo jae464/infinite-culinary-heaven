@@ -16,7 +16,7 @@ import com.jae464.presentation.home.navigation.navigateHome
 import com.jae464.presentation.main.MainTab
 import com.jae464.presentation.mypage.navigation.navigateMyPage
 import com.jae464.presentation.register.navigation.navigateRecipeRegister
-import com.jae464.presentation.scrap.navigation.navigateBookMark
+import com.jae464.presentation.bookmark.navigation.navigateBookMark
 
 @Stable
 class AppState(
