@@ -2,7 +2,6 @@ package com.jae464.presentation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -27,7 +26,7 @@ enum class MainTab(
     SCRAP(
         iconImageVector = Icons.Default.BookmarkBorder,
         description = "스크랩",
-        route = MainTabRoute.Scrap
+        route = MainTabRoute.BookMark
     ),
     MYPAGE(
       iconImageVector = Icons.Default.Person,

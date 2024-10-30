@@ -28,8 +28,8 @@ sealed interface MainTabRoute : Route {
     }
 
     @Serializable
-    data object Scrap: MainTabRoute {
-        override val name: String = "scrap"
+    data object BookMark: MainTabRoute {
+        override val name: String = "book_mark"
     }
 
     @Serializable

@@ -16,7 +16,7 @@ import com.jae464.presentation.home.navigation.navigateHome
 import com.jae464.presentation.main.MainTab
 import com.jae464.presentation.mypage.navigation.navigateMyPage
 import com.jae464.presentation.register.navigation.navigateRecipeRegister
-import com.jae464.presentation.scrap.navigation.navigateScrap
+import com.jae464.presentation.scrap.navigation.navigateBookMark
 
 @Stable
 class AppState(
@@ -45,7 +45,7 @@ class AppState(
         when (tab) {
             MainTab.HOME -> navController.navigateHome(navOptions)
             MainTab.HISTORY -> navController.navigateContestHistory(navOptions)
-            MainTab.SCRAP -> navController.navigateScrap(navOptions)
+            MainTab.SCRAP -> navController.navigateBookMark(navOptions)
             MainTab.MYPAGE -> navController.navigateMyPage(navOptions)
         }
     }

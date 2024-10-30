@@ -7,19 +7,17 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.jae464.presentation.main.MainTabRoute
-import com.jae464.presentation.mypage.MyPageScreen
-import com.jae464.presentation.scrap.ScrapRoute
-import com.jae464.presentation.scrap.ScrapScreen
+import com.jae464.presentation.scrap.BookMarkRoute
 import com.jae464.presentation.util.navigation.getMainTabDirection
 
-fun NavController.navigateScrap(navOptions: NavOptions) {
-    navigate(MainTabRoute.Scrap, navOptions)
+fun NavController.navigateBookMark(navOptions: NavOptions) {
+    navigate(MainTabRoute.BookMark, navOptions)
 }
 
-fun NavGraphBuilder.scrapNavGraph(
+fun NavGraphBuilder.bookMarkNavGraph(
     padding: PaddingValues
 ) {
-    composable<MainTabRoute.Scrap>(
+    composable<MainTabRoute.BookMark>(
         enterTransition = {
             val direction = getMainTabDirection(initialState.destination, targetState.destination)
             if (direction == null) {
@@ -43,6 +41,6 @@ fun NavGraphBuilder.scrapNavGraph(
             }
         },
     ) {
-        ScrapRoute(padding = padding)
+        BookMarkRoute(padding = padding)
     }
 }

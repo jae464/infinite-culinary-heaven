@@ -9,15 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ScrapRoute(
+fun BookMarkRoute(
     padding: PaddingValues
 ) {
-    ScrapScreen(
+    BookMarkScreen(
         padding = padding
     )
 }
 @Composable
-fun ScrapScreen(
+fun BookMarkScreen(
     padding: PaddingValues
 ) {
     Column(

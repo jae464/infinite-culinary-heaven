@@ -9,7 +9,7 @@ import com.jae464.presentation.history.navigation.contestHistoryNavGraph
 import com.jae464.presentation.home.navigation.homeNavGraph
 import com.jae464.presentation.mypage.navigation.myPageNavGraph
 import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
-import com.jae464.presentation.scrap.navigation.scrapNavGraph
+import com.jae464.presentation.scrap.navigation.bookMarkNavGraph
 
 @Composable
 fun MainNavHost(
@@ -28,7 +28,7 @@ fun MainNavHost(
         contestHistoryNavGraph(
             padding = paddingValues
         )
-        scrapNavGraph(
+        bookMarkNavGraph(
             padding = paddingValues
         )
         myPageNavGraph(
