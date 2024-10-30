@@ -32,8 +32,8 @@ class HomeViewModel @Inject constructor(
                 val currentContest = contestRepository.getCurrentContest().getOrThrow()
                 _uiState.update { state -> state.copy(currentContest = currentContest) }
 
-                val recipePreviews = recipeRepository.getRecipePreviews().getOrThrow()
-                _uiState.value = _uiState.value.copy(recipePreviews = recipePreviews, isLoading = false)
+                val recipePreviews = recipeRepository.getRecipePreviewsByContestId(currentContest.id).getOrThrow()
+                _uiState.update { state -> state.copy(recipePreviews = recipePreviews, isLoading = false) }
             }.onFailure {
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed")
             }
