@@ -18,7 +18,7 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = appState.navController,
-        startDestination = appState.startDestination
+        startDestination = appState.startDestination,
     ) {
         homeNavGraph(
             padding = paddingValues,
@@ -42,3 +42,4 @@ fun MainNavHost(
         )
     }
 }
+
