@@ -34,16 +34,16 @@ fun ContestHistoryScreen(
     uiState: ContestHistoryUiState
 ) {
     LazyColumn(
-        modifier = Modifier.padding(padding).fillMaxSize(),
+        modifier = Modifier.padding(padding).padding(horizontal = 16.dp).fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
             Text(
                 text = "지난 요리 대회",
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(vertical = 16.dp),
                 color = Color.Black,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
             )
         }
         items(uiState.contests.size) { index ->

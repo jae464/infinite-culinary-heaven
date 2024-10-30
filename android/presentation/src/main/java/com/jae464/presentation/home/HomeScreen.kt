@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -59,9 +60,13 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
 
-    Box {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)
+    ) {
         LazyColumn(
-            modifier = Modifier.padding(padding),
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             item {
                 Column {
@@ -70,15 +75,14 @@ fun HomeScreen(
                         imageUrl = uiState.currentContest?.imageUrl ?: "",
                         description = uiState.currentContest?.description ?: ""
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "10월 5주차 대회",
-                        modifier = Modifier.padding(16.dp),
                         color = Color.Black,
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
             items(uiState.recipePreviews.size) { index ->
@@ -91,7 +95,6 @@ fun HomeScreen(
         }
         FloatingActionButton(
             modifier = Modifier
-                .padding(padding)
                 .padding(16.dp)
                 .align(Alignment.BottomEnd),
             shape = CircleShape,

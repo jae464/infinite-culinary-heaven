@@ -1,5 +1,6 @@
 package com.jae464.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.ContestRepository
@@ -8,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,9 +28,15 @@ class HomeViewModel @Inject constructor(
 
     private fun fetchRecipePreviews() {
         viewModelScope.launch {
-            val recipePreviews = recipeRepository.getRecipePreviews()
-            val currentContest = contestRepository.getCurrentContest()
-            _uiState.value = _uiState.value.copy(recipePreviews = recipePreviews, currentContest = currentContest, isLoading = false)
+            runCatching {
+                val currentContest = contestRepository.getCurrentContest().getOrThrow()
+                _uiState.update { state -> state.copy(currentContest = currentContest) }
+
+                val recipePreviews = recipeRepository.getRecipePreviews().getOrThrow()
+                _uiState.value = _uiState.value.copy(recipePreviews = recipePreviews, isLoading = false)
+            }.onFailure {
+                Log.e("HomeViewModel", "fetchRecipePreviews Failed")
+            }
         }
     }
 

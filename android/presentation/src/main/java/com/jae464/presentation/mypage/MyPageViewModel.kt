@@ -24,12 +24,10 @@ class MyPageViewModel @Inject constructor(
 
     private fun fetchUserInfo() {
         viewModelScope.launch {
-            val userInfo = userRepository.getUserInfo()
-            _uiState.update { state ->
-                state.copy(
-                    userInfo = userInfo
-                )
-            }
+            userRepository.getUserInfo()
+                .onSuccess { userInfo ->
+                    _uiState.update { state -> state.copy(userInfo = userInfo) }
+                }
         }
     }
 

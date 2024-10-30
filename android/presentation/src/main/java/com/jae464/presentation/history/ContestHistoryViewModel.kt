@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,8 +25,10 @@ class ContestHistoryViewModel @Inject constructor(
 
     private fun fetchContests() {
         viewModelScope.launch {
-            val contests = contestRepository.getAllContests()
-            _uiState.value = _uiState.value.copy(contests = contests)
+            contestRepository.getAllContests()
+                .onSuccess { contests ->
+                    _uiState.update { state -> state.copy(contests = contests) }
+                }
         }
 
     }

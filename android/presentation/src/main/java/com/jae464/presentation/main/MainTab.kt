@@ -1,6 +1,7 @@
 package com.jae464.presentation.main
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
@@ -24,7 +25,7 @@ enum class MainTab(
         MainTabRoute.ContestHistory
     ),
     SCRAP(
-        iconImageVector = Icons.Default.Favorite,
+        iconImageVector = Icons.Default.BookmarkBorder,
         description = "스크랩",
         route = MainTabRoute.Scrap
     ),

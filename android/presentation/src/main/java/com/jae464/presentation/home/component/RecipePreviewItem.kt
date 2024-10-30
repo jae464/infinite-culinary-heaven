@@ -40,15 +40,13 @@ fun RecipeItem(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
             .clickable {
-                // 나중에 수정해야함
                 onClickRecipe(recipePreview.id)
 
             },
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        Row(modifier = Modifier.padding(8.dp)) {
+        Row {
             AsyncImage(
                 model = recipePreview.imageUrl,
                 contentDescription = null,
@@ -64,7 +62,7 @@ fun RecipeItem(
             ) {
                 Text(
                     text = recipePreview.title,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.secondary
                 )

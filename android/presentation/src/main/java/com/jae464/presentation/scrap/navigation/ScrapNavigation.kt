@@ -8,6 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.jae464.presentation.main.MainTabRoute
 import com.jae464.presentation.mypage.MyPageScreen
+import com.jae464.presentation.scrap.ScrapRoute
 import com.jae464.presentation.scrap.ScrapScreen
 import com.jae464.presentation.util.navigation.getMainTabDirection
 
@@ -42,6 +43,6 @@ fun NavGraphBuilder.scrapNavGraph(
             }
         },
     ) {
-        ScrapScreen(padding = padding)
+        ScrapRoute(padding = padding)
     }
 }

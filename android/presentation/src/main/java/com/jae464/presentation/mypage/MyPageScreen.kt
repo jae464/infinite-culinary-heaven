@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,10 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material.icons.filled.Dining
 import androidx.compose.material.icons.filled.FoodBank
-import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Dining
 import androidx.compose.material3.HorizontalDivider
@@ -39,10 +35,6 @@ import coil.compose.AsyncImage
 import com.jae464.domain.model.UserInfo
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
-import com.jae464.presentation.ui.theme.Green10
-import com.jae464.presentation.ui.theme.Green2
-import com.jae464.presentation.ui.theme.Green5
-import com.jae464.presentation.ui.theme.PastelGreen
 
 @Composable
 fun MyPageRoute(

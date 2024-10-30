@@ -22,12 +22,11 @@ fun WeeklyIngredientSection(title: String, imageUrl: String, description: String
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
     ) {
         Text(
             text = "금주의 재료",
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 20.sp,
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
