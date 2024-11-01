@@ -1,6 +1,5 @@
 package com.culinaryheaven.domain.contest.domain;
 
-import com.culinaryheaven.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
