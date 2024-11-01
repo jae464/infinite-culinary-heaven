@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.contest.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,11 @@ public class Contest {
     @ManyToOne
     @JoinColumn(name = "topic_ingredient_id", nullable = false)
     private TopicIngredient topicIngredient;
+
+    @Builder
+    public Contest(String description, TopicIngredient topicIngredient) {
+        this.description = description;
+        this.topicIngredient = topicIngredient;
+    }
+
 }

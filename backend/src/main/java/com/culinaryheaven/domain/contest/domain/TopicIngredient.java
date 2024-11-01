@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.contest.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +26,10 @@ public class TopicIngredient {
 
     @OneToMany(mappedBy = "topicIngredient")
     private List<Contest> contests = new ArrayList<>();
+
+    @Builder
+    public TopicIngredient(String name, String image) {
+        this.name = name;
+        this.image = image;
+    }
 }
