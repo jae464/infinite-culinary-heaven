@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import com.jae464.presentation.main.MainTab
-import com.jae464.presentation.main.MainTab.entries
 
 fun getMainTabDirection(
     startDestination: NavDestination,
@@ -29,5 +28,5 @@ fun getMainTabDirection(
 }
 
 fun NavDestination.getRoute(): MainTab? {
-    return entries.find { this.hasRoute(it.route::class) }
+    return MainTab.entries.find { tab -> this.hasRoute(tab.route::class) }
 }
