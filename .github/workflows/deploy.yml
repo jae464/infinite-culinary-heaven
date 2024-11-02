@@ -52,7 +52,7 @@ jobs:
           script: |
             cd culinary-heaven/
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-            sudo docker rm -f $(docker ps -qa)
+            sudo docker rm -f $(sudo docker ps -qa)
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest
             sudo docker stop $(sudo docker ps -aq)
             sudo docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest \
