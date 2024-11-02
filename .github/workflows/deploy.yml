@@ -42,3 +42,19 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME}}/culinary-heaven:latest
+
+      - name: Deploy to AWS EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd culinary-heaven/
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+            sudo docker rm -f $(docker ps -qa)
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest
+            sudo docker stop $(sudo docker ps -aq)
+            sudo docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest \
+              --name culinary-heaven \
+              -p 8080:8080 culinary-heaven \
