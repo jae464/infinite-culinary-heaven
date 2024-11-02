@@ -22,7 +22,6 @@ public class ContestController {
             @RequestBody final ContestCreateRequest request
     ) {
         System.out.println(request.toString());
-        System.out.println(request.toString());
         contestService.create(request);
         return ResponseEntity.ok().build();
     }
