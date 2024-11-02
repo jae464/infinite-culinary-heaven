@@ -55,6 +55,4 @@ jobs:
             sudo docker rm -f $(sudo docker ps -qa)
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest
             sudo docker stop $(sudo docker ps -aq)
-            sudo docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest \
-              --name culinary-heaven \
-              -p 8080:8080 culinary-heaven \
+            sudo docker run -d ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest --name culinary-heaven -p 8080:8080 culinary-heaven \
