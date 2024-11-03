@@ -3,10 +3,14 @@ package com.culinaryheaven.domain.contest.service;
 import com.culinaryheaven.domain.contest.domain.Contest;
 import com.culinaryheaven.domain.contest.domain.TopicIngredient;
 import com.culinaryheaven.domain.contest.dto.request.ContestCreateRequest;
+import com.culinaryheaven.domain.contest.dto.response.ContestResponse;
+import com.culinaryheaven.domain.contest.dto.response.ContestsResponse;
 import com.culinaryheaven.domain.contest.exception.TopicIngredientNotFoundException;
 import com.culinaryheaven.domain.contest.repository.ContestRepository;
 import com.culinaryheaven.domain.contest.repository.TopicIngredientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -41,7 +45,10 @@ public class ContestService {
         return contest.getId();
     }
 
-
+    public ContestsResponse getAllContests(Pageable pageable) {
+        Slice<Contest> contests = contestRepository.findAll(pageable);
+        return ContestsResponse.of(contests);
+    }
 
     private LocalDateTime getEndOfWeekSaturday(LocalDateTime startDate) {
         DayOfWeek dayOfWeek = startDate.getDayOfWeek();
