@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.contest.controller;
 
 import com.culinaryheaven.domain.contest.dto.request.ContestCreateRequest;
 import com.culinaryheaven.domain.contest.service.ContestService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,10 +20,11 @@ public class ContestController {
 
     @PostMapping
     public ResponseEntity<Void> createContest(
-            @RequestBody final ContestCreateRequest request
+            @RequestBody @Valid final ContestCreateRequest request
     ) {
         System.out.println(request.toString());
         contestService.create(request);
         return ResponseEntity.ok().build();
     }
+
 }
