@@ -31,7 +31,7 @@ public class ContestController {
             final Pageable pageable
     ) {
         final ContestsResponse contestsResponse = contestService.getAllContests(pageable);
-        return ResponseEntity.ok(contestsResponse);
+        return ResponseEntity.ok().body(contestsResponse);
     }
 
 }
