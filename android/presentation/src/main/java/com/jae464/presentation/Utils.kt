@@ -1,10 +1,11 @@
 package com.jae464.presentation
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.temporal.WeekFields
 import java.util.Locale
 
-fun LocalDate.toFormattedString(): String {
+fun LocalDateTime.toFormattedString(): String {
     val year = this.year
     val month = this.monthValue
 
