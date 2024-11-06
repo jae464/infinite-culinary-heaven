@@ -41,8 +41,8 @@ public class ContestService {
                 .endDate(endDate)
                 .build();
 
-        contestRepository.save(contest);
-        return ContestResponse.of(contest);
+        Contest savedContest = contestRepository.save(contest);
+        return ContestResponse.of(savedContest);
     }
 
     public ContestsResponse getAllContests(Pageable pageable) {

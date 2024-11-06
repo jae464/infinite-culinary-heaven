@@ -25,9 +25,9 @@ public class TopicIngredientService {
                 .image(request.image())
                 .build();
 
-        topicIngredientRepository.save(topicIngredient);
+        TopicIngredient savedTopicIngredient = topicIngredientRepository.save(topicIngredient);
 
-        return TopicIngredientResponse.of(topicIngredient);
+        return TopicIngredientResponse.of(savedTopicIngredient);
     }
 
     public TopicIngredientsResponse getAllTopicIngredients(
