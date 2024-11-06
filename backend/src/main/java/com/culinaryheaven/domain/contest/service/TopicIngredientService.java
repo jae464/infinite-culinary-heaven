@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.contest.service;
 
 import com.culinaryheaven.domain.contest.domain.TopicIngredient;
 import com.culinaryheaven.domain.contest.dto.request.TopicIngredientCreateRequest;
+import com.culinaryheaven.domain.contest.dto.response.TopicIngredientResponse;
 import com.culinaryheaven.domain.contest.dto.response.TopicIngredientsResponse;
 import com.culinaryheaven.domain.contest.repository.TopicIngredientRepository;
 import jakarta.transaction.Transactional;
@@ -17,7 +18,7 @@ public class TopicIngredientService {
     private final TopicIngredientRepository topicIngredientRepository;
 
     @Transactional
-    public void create(TopicIngredientCreateRequest request) {
+    public TopicIngredientResponse create(TopicIngredientCreateRequest request) {
 
         TopicIngredient topicIngredient = TopicIngredient.builder()
                 .name(request.name())
@@ -25,6 +26,8 @@ public class TopicIngredientService {
                 .build();
 
         topicIngredientRepository.save(topicIngredient);
+
+        return TopicIngredientResponse.of(topicIngredient);
     }
 
     public TopicIngredientsResponse getAllTopicIngredients(

@@ -25,7 +25,7 @@ public class ContestService {
     private final ContestRepository contestRepository;
     private final TopicIngredientRepository topicIngredientRepository;
 
-    public Long create(final ContestCreateRequest request) {
+    public ContestResponse create(final ContestCreateRequest request) {
         TopicIngredient topicIngredient = topicIngredientRepository.findById(request.topicIngredientId())
                 .orElseThrow(() -> new TopicIngredientNotFoundException(
                         "존재하지 않는 재료입니다."
@@ -42,7 +42,7 @@ public class ContestService {
                 .build();
 
         contestRepository.save(contest);
-        return contest.getId();
+        return ContestResponse.of(contest);
     }
 
     public ContestsResponse getAllContests(Pageable pageable) {
