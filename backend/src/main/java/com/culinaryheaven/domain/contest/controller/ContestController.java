@@ -23,7 +23,7 @@ public class ContestController {
     public ResponseEntity<ContestResponse> createContest(
             @RequestBody @Valid final ContestCreateRequest request
     ) {
-        final ContestResponse contestResponse = contestService.create(request);
+        ContestResponse contestResponse = contestService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(contestResponse);
     }
 
@@ -31,7 +31,7 @@ public class ContestController {
     public ResponseEntity<ContestsResponse> getAllContests(
             final Pageable pageable
     ) {
-        final ContestsResponse contestsResponse = contestService.getAllContests(pageable);
+        ContestsResponse contestsResponse = contestService.getAllContests(pageable);
         return ResponseEntity.ok().body(contestsResponse);
     }
 

@@ -8,8 +8,8 @@ import java.util.List;
 public record ContestsResponse(
     List<ContestResponse> contests
 ) {
-    public static ContestsResponse of(final Slice<Contest> contests) {
-        final List<ContestResponse> contestResponses = contests.getContent()
+    public static ContestsResponse of(Slice<Contest> contests) {
+        List<ContestResponse> contestResponses = contests.getContent()
                 .stream()
                 .map(ContestResponse::of)
                 .toList();
