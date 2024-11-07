@@ -29,10 +29,16 @@ public class ContestController {
 
     @GetMapping
     public ResponseEntity<ContestsResponse> getAllContests(
-            final Pageable pageable
+            Pageable pageable
     ) {
         ContestsResponse contestsResponse = contestService.getAllContests(pageable);
         return ResponseEntity.ok().body(contestsResponse);
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<ContestResponse> getCurrentContest() {
+        ContestResponse contestResponse = contestService.getCurrentContest();
+        return ResponseEntity.ok().body(contestResponse);
     }
 
 }

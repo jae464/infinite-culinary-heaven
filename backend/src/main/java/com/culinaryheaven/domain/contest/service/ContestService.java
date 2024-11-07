@@ -50,6 +50,13 @@ public class ContestService {
         return ContestsResponse.of(contests);
     }
 
+    public ContestResponse getCurrentContest() {
+        Contest contest = contestRepository.findContestsWithinCurrentDate(LocalDateTime.now()).orElseThrow( () ->
+                new IllegalArgumentException("조건에 부합하는 대회가 없습니다.")
+        );
+        return ContestResponse.of(contest);
+    }
+
     private LocalDateTime getEndOfWeekSaturday(LocalDateTime startDate) {
         DayOfWeek dayOfWeek = startDate.getDayOfWeek();
 
