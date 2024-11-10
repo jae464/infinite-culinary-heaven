@@ -21,7 +21,7 @@ spring:
       path: /h2-console
 image:
   store:
-    dir: "${user.dir}"
+    dir: "${user.dir}/images"
 ---
 spring:
   config:

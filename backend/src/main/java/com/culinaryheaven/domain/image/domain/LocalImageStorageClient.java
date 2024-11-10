@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -15,17 +16,22 @@ public class LocalImageStorageClient implements ImageStorageClient {
 
     @Value("${image.store.dir}")
     private String imageStoragePath;
-//    private String imageStoragePath = "/Users/jae464/Desktop/workspace/07_infinite-culinary-heaven/backend/";
 
     @Override
     public String uploadImage(MultipartFile file) {
         try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(imageStoragePath, fileName);
+            Path storageDir = Paths.get(imageStoragePath);
 
-            File newFile = new File(imageStoragePath + fileName);
+            if (Files.notExists(storageDir)) {
+                Files.createDirectories(storageDir);
+            }
+
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path filePath = storageDir.resolve(fileName);
+
             file.transferTo(filePath.toFile());
-            System.out.println(filePath.toAbsolutePath());
+            System.out.println("File saved at: " + filePath.toAbsolutePath());
+
             return filePath.toAbsolutePath().toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
