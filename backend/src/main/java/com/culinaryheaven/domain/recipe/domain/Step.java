@@ -3,6 +3,7 @@ package com.culinaryheaven.domain.recipe.domain;
 import com.culinaryheaven.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,11 @@ public class Step {
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
+
+    @Builder
+    public Step(String description, String image, Recipe recipe) {
+        this.description = description;
+        this.image = image;
+        this.recipe = recipe;
+    }
 }

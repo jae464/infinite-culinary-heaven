@@ -7,8 +7,10 @@ import com.culinaryheaven.domain.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,11 +21,12 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
-    @PostMapping
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<RecipeResponse> create(
-            @RequestBody RecipeCreateRequest request
+            @RequestPart List<MultipartFile> images,
+            @RequestPart RecipeCreateRequest request
     ) {
-        RecipeResponse recipeResponse = recipeService.create(request);
+        RecipeResponse recipeResponse = recipeService.create(request, images);
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeResponse);
     }
 
