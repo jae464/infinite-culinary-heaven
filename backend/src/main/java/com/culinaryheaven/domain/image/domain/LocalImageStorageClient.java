@@ -29,12 +29,13 @@ public class LocalImageStorageClient implements ImageStorageClient {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path filePath = storageDir.resolve(fileName);
 
-            file.transferTo(filePath.toFile());
+            Files.write(filePath, file.getBytes());
             System.out.println("File saved at: " + filePath.toAbsolutePath());
 
             return filePath.toAbsolutePath().toString();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("이미지 저장에 실패했습니다.", e);
         }
     }
 

@@ -41,7 +41,7 @@ public class RecipeService {
         ));
 
         System.out.println("images: " + images.toString());
-//
+
         Map<String, MultipartFile> imageMap = images.stream()
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, file -> file));
 
@@ -50,7 +50,7 @@ public class RecipeService {
             System.out.println(entry.getValue().getOriginalFilename());
         }
 
-        String thumbnailUrl = imageStorageClient.uploadImage(images.get(0));
+        String thumbnailUrl = imageStorageClient.uploadImage(imageMap.get(request.thumbnailImage()));
 
         Recipe recipe = Recipe.builder()
                 .title(request.title())
