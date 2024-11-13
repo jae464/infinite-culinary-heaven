@@ -1,11 +1,14 @@
 package com.culinaryheaven.domain.image.domain;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,6 +39,19 @@ public class LocalImageStorageClient implements ImageStorageClient {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("이미지 저장에 실패했습니다.", e);
+        }
+    }
+
+    @Override
+    public Resource loadImage(String image) {
+        try {
+
+            Path filePath = Paths.get(imageStoragePath, image);
+            String fullPath = filePath.toAbsolutePath().toString();
+            return new UrlResource("file:", fullPath);
+
+        } catch(MalformedURLException e) {
+            throw new RuntimeException("파일 경로를 확인해주세요.");
         }
     }
 

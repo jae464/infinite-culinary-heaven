@@ -1,7 +1,7 @@
-INSERT INTO topic_ingredient (name, image) VALUES ('두부', 'tofu.jpg');
-INSERT INTO topic_ingredient (name, image) VALUES ('토마토', 'tomato.jpg');
-INSERT INTO topic_ingredient (name, image) VALUES ('오징어', 'squid.jpg');
-INSERT INTO topic_ingredient (name, image) VALUES ('양파', 'onion.jpg');
+INSERT INTO topic_ingredient (name, image) VALUES ('두부', 'file:potato.jpg');
+INSERT INTO topic_ingredient (name, image) VALUES ('토마토', 'file:potato.jpg');
+INSERT INTO topic_ingredient (name, image) VALUES ('오징어', 'file:potato.jpg');
+INSERT INTO topic_ingredient (name, image) VALUES ('양파', 'file:potato.jpg');
 
 INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
 VALUES

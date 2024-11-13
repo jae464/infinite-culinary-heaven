@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,9 +23,10 @@ public class TopicIngredientController {
 
     @PostMapping
     public ResponseEntity<TopicIngredientResponse> create(
-            @RequestBody final TopicIngredientCreateRequest request
+            @RequestPart MultipartFile image,
+            @RequestPart TopicIngredientCreateRequest request
     ) {
-        final TopicIngredientResponse topicIngredientResponse = topicIngredientService.create(request);
+        TopicIngredientResponse topicIngredientResponse = topicIngredientService.create(request, image);
         return ResponseEntity.status(HttpStatus.CREATED).body(topicIngredientResponse);
     }
 
