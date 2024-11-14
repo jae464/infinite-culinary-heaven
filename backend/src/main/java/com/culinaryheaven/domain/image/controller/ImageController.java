@@ -4,6 +4,9 @@ import com.culinaryheaven.domain.image.domain.ImageStorageClient;
 import com.culinaryheaven.domain.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,11 +28,13 @@ public class ImageController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getImage(
+    public ResponseEntity<Resource> getImage(
             @RequestParam  String image
     ) {
         Resource res = imageStorageClient.loadImage(image);
-        return ResponseEntity.ok(res.getFilename());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<>(res, headers, HttpStatus.OK);
 
     }
 }

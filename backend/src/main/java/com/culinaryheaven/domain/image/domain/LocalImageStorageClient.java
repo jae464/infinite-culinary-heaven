@@ -45,10 +45,8 @@ public class LocalImageStorageClient implements ImageStorageClient {
     @Override
     public Resource loadImage(String image) {
         try {
-
             Path filePath = Paths.get(imageStoragePath, image);
-            String fullPath = filePath.toAbsolutePath().toString();
-            return new UrlResource("file:", fullPath);
+            return new UrlResource(filePath.toUri());
 
         } catch(MalformedURLException e) {
             throw new RuntimeException("파일 경로를 확인해주세요.");
