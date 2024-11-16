@@ -32,14 +32,7 @@ public class ContestService {
                 )
         );
 
-        LocalDateTime endDate = getEndOfWeekSaturday(request.startDate());
-
-        Contest contest = Contest.builder()
-                .description(request.description())
-                .topicIngredient(topicIngredient)
-                .startDate(request.startDate())
-                .endDate(endDate)
-                .build();
+        Contest contest = request.toEntity(topicIngredient);
 
         Contest savedContest = contestRepository.save(contest);
         return ContestResponse.of(savedContest);
@@ -55,19 +48,6 @@ public class ContestService {
                 new IllegalArgumentException("조건에 부합하는 대회가 없습니다.")
         );
         return ContestResponse.of(contest);
-    }
-
-    private LocalDateTime getEndOfWeekSaturday(LocalDateTime startDate) {
-        DayOfWeek dayOfWeek = startDate.getDayOfWeek();
-
-        if (dayOfWeek != DayOfWeek.MONDAY) {
-            throw new IllegalArgumentException("시작일은 월요일만 가능합니다.");
-        }
-
-        int daysUntilSaturday = DayOfWeek.SATURDAY.getValue() - dayOfWeek.getValue();
-
-        return startDate.plusDays(daysUntilSaturday)
-                .with(LocalTime.of(23, 59, 59));
     }
 
 }
