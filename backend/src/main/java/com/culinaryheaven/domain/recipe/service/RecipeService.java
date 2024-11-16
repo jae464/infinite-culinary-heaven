@@ -6,6 +6,7 @@ import com.culinaryheaven.domain.image.domain.ImageStorageClient;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.domain.Step;
 import com.culinaryheaven.domain.recipe.dto.request.RecipeCreateRequest;
+import com.culinaryheaven.domain.recipe.dto.request.StepCreateRequest;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipesResponse;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -52,23 +52,14 @@ public class RecipeService {
 
         String thumbnailUrl = imageStorageClient.uploadImage(imageMap.get(request.thumbnailImage()));
 
-        Recipe recipe = Recipe.builder()
-                .title(request.title())
-                .thumbnailImage(thumbnailUrl)
-                .contest(contest)
-                .build();
+        Recipe recipe = request.toEntity(thumbnailUrl, contest);
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
-        for (RecipeCreateRequest.StepRequest stepRequest : request.steps()) {
+        for (StepCreateRequest stepRequest : request.steps()) {
             String stepImageUrl = imageStorageClient.uploadImage(imageMap.get(stepRequest.ImageUrl()));
 
-            Step step = Step.builder()
-                    .description(stepRequest.description())
-                    .image(stepImageUrl)
-                    .recipe(recipe)
-                    .build();
-
+            Step step = stepRequest.toEntity(stepImageUrl, savedRecipe);
             stepRepository.save(step);
         }
 
