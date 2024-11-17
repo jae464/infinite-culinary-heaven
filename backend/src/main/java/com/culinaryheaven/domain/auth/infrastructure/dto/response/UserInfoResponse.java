@@ -1,4 +1,4 @@
 package com.culinaryheaven.domain.auth.infrastructure.dto.response;
 
-public record UserInfoResponse(String oauthId) {
+public record UserInfoResponse(Long id) {
 }

@@ -39,6 +39,7 @@ public class KakaoOAuth2Client implements OAuth2Client {
                     request,
                     UserInfoResponse.class
             );
+            System.out.println(response.toString());
             return response.getBody();
 
         } catch (HttpStatusCodeException e) {
