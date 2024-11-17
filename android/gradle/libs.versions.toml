@@ -22,6 +22,7 @@ kotlinxSerializationJson = "1.6.1"
 coil-compose = "2.4.0"
 okhttp = "4.12.0"
 retrofit = "2.11.0"
+kakao = "2.20.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -60,6 +61,8 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
+
+kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
