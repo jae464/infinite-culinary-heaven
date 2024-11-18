@@ -2,8 +2,10 @@ package com.culinaryheaven.domain.user.domain;
 
 
 import com.culinaryheaven.common.BaseTimeEntity;
+import com.culinaryheaven.domain.auth.domain.OAuth2Type;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,5 +20,19 @@ public class User extends BaseTimeEntity {
 
     @Column
     private String username;
+
+    @Column
+    private String oauthId;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private OAuth2Type oauthType;
+
+    @Builder
+    public User(String username, String oauthId, OAuth2Type oauthType) {
+        this.username = username;
+        this.oauthId = oauthId;
+        this.oauthType = oauthType;
+    }
 
 }

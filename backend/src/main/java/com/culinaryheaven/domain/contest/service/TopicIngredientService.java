@@ -6,11 +6,11 @@ import com.culinaryheaven.domain.contest.dto.response.TopicIngredientResponse;
 import com.culinaryheaven.domain.contest.dto.response.TopicIngredientsResponse;
 import com.culinaryheaven.domain.contest.repository.TopicIngredientRepository;
 import com.culinaryheaven.domain.image.domain.ImageStorageClient;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
