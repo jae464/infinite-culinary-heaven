@@ -22,6 +22,12 @@ spring:
 image:
   store:
     dir: "${user.dir}/images"
+jwt:
+  secret: "123213123213123213123213123213123213123213123213123213123213123213123213123213123213"
+  access-token-validity-in-seconds: 1800
+  refresh-token-validity-in-seconds: 1296000
+
+
 ---
 spring:
   config:

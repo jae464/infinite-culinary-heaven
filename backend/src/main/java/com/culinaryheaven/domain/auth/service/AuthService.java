@@ -1,7 +1,9 @@
 package com.culinaryheaven.domain.auth.service;
 
 import com.culinaryheaven.domain.auth.domain.OAuth2Type;
+import com.culinaryheaven.domain.auth.domain.TokenType;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
+import com.culinaryheaven.domain.auth.infrastructure.TokenProvider;
 import com.culinaryheaven.domain.auth.infrastructure.dto.response.UserInfoResponse;
 import com.culinaryheaven.domain.auth.infrastructure.kakao.KakaoOAuth2Client;
 import com.culinaryheaven.domain.user.domain.User;
@@ -18,14 +20,18 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final KakaoOAuth2Client oAuth2Client; // todo OAuth2ClientProvider 구현후 타입 바꾸기
+    private final TokenProvider tokenProvider;
 
     @Transactional
-    public LoginResponse login(String oauth2Type, String accessToken) {
+    public LoginResponse login(String oauth2Type, String oauth2AccessToken) {
 
         if (OAuth2Type.from(oauth2Type) == OAuth2Type.KAKAO) {
-            UserInfoResponse userInfoResponse = oAuth2Client.getUserInfo(accessToken);
+            UserInfoResponse userInfoResponse = oAuth2Client.getUserInfo(oauth2AccessToken);
             System.out.println(userInfoResponse.toString());
-            // todo userInfoResponse 가지고 JWT token 생성
+
+            String accessToken = tokenProvider.provideToken(userInfoResponse.id(), TokenType.ACCESS);
+            String refreshToken = tokenProvider.provideToken(userInfoResponse.id(), TokenType.REFRESH);
+            System.out.println("created jwt token : " + accessToken + " " + refreshToken);
 
             User savedUser = userRepository.findByOauthId(userInfoResponse.id().toString())
                             .orElseGet(() -> {
@@ -39,7 +45,8 @@ public class AuthService {
 
             System.out.println(savedUser);
 
+            return new LoginResponse(accessToken, refreshToken);
         }
-        return new LoginResponse("accessToken", "refreshToken");
+        return null;
     }
 }
