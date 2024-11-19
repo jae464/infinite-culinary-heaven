@@ -1,11 +1,12 @@
 package com.culinaryheaven.global.configuration;
 
-import com.culinaryheaven.global.filter.CustomFilter;
+import com.culinaryheaven.global.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final CustomFilter customFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,7 +31,15 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(manage ->
                         manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/contests").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/contests").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/topic-ingredients").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/topic-ingredients").permitAll()
+                        .requestMatchers("/auth").permitAll()
+                        .anyRequest().permitAll()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
