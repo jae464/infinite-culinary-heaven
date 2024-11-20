@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getContests } from '../api/auth';
+import { getContests, getImageApi } from '../api/api';
 import { ContestResponse } from '../type/api/Contest';
 import styled from 'styled-components';
 
@@ -61,11 +61,15 @@ const ErrorText = styled.div`
 export const ContestListComponent: React.FC = () => {
   const [contests, setContests] = useState<ContestResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [image, setImage] = useState<string>('null');
 
   useEffect(() => {
     const fetchContests = async () => {
       try {
         const data = await getContests(0, 10);
+        const image = await getImageApi();
+        setImage(image);
+        console.log(image);
         setContests(data.contests);
       } catch (err) {
         setError('Failed to load contests.');
@@ -86,10 +90,7 @@ export const ContestListComponent: React.FC = () => {
         {contests.map((contest) => (
           <ContestItem key={contest.id}>
             <ContestDetails>
-              <IngredientImage
-                src={contest.topicIngredient.image}
-                alt={contest.topicIngredient.name}
-              />
+              <IngredientImage src={image} alt={contest.topicIngredient.name} />
               <Description>
                 <strong>{contest.description}</strong>
                 <ContestDate>

@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
-import { loginAPI } from '../api/auth';
+import { loginAPI } from '../api/api';
 
 type AuthContextType = {
   accessToken: string | null;
