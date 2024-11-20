@@ -25,7 +25,7 @@ public class TopicIngredientService {
 
         String imageUrl = imageStorageClient.uploadImage(image);
 
-        TopicIngredient topicIngredient = request.toEntity();
+        TopicIngredient topicIngredient = request.toEntity(imageUrl);
 
         TopicIngredient savedTopicIngredient = topicIngredientRepository.save(topicIngredient);
 

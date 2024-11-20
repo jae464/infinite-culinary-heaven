@@ -68,10 +68,13 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
+        System.out.println("validateToken");
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            System.out.println("success");
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("fail");
             return false;
         }
     }

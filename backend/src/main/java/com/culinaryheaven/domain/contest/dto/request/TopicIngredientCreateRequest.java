@@ -14,10 +14,10 @@ public record TopicIngredientCreateRequest(
         @Schema(description = "주재료 이미지 주소")
         String image
 ) {
-    public TopicIngredient toEntity() {
+    public TopicIngredient toEntity(String imageUrl) {
         return TopicIngredient.builder()
                 .name(name)
-                .image(image)
+                .image(imageUrl)
                 .build();
     }
 }

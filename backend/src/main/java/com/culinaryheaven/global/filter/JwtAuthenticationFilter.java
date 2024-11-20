@@ -28,11 +28,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
+        System.out.println(token);
+
+        // todo access token 만료 처리 필요
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Claims claims = jwtTokenProvider.getClaimsFromToken(token);
             String username = claims.getSubject();
             String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
+            System.out.println(role);
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
             Authentication authentication = new UsernamePasswordAuthenticationToken(username, token, List.of(grantedAuthority));
             System.out.println(authentication);
