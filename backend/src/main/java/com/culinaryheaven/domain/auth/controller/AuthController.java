@@ -1,5 +1,6 @@
 package com.culinaryheaven.domain.auth.controller;
 
+import com.culinaryheaven.domain.auth.dto.request.AdminLoginRequest;
 import com.culinaryheaven.domain.auth.dto.request.OAuth2LoginRequest;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
 import com.culinaryheaven.domain.auth.service.AuthService;
@@ -24,5 +25,15 @@ public class AuthController {
         LoginResponse loginResponse = authService.login("kakao", request.accessToken());
         return ResponseEntity.ok().body(loginResponse);
     }
+
+    @PostMapping("/login/admin")
+    public ResponseEntity<LoginResponse> adminLogin(
+            @RequestBody AdminLoginRequest request
+    ) {
+        LoginResponse loginResponse = authService.loginAsAdmin(request);
+        return ResponseEntity.ok().body(loginResponse);
+    }
+
+
 
 }

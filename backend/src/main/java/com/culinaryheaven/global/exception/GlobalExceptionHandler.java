@@ -1,6 +1,5 @@
 package com.culinaryheaven.global.exception;
 
-import com.culinaryheaven.domain.contest.exception.TopicIngredientNotFoundException;
 import com.culinaryheaven.global.exception.dto.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -15,10 +14,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String LOG_FORMAT_ERROR = "\n[ERROR] %s %s";
     private static final String LOG_FORMAT_WARN = "\n[WARN] %s %s";
 
-    @ExceptionHandler(TopicIngredientNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleTopicIngredientNotFoundException(TopicIngredientNotFoundException ex, HttpServletRequest request) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ExceptionResponse> handleCustomException(CustomException ex, HttpServletRequest request) {
         logger.warn(String.format(LOG_FORMAT_WARN, ex.getMessage(), request.getRequestURI()));
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExceptionResponse(ex.getMessage()));
+        return ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(new ExceptionResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

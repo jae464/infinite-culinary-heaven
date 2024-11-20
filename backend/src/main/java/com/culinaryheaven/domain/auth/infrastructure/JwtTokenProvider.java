@@ -1,6 +1,8 @@
 package com.culinaryheaven.domain.auth.infrastructure;
 
 import com.culinaryheaven.domain.auth.domain.TokenType;
+import com.culinaryheaven.global.exception.CustomException;
+import com.culinaryheaven.global.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -32,9 +34,9 @@ public class JwtTokenProvider {
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInSeconds * 1000;
     }
 
-    public String provideToken(Long id, TokenType tokenType) {
+    public String provideToken(Long id, TokenType tokenType, String role) {
         Claims claims = Jwts.claims();
-        claims.put(MEMBER_ROLE_CLAIM_KEY, "ROLE_USER");
+        claims.put(MEMBER_ROLE_CLAIM_KEY, role);
 
         long now = (new Date()).getTime();
 
@@ -45,7 +47,7 @@ public class JwtTokenProvider {
         } else if (tokenType == TokenType.REFRESH) {
             validity = new Date(now + this.refreshTokenValidityInMilliseconds);
         } else {
-            throw new IllegalArgumentException("Invalid token type");
+            throw new CustomException(ErrorCode.INVALID_TOKEN_TYPE);
         }
 
         return Jwts.builder()

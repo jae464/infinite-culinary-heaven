@@ -5,9 +5,10 @@ import com.culinaryheaven.domain.contest.domain.TopicIngredient;
 import com.culinaryheaven.domain.contest.dto.request.ContestCreateRequest;
 import com.culinaryheaven.domain.contest.dto.response.ContestResponse;
 import com.culinaryheaven.domain.contest.dto.response.ContestsResponse;
-import com.culinaryheaven.domain.contest.exception.TopicIngredientNotFoundException;
 import com.culinaryheaven.domain.contest.repository.ContestRepository;
 import com.culinaryheaven.domain.contest.repository.TopicIngredientRepository;
+import com.culinaryheaven.global.exception.CustomException;
+import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -27,9 +28,7 @@ public class ContestService {
 
     public ContestResponse create(final ContestCreateRequest request) {
         TopicIngredient topicIngredient = topicIngredientRepository.findById(request.topicIngredientId())
-                .orElseThrow(() -> new TopicIngredientNotFoundException(
-                        "존재하지 않는 재료입니다."
-                )
+                .orElseThrow(() -> new CustomException(ErrorCode.TOPIC_INGREDIENT_NOT_FOUND)
         );
 
         Contest contest = request.toEntity(topicIngredient);
@@ -44,8 +43,8 @@ public class ContestService {
     }
 
     public ContestResponse getCurrentContest() {
-        Contest contest = contestRepository.findContestsWithinCurrentDate(LocalDateTime.now()).orElseThrow( () ->
-                new IllegalArgumentException("조건에 부합하는 대회가 없습니다.")
+        Contest contest = contestRepository.findContestsWithinCurrentDate(LocalDateTime.now()).orElseThrow(() ->
+                new CustomException(ErrorCode.CONTEST_NOT_FOUND)
         );
         return ContestResponse.of(contest);
     }

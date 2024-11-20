@@ -11,6 +11,8 @@ import com.culinaryheaven.domain.recipe.dto.response.RecipeResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipesResponse;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
 import com.culinaryheaven.domain.recipe.repository.StepRepository;
+import com.culinaryheaven.global.exception.CustomException;
+import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -67,7 +69,7 @@ public class RecipeService {
     }
 
     public RecipeResponse findById(Long id) {
-        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 레시피입니다."));
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
         return RecipeResponse.of(recipe);
     }
 

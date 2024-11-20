@@ -3,6 +3,8 @@ package com.culinaryheaven.domain.auth.infrastructure.kakao;
 import com.culinaryheaven.domain.auth.domain.OAuth2Type;
 import com.culinaryheaven.domain.auth.infrastructure.OAuth2Client;
 import com.culinaryheaven.domain.auth.infrastructure.dto.response.UserInfoResponse;
+import com.culinaryheaven.global.exception.CustomException;
+import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -43,7 +45,7 @@ public class KakaoOAuth2Client implements OAuth2Client {
             return response.getBody();
 
         } catch (HttpStatusCodeException e) {
-            throw new IllegalArgumentException(e.getResponseBodyAsString(), e);
+            throw new CustomException(ErrorCode.KAKAO_INTERNAL_ERROR);
         }
     }
 }

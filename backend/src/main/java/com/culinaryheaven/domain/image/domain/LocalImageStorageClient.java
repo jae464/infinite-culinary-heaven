@@ -1,5 +1,7 @@
 package com.culinaryheaven.domain.image.domain;
 
+import com.culinaryheaven.global.exception.CustomException;
+import com.culinaryheaven.global.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -37,8 +39,7 @@ public class LocalImageStorageClient implements ImageStorageClient {
 
             return filePath.toAbsolutePath().toString();
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("이미지 저장에 실패했습니다.", e);
+            throw new CustomException(ErrorCode.IMAGE_SAVE_FAILED);
         }
     }
 
@@ -49,7 +50,7 @@ public class LocalImageStorageClient implements ImageStorageClient {
             return new UrlResource(filePath.toUri());
 
         } catch(MalformedURLException e) {
-            throw new RuntimeException("파일 경로를 확인해주세요.");
+            throw new CustomException(ErrorCode.INVALID_IMAGE_URL);
         }
     }
 
