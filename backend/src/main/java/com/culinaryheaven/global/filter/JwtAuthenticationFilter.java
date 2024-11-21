@@ -1,6 +1,11 @@
 package com.culinaryheaven.global.filter;
 
 import com.culinaryheaven.domain.auth.infrastructure.JwtTokenProvider;
+import com.culinaryheaven.global.exception.CustomException;
+import com.culinaryheaven.global.exception.dto.ExceptionResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,17 +35,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = jwtTokenProvider.resolveToken(request);
         System.out.println(token);
 
-        // todo access token 만료 처리 필요
-
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-            String username = claims.getSubject();
-            String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
-            System.out.println(role);
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(username, token, List.of(grantedAuthority));
-            System.out.println(authentication);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+                String username = claims.getSubject();
+                String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
+                System.out.println(role);
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(username, token, List.of(grantedAuthority));
+                System.out.println(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (CustomException ex) {
+            System.out.println(ex.getMessage());
+            response.setStatus(ex.getErrorCode().getHttpStatus().value());
+            response.setContentType("application/json; charset=UTF-8");
+            ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            response.getWriter().write(
+                    mapper.writeValueAsString(
+                            new ExceptionResponse(ex.getMessage())
+                    )
+            );
+            return;
         }
 
         filterChain.doFilter(request, response);

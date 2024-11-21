@@ -4,6 +4,7 @@ import com.culinaryheaven.domain.auth.domain.TokenType;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -73,9 +74,12 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             System.out.println("success");
             return true;
+        } catch (ExpiredJwtException e) {
+            System.out.println("expired");
+            throw new CustomException(ErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (JwtException | IllegalArgumentException e) {
             System.out.println("fail");
-            return false;
+            throw new CustomException(ErrorCode.AUTHORIZATION_FAILED);
         }
     }
 
