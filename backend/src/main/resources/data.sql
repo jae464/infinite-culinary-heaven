@@ -1,6 +1,6 @@
-INSERT INTO topic_ingredient (name, image) VALUES ('두부', 'tofu_sample.jpeg');
-INSERT INTO topic_ingredient (name, image) VALUES ('토마토', 'tomato_sample.jpeg');
-INSERT INTO topic_ingredient (name, image) VALUES ('감자', 'potato_sample.jpg');
+INSERT INTO topic_ingredient (name, image) VALUES ('두부', 'http://localhost:8080/images/tofu_sample.jpeg');
+INSERT INTO topic_ingredient (name, image) VALUES ('토마토', 'http://localhost:8080/images/tomato_sample.jpeg');
+INSERT INTO topic_ingredient (name, image) VALUES ('감자', 'http://localhost:8080/images/potato_sample.jpg');
 
 INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
 VALUES

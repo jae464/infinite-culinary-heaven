@@ -21,6 +21,7 @@ public class LocalImageStorageClient implements ImageStorageClient {
 
     @Value("${image.store.dir}")
     private String imageStoragePath;
+    private static final String LOCAL_IMAGE_URL_PREFIX = "http://localhost:8080/images/";
 
     @Override
     public String uploadImage(MultipartFile file) {
@@ -35,9 +36,8 @@ public class LocalImageStorageClient implements ImageStorageClient {
             Path filePath = storageDir.resolve(fileName);
 
             Files.write(filePath, file.getBytes());
-            System.out.println("File saved at: " + filePath.toAbsolutePath());
 
-            return fileName;
+            return LOCAL_IMAGE_URL_PREFIX + fileName;
         } catch (IOException e) {
             throw new CustomException(ErrorCode.IMAGE_SAVE_FAILED);
         }
