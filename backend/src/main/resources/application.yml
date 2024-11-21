@@ -23,7 +23,8 @@ image:
   store:
     dir: "${user.dir}/images"
 jwt:
-  secret: culinaryheavenculinaryheavenculinaryheavenculinaryheavenculinaryheaven
+  secret-access: culinaryheavenculinaryheavenculinaryheavenculinaryheavenculinaryheaven
+  secret-refresh: culinaryheavenculinaryheavenculinaryheavenculinaryheavenculinaryheavenrefresh
   access-token-validity-in-seconds: 1800
   refresh-token-validity-in-seconds: 1296000
 

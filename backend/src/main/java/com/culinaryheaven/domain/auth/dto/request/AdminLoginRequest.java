@@ -12,6 +12,7 @@ public record AdminLoginRequest(
         @NotNull
         @Schema(description = "관리자 패스워드")
         String password
+
 ) {
 
 }

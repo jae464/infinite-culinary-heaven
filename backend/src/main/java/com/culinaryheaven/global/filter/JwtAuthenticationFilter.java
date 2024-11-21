@@ -1,5 +1,6 @@
 package com.culinaryheaven.global.filter;
 
+import com.culinaryheaven.domain.auth.domain.TokenType;
 import com.culinaryheaven.domain.auth.infrastructure.JwtTokenProvider;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.dto.ExceptionResponse;
@@ -36,10 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println(token);
 
         try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+            if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+                Claims claims = jwtTokenProvider.getClaimsFromToken(token, TokenType.ACCESS);
                 String username = claims.getSubject();
                 String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
+                System.out.println("username : " + username);
                 System.out.println(role);
                 GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, token, List.of(grantedAuthority));
@@ -58,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
             return;
         }
-
+        System.out.println("doFilter");
         filterChain.doFilter(request, response);
     }
 }

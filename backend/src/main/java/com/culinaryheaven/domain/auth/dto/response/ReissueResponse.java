@@ -1,6 +1,6 @@
 package com.culinaryheaven.domain.auth.dto.response;
 
-public record LoginResponse(
+public record ReissueResponse(
         String accessToken,
         String refreshToken
 ) {

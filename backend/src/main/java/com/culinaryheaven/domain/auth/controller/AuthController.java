@@ -2,7 +2,9 @@ package com.culinaryheaven.domain.auth.controller;
 
 import com.culinaryheaven.domain.auth.dto.request.AdminLoginRequest;
 import com.culinaryheaven.domain.auth.dto.request.OAuth2LoginRequest;
+import com.culinaryheaven.domain.auth.dto.request.ReissueRequest;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
+import com.culinaryheaven.domain.auth.dto.response.ReissueResponse;
 import com.culinaryheaven.domain.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,13 @@ public class AuthController {
         return ResponseEntity.ok().body(loginResponse);
     }
 
+    @PostMapping("/reissue")
+    public ResponseEntity<ReissueResponse> reissue(
+            @RequestBody ReissueRequest request
+    ) {
+        ReissueResponse reissueResponse = authService.reissue(request);
+        return ResponseEntity.ok().body(reissueResponse);
+    }
 
 
 }
