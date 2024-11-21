@@ -1,5 +1,6 @@
 package com.jae464.presentation.history.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -60,7 +61,6 @@ fun ContestItem(contest: Contest) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-//                        text = "시작일: ${contest.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))}",
                         text = contest.startDate.toFormattedString(),
                         fontSize = 14.sp,
                         color = Color.Gray

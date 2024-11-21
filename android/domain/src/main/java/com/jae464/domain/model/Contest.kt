@@ -1,6 +1,5 @@
 package com.jae464.domain.model
 
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class Contest(

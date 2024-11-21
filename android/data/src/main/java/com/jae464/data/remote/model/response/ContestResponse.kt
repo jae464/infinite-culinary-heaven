@@ -25,6 +25,10 @@ fun ContestResponse.toDomain() = Contest(
     description = description,
     startDate = LocalDateTime.parse(startDate),
     ingredient = topicIngredient.name,
-    imageUrl = topicIngredient.image
+    imageUrl = adjustLocalhostUrl(topicIngredient.image)
 )
+
+fun adjustLocalhostUrl(url: String): String {
+    return url.replace("localhost", "10.0.2.2")
+}
 
