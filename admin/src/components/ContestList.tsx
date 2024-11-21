@@ -61,7 +61,6 @@ const ErrorText = styled.div`
 export const ContestListComponent: React.FC = () => {
   const [contests, setContests] = useState<ContestResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const imagePath = 'http://localhost:8080/images/';
 
   useEffect(() => {
     const fetchContests = async () => {
@@ -88,7 +87,7 @@ export const ContestListComponent: React.FC = () => {
           <ContestItem key={contest.id}>
             <ContestDetails>
               <IngredientImage
-                src={imagePath + contest.topicIngredient.image}
+                src={contest.topicIngredient.image}
                 alt={contest.topicIngredient.name}
               />
               <Description>

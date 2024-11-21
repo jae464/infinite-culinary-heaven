@@ -97,7 +97,6 @@ export const TopicIngredientList: React.FC = () => {
   const [newName, setNewName] = useState<string>('');
   const [newImage, setNewImage] = useState<File | null>(null);
   const { accessToken, refreshToken } = useAuth();
-  const imagePath = 'http://localhost:8080/images/';
 
   useEffect(() => {
     const fetchIngredients = async () => {
@@ -154,10 +153,7 @@ export const TopicIngredientList: React.FC = () => {
       <IngredientList>
         {ingredients.map((ingredient) => (
           <IngredientItem key={ingredient.id}>
-            <IngredientImage
-              src={imagePath + ingredient.image}
-              alt={ingredient.name}
-            />
+            <IngredientImage src={ingredient.image} alt={ingredient.name} />
             <IngredientDetails>
               <IngredientName>{ingredient.name}</IngredientName>
             </IngredientDetails>
