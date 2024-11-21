@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getTopicIngredients, createTopicIngredient } from '../api/api';
+import {
+  getTopicIngredients,
+  createTopicIngredient,
+  reissueToken,
+} from '../api/api';
 import { TopicIngredientResponse } from '../type/api/Contest';
 import { Modal } from '../components/CustomModal';
 import { useAuth } from '../contexts/AuthContext';
@@ -92,12 +96,14 @@ export const TopicIngredientList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newName, setNewName] = useState<string>('');
   const [newImage, setNewImage] = useState<File | null>(null);
-  const { accessToken } = useAuth();
+  const { accessToken, refreshToken } = useAuth();
+  const imagePath = 'http://localhost:8080/images/';
 
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
         const data = await getTopicIngredients(0, 10);
+        console.log(data.topicIngredients);
         setIngredients(data.topicIngredients);
       } catch (err) {
         setError('Failed to load topic ingredients.');
@@ -124,11 +130,12 @@ export const TopicIngredientList: React.FC = () => {
         newImage,
         accessToken,
       );
-      setIngredients((prev) => [...prev, response]); // 새 항목 추가
-      setIsModalOpen(false); // Modal 닫기
+      setIngredients((prev) => [...prev, response]);
+      setIsModalOpen(false);
       setNewName('');
       setNewImage(null);
     } catch (err) {
+      console.log(err);
       setError('주재료 생성 중 오류가 발생했습니다.');
     }
   };
@@ -147,7 +154,10 @@ export const TopicIngredientList: React.FC = () => {
       <IngredientList>
         {ingredients.map((ingredient) => (
           <IngredientItem key={ingredient.id}>
-            <IngredientImage src={ingredient.image} alt={ingredient.name} />
+            <IngredientImage
+              src={imagePath + ingredient.image}
+              alt={ingredient.name}
+            />
             <IngredientDetails>
               <IngredientName>{ingredient.name}</IngredientName>
             </IngredientDetails>

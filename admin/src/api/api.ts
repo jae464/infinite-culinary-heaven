@@ -54,5 +54,11 @@ export const createTopicIngredient = async (
     },
   });
 
+  console.log(response.data);
   return response.data; // 생성된 주재료 데이터 반환
+};
+
+export const reissueToken = async (refreshToken: string) => {
+  const response = await api.post('/reissue', { refreshToken });
+  return response.data; // ReissueResponse 반환
 };

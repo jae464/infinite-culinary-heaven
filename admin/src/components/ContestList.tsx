@@ -61,15 +61,12 @@ const ErrorText = styled.div`
 export const ContestListComponent: React.FC = () => {
   const [contests, setContests] = useState<ContestResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [image, setImage] = useState<string>('null');
+  const imagePath = 'http://localhost:8080/images/';
 
   useEffect(() => {
     const fetchContests = async () => {
       try {
         const data = await getContests(0, 10);
-        const image = await getImageApi();
-        setImage(image);
-        console.log(image);
         setContests(data.contests);
       } catch (err) {
         setError('Failed to load contests.');
@@ -90,7 +87,10 @@ export const ContestListComponent: React.FC = () => {
         {contests.map((contest) => (
           <ContestItem key={contest.id}>
             <ContestDetails>
-              <IngredientImage src={image} alt={contest.topicIngredient.name} />
+              <IngredientImage
+                src={imagePath + contest.topicIngredient.image}
+                alt={contest.topicIngredient.name}
+              />
               <Description>
                 <strong>{contest.description}</strong>
                 <ContestDate>

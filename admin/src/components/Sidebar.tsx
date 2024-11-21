@@ -52,9 +52,11 @@ export const Sidebar: React.FC = () => {
     <SidebarContainer>
       <Logo>Infinite Culinary</Logo>
       <MenuList>
-        <MenuItem onClick={() => handleNavigation('/contest')}>대회</MenuItem>
+        <MenuItem onClick={() => handleNavigation('/contest')}>
+          대회관리
+        </MenuItem>
         <MenuItem onClick={() => handleNavigation('/topic-ingredient')}>
-          재료
+          재료등록
         </MenuItem>
       </MenuList>
     </SidebarContainer>

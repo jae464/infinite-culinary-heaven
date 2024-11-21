@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { createTopicIngredient } from '../api/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const FormContainer = styled.div`
   width: 100%;
@@ -67,6 +68,7 @@ export const TopicIngredientForm: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { accessToken } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,8 +78,13 @@ export const TopicIngredientForm: React.FC = () => {
       return;
     }
 
+    if (accessToken == null) {
+      setErrorMessage('Access Token이 만료되었습니다.');
+      return;
+    }
+
     try {
-      const response = await createTopicIngredient(name, image);
+      const response = await createTopicIngredient(name, image, accessToken);
       setSuccessMessage(`주재료가 생성되었습니다: ${response.name}`);
       setErrorMessage(null);
       setName('');
