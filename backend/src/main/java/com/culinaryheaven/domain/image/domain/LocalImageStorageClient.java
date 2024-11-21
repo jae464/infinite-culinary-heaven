@@ -37,7 +37,7 @@ public class LocalImageStorageClient implements ImageStorageClient {
             Files.write(filePath, file.getBytes());
             System.out.println("File saved at: " + filePath.toAbsolutePath());
 
-            return filePath.toAbsolutePath().toString();
+            return fileName;
         } catch (IOException e) {
             throw new CustomException(ErrorCode.IMAGE_SAVE_FAILED);
         }
