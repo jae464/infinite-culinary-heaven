@@ -14,6 +14,17 @@ sealed interface Route {
     data class RecipeRegister(val recipeId: Long?): Route {
         override val name: String = "recipe_register"
     }
+
+    @Serializable
+    data object Splash : Route {
+        override val name: String = "splash"
+    }
+
+    @Serializable
+    data object Login : Route {
+        override val name: String = "login"
+    }
+
 }
 
 sealed interface MainTabRoute : Route {

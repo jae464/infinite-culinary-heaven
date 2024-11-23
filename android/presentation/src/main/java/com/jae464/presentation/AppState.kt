@@ -17,6 +17,8 @@ import com.jae464.presentation.main.MainTab
 import com.jae464.presentation.mypage.navigation.navigateMyPage
 import com.jae464.presentation.register.navigation.navigateRecipeRegister
 import com.jae464.presentation.bookmark.navigation.navigateBookMark
+import com.jae464.presentation.login.navigation.navigateLogin
+import com.jae464.presentation.main.Route
 
 @Stable
 class AppState(
@@ -26,7 +28,7 @@ class AppState(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = MainTab.HOME.route
+    val startDestination = Route.Splash
 
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
@@ -35,7 +37,7 @@ class AppState(
 
     fun navigate(tab: MainTab) {
         val navOptions = navOptions {
-            popUpTo(navController.graph.findStartDestination().id) {
+            popUpTo(MainTab.HOME.route) {
                 saveState = true
             }
             launchSingleTop = true
@@ -48,6 +50,27 @@ class AppState(
             MainTab.SCRAP -> navController.navigateBookMark(navOptions)
             MainTab.MYPAGE -> navController.navigateMyPage(navOptions)
         }
+    }
+
+    fun navigateToLogin() {
+        val navOptions = navOptions {
+            popUpTo(navController.graph.findStartDestination().id) {
+                inclusive = true
+            }
+        }
+
+        navController.navigateLogin(navOptions)
+    }
+
+    fun navigateToHome() {
+        val navOptions = navOptions {
+            popUpTo(Route.Login) {
+                inclusive = true
+            }
+        }
+
+        navController.navigateHome(navOptions)
+
     }
 
     fun navigateToRecipeDetail(recipeId: Long) {

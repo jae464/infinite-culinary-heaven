@@ -10,6 +10,8 @@ import com.jae464.presentation.home.navigation.homeNavGraph
 import com.jae464.presentation.mypage.navigation.myPageNavGraph
 import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
 import com.jae464.presentation.bookmark.navigation.bookMarkNavGraph
+import com.jae464.presentation.login.navigation.loginNavGraph
+import com.jae464.presentation.splash.navigation.splashNavGraph
 
 @Composable
 fun MainNavHost(
@@ -20,6 +22,13 @@ fun MainNavHost(
         navController = appState.navController,
         startDestination = appState.startDestination,
     ) {
+        splashNavGraph(
+            onNavigateToHome = { appState.navigateToHome() },
+            onNavigateToLogin = { appState.navigateToLogin()}
+        )
+        loginNavGraph(
+            onLoginSuccess = { appState.navigateToHome() }
+        )
         homeNavGraph(
             padding = paddingValues,
             onClickRecipe = { appState.navigateToRecipeDetail(it) },
