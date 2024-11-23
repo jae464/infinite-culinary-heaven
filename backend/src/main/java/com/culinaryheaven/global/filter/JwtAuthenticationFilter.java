@@ -47,7 +47,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (CustomException ex) {
-            System.out.println(ex.getMessage());
             response.setStatus(ex.getErrorCode().getHttpStatus().value());
             response.setContentType("application/json; charset=UTF-8");
             ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
