@@ -9,5 +9,5 @@ data class RecipePreviewsResponse(
 )
 
 fun RecipePreviewsResponse.toDomain(): List<RecipePreview> {
-    return recipes.map { it.toDomain() }
+    return recipes.map { it.toRecipePreviewDomain() }
 }

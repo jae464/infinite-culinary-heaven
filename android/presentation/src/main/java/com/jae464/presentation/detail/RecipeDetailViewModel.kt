@@ -15,16 +15,19 @@ import javax.inject.Inject
 class RecipeDetailViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
     val uiState: StateFlow<RecipeDetailUiState> = _uiState.asStateFlow()
 
-    init {
-        fetchRecipe()
+    fun handleIntent(intent: RecipeDetailIntent) {
+        when (intent) {
+            is RecipeDetailIntent.FetchRecipe -> fetchRecipe(intent.recipeId)
+        }
     }
 
-    private fun fetchRecipe() {
+    private fun fetchRecipe(recipeId: Long) {
         viewModelScope.launch {
-            recipeRepository.getRecipeById(1L)
+            recipeRepository.getRecipeById(recipeId)
                 .onSuccess { recipe ->
                     _uiState.update { state -> state.copy(recipe = recipe) }
                 }

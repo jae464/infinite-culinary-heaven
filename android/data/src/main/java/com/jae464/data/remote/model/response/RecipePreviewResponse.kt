@@ -1,7 +1,10 @@
 package com.jae464.data.remote.model.response
 
 import com.jae464.data.util.adjustLocalhostUrl
+import com.jae464.domain.model.Ingredient
+import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
+import com.jae464.domain.model.Step
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,15 +16,6 @@ data class RecipePreviewResponse(
     val steps: List<StepResponse>,
     val ingredients: List<IngredientResponse>,
     val contest: ContestResponse
-)
-
-fun RecipePreviewResponse.toDomain() = RecipePreview(
-    id = id,
-    title = title,
-    imageUrl = adjustLocalhostUrl(thumbnailImage),
-    description = description,
-    score = 5f,
-    author = "author",
 )
 
 @Serializable
@@ -37,3 +31,35 @@ data class IngredientResponse(
     val name: String,
     val quantity: String
 )
+
+fun RecipePreviewResponse.toRecipePreviewDomain() = RecipePreview(
+    id = id,
+    title = title,
+    imageUrl = adjustLocalhostUrl(thumbnailImage),
+    description = description,
+    score = 5f,
+    author = "익명",
+)
+
+fun RecipePreviewResponse.toRecipeDomain() = Recipe(
+    id = id,
+    title = title,
+    imageUrl = adjustLocalhostUrl(thumbnailImage),
+    description = description,
+    score = 5f,
+    author = "익명",
+    ingredients = ingredients.map { it.toDomain() },
+    steps = steps.map { it.toDomain() }
+)
+
+fun IngredientResponse.toDomain() = Ingredient(
+    name = name,
+    quantity = quantity
+)
+
+fun StepResponse.toDomain() = Step(
+    step = id.toInt(),
+    description = description,
+    imageUrl = adjustLocalhostUrl(imageUrl)
+)
+

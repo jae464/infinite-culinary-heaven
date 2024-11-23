@@ -7,7 +7,6 @@ data class Recipe(
     val description: String,
     val score: Float,
     val author: String,
-    // 이 아래 필드들은 수정 필요
     val ingredients: List<Ingredient>,
     val steps: List<Step>,
 )

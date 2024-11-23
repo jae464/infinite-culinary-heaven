@@ -41,11 +41,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = jwtTokenProvider.getClaimsFromToken(token, TokenType.ACCESS);
                 String username = claims.getSubject();
                 String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
-                System.out.println("username : " + username);
-                System.out.println(role);
+
                 GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, token, List.of(grantedAuthority));
-                System.out.println(authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (CustomException ex) {

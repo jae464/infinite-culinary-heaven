@@ -3,6 +3,7 @@ package com.jae464.data.repository
 import android.util.Log
 import com.jae464.data.remote.api.RecipeService
 import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.remote.model.response.toRecipeDomain
 import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
@@ -42,6 +43,24 @@ class DefaultRecipeRepository @Inject constructor(
     }
 
     override suspend fun getRecipeById(id: Long): Result<Recipe> {
-        TODO("Not yet implemented")
+        val response = recipeService.getRecipeById(id)
+
+        return if (response.isSuccessful) {
+            val recipeResponse = response.body()
+            if (recipeResponse != null) {
+                Result.success(recipeResponse.toRecipeDomain())
+            } else {
+                Result.failure(
+                    Exception(
+                        makeErrorResponse(
+                            response.code(),
+                            response.message(),
+                            response.errorBody().toString())
+                    )
+                )
+            }
+        } else {
+            Result.failure(Exception("network error"))
+        }
     }
 }
