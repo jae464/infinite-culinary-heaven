@@ -37,12 +37,20 @@ public class RecipeController {
     ) {
         RecipesResponse recipesResponse;
         if (contestId == null) {
-            recipesResponse = recipeService.findAll(pageable);
+            recipesResponse = recipeService.getAllRecipes(pageable);
         }
         else {
-            recipesResponse = recipeService.findAllByContestId(pageable, contestId);
+            recipesResponse = recipeService.getRecipesByContestId(pageable, contestId);
         }
         return ResponseEntity.ok().body(recipesResponse);
+    }
+
+    @GetMapping("/{recipeId}")
+    public ResponseEntity<RecipeResponse> getRecipe(
+        @PathVariable Long recipeId
+    ) {
+        RecipeResponse recipeResponse = recipeService.getRecipeById(recipeId);
+        return ResponseEntity.ok().body(recipeResponse);
     }
 
 }

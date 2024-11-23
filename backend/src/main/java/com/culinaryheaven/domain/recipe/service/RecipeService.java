@@ -75,17 +75,17 @@ public class RecipeService {
         return RecipeResponse.of(savedRecipe);
     }
 
-    public RecipeResponse findById(Long id) {
+    public RecipeResponse getRecipeById(Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
         return RecipeResponse.of(recipe);
     }
 
-    public RecipesResponse findAll(Pageable pageable) {
+    public RecipesResponse getAllRecipes(Pageable pageable) {
         Slice<Recipe> recipes = recipeRepository.findAll(pageable);
         return RecipesResponse.of(recipes);
     }
 
-    public RecipesResponse findAllByContestId(Pageable pageable, Long id) {
+    public RecipesResponse getRecipesByContestId(Pageable pageable, Long id) {
         Slice<Recipe> recipes = recipeRepository.findAllByContestId(pageable, id);
         return RecipesResponse.of(recipes);
     }
