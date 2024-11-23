@@ -77,7 +77,7 @@ fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "10월 5주차 대회",
+                        text = uiState.currentContest?.description ?: "",
                         color = Color.Black,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold

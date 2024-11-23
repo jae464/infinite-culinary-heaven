@@ -35,6 +35,7 @@ class HomeViewModel @Inject constructor(
                 val recipePreviews = recipeRepository.getRecipePreviewsByContestId(currentContest.id).getOrThrow()
                 _uiState.update { state -> state.copy(recipePreviews = recipePreviews, isLoading = false) }
             }.onFailure {
+                Log.e("HomeViewModel", "fetchRecipePreviews Failed ${it.message}")
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed")
             }
         }

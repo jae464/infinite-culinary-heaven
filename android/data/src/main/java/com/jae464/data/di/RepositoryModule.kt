@@ -1,6 +1,7 @@
 package com.jae464.data.di
 
 import com.jae464.data.repository.DefaultContestRepository
+import com.jae464.data.repository.DefaultRecipeRepository
 import com.jae464.data.repository.FakeBookMarkRepository
 import com.jae464.data.repository.FakeContestRepository
 import com.jae464.data.repository.FakeRecipeRepository
@@ -22,7 +23,7 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindRecipeRepository(
-        recipeRepositoryImpl: FakeRecipeRepository
+        recipeRepositoryImpl: DefaultRecipeRepository
     ): RecipeRepository
 
     @Binds

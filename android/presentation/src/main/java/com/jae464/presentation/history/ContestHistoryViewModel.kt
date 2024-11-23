@@ -1,5 +1,6 @@
 package com.jae464.presentation.history
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.ContestRepository
@@ -25,12 +26,15 @@ class ContestHistoryViewModel @Inject constructor(
 
     private fun fetchContests() {
         viewModelScope.launch {
-            contestRepository.getAllContests()
-                .onSuccess { contests ->
-                    _uiState.update { state -> state.copy(contests = contests) }
-                }
-        }
 
+            runCatching {
+                val contests = contestRepository.getAllContests().getOrThrow()
+                _uiState.update { state -> state.copy(contests = contests, isLoading = false) }
+            }.onFailure {
+                Log.e("ContestHistoryViewModel", "fetchContests Failed")
+            }
+
+        }
     }
 
 
