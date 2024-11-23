@@ -3,12 +3,15 @@ package com.culinaryheaven.domain.recipe.service;
 import com.culinaryheaven.domain.contest.domain.Contest;
 import com.culinaryheaven.domain.contest.repository.ContestRepository;
 import com.culinaryheaven.domain.image.domain.ImageStorageClient;
+import com.culinaryheaven.domain.recipe.domain.Ingredient;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.domain.Step;
+import com.culinaryheaven.domain.recipe.dto.request.IngredientCreateRequest;
 import com.culinaryheaven.domain.recipe.dto.request.RecipeCreateRequest;
 import com.culinaryheaven.domain.recipe.dto.request.StepCreateRequest;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipesResponse;
+import com.culinaryheaven.domain.recipe.repository.IngredientRepository;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
 import com.culinaryheaven.domain.recipe.repository.StepRepository;
 import com.culinaryheaven.global.exception.CustomException;
@@ -32,6 +35,7 @@ public class RecipeService {
     private final ContestRepository contestRepository;
     private final ImageStorageClient imageStorageClient;
     private final StepRepository stepRepository;
+    private final IngredientRepository ingredientRepository;
 
     @Transactional
     public RecipeResponse create(
@@ -41,8 +45,6 @@ public class RecipeService {
         Contest contest = contestRepository.findById(request.contestId()).orElseThrow(() -> new IllegalArgumentException(
                 "존재하지 않는 대회입니다."
         ));
-
-        System.out.println("images: " + images.toString());
 
         Map<String, MultipartFile> imageMap = images.stream()
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, file -> file));
@@ -58,6 +60,11 @@ public class RecipeService {
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
+        for (IngredientCreateRequest ingredientCreateRequest : request.ingredients()) {
+            Ingredient ingredient = ingredientCreateRequest.toEntity(savedRecipe);
+            ingredientRepository.save(ingredient);
+        }
+
         for (StepCreateRequest stepRequest : request.steps()) {
             String stepImageUrl = imageStorageClient.uploadImage(imageMap.get(stepRequest.ImageUrl()));
 
@@ -71,6 +78,11 @@ public class RecipeService {
     public RecipeResponse findById(Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
         return RecipeResponse.of(recipe);
+    }
+
+    public RecipesResponse findAll(Pageable pageable) {
+        Slice<Recipe> recipes = recipeRepository.findAll(pageable);
+        return RecipesResponse.of(recipes);
     }
 
     public RecipesResponse findAllByContestId(Pageable pageable, Long id) {

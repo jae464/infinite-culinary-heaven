@@ -30,15 +30,19 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeResponse);
     }
 
-    @GetMapping("/{contestId}")
+    @GetMapping
     public ResponseEntity<RecipesResponse> getAllRecipes(
             Pageable pageable,
-            @PathVariable Long contestId
-
+            @RequestParam(required = false) Long contestId
     ) {
-        RecipesResponse recipesResponse = recipeService.findAllByContestId(pageable, contestId);
+        RecipesResponse recipesResponse;
+        if (contestId == null) {
+            recipesResponse = recipeService.findAll(pageable);
+        }
+        else {
+            recipesResponse = recipeService.findAllByContestId(pageable, contestId);
+        }
         return ResponseEntity.ok().body(recipesResponse);
     }
-
 
 }

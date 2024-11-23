@@ -22,6 +22,9 @@ public class Recipe extends BaseTimeEntity {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private String description;
+
     @Column(nullable = false, name = "thumbnail_image")
     private String thumbnailImage;
 
@@ -35,9 +38,20 @@ public class Recipe extends BaseTimeEntity {
     @OneToMany(mappedBy = "recipe")
     private List<Step> steps;
 
+    @Column(nullable = false, name = "competition_count")
+    private int competitionCount = 0;
+
+    @Column(nullable = false, name = "win_count")
+    private int winCount = 0;
+
     @Builder
-    public Recipe(String title, String thumbnailImage, Contest contest) {
+    public Recipe(String title,
+                  String description,
+                  String thumbnailImage,
+                  Contest contest
+    ) {
         this.title = title;
+        this.description = description;
         this.thumbnailImage = thumbnailImage;
         this.contest = contest;
     }

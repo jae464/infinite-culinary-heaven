@@ -17,10 +17,10 @@ public class BaseTimeEntity {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private LocalDateTime createTime;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime updateTime;
+    private LocalDateTime modifiedAt;
 
 }

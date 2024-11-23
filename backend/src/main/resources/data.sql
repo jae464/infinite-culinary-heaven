@@ -4,12 +4,20 @@ INSERT INTO topic_ingredient (name, image) VALUES ('감자', 'http://localhost:8
 
 INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
 VALUES
-    ('두부 요리 대회', '2024-10-28T00:00:00', '2024-11-03T23:59:59', 1);
+    ('두부 요리 대회', '2024-11-04T00:00:00', '2024-11-10T23:59:59', 1);
 
 INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
 VALUES
-    ('토마토 요리 대회', '2024-11-4T00:00:00', '2024-11-10T23:59:59', 2);
+    ('토마토 요리 대회', '2024-11-11T00:00:00', '2024-11-17T23:59:59', 2);
 
 INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
 VALUES
-    ('감자 요리 대회', '2024-11-11T00:00:00', '2024-11-17T23:59:59', 3);
+    ('감자 요리 대회', '2024-11-18T00:00:00', '2024-11-24T23:59:59', 3);
+
+INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, contest_id, competition_count, win_count)
+VALUES ('2024-11-22T11:11:11','2024-11-22T11:11:11','휴게소 알감자', '휴게소에서 파는 알감자의 맛을 그대로 재현해봤습니다.','http://localhost:8080/images/step_sample.jpg', 3, 0, 0);
+
+INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('감자', '50g', 1);
+INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('양파', '50g', 1);
+
+INSERT INTO step (description, image, recipe_id) VALUES ('먼저 감자를 삶습니다.', 'http://localhost:8080/images/step_sample.jpg', 1);

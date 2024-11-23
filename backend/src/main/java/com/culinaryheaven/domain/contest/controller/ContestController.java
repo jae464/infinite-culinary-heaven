@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/contests")
 @RequiredArgsConstructor
-
 public class ContestController {
 
     private final ContestService contestService;
