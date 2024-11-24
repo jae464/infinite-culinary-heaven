@@ -1,8 +1,10 @@
 package com.jae464.presentation.login
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.kakao.sdk.user.UserApi
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -15,16 +17,8 @@ class LoginViewModel @Inject constructor(
 
     fun handleIntent(intent: LoginIntent) {
         when (intent) {
-            is LoginIntent.KakaoLogin -> kakaoLogin()
+            is LoginIntent.KakaoLogin -> TODO()
             is LoginIntent.Logout -> TODO()
-        }
-    }
-
-    private fun kakaoLogin() {
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-            UserApiClient.instance.loginWithKakaoTalk(context) { token, error -> }
-        } else {
-            UserApiClient.instance.loginWithKakaoAccount(context) { token, error -> }
         }
     }
 

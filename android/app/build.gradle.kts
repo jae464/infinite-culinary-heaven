@@ -25,7 +25,7 @@ android {
         versionName = "1.0"
 
         manifestPlaceholders["NATIVE_APP_KEY"] = getLocalProperty("kakao_app_key")
-        buildConfigField("String", "KAKAO_APP_KEY", getLocalProperty("kakao_app_key"))
+        buildConfigField("String", "KAKAO_APP_KEY", "\"${getLocalProperty("kakao_app_key")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
