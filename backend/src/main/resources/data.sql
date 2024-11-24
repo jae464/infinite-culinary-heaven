@@ -1,6 +1,7 @@
 INSERT INTO topic_ingredient (name, image) VALUES ('두부', 'http://localhost:8080/images/tofu_sample.jpeg');
 INSERT INTO topic_ingredient (name, image) VALUES ('토마토', 'http://localhost:8080/images/tomato_sample.jpeg');
 INSERT INTO topic_ingredient (name, image) VALUES ('감자', 'http://localhost:8080/images/potato_sample.jpg');
+INSERT INTO topic_ingredient (name, image) VALUES ('계란', 'http://localhost:8080/images/egg_sample.jpg');
 
 INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
 VALUES
@@ -14,6 +15,11 @@ INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
 VALUES
     ('감자 요리 대회', '2024-11-18T00:00:00', '2024-11-24T23:59:59', 3);
 
+INSERT INTO contest (description, start_date, end_date, topic_ingredient_id)
+VALUES
+    ('계란 요리 대회', '2024-11-25T00:00:00', '2024-12-01T23:59:59', 4);
+
+
 INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, contest_id, competition_count, win_count)
 VALUES ('2024-11-22T11:11:11','2024-11-22T11:11:11','휴게소 알감자', '휴게소에서 파는 알감자의 맛을 그대로 재현해봤습니다.','http://localhost:8080/images/recipe_2_sample.jpg', 3, 0, 0);
 
@@ -22,3 +28,12 @@ INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('소금', '적당히'
 
 INSERT INTO step (description, image, recipe_id) VALUES ('먼저 감자를 삶습니다.', 'http://localhost:8080/images/step_sample.jpg', 1);
 INSERT INTO step (description, image, recipe_id) VALUES ('감자에 양념을 뿌립니다.', 'http://localhost:8080/images/step_2_sample.jpg', 1);
+
+INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, contest_id, competition_count, win_count)
+VALUES ('2024-11-25T11:11:11','2024-11-25T11:11:11','들기름 계란 후라이', '간단하고 맛있는 들기름 계란후라이','http://localhost:8080/images/recipe_egg_sample.jpg', 4, 0, 0);
+
+INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('계란', '3개', 2);
+INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('소금', '적당히', 2);
+
+INSERT INTO step (description, image, recipe_id) VALUES ('먼저 감자를 삶습니다.', 'http://localhost:8080/images/step_sample.jpg', 2);
+INSERT INTO step (description, image, recipe_id) VALUES ('감자에 양념을 뿌립니다.', 'http://localhost:8080/images/step_2_sample.jpg', 2);
