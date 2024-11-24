@@ -27,7 +27,7 @@ fun MainNavHost(
             onNavigateToLogin = { appState.navigateToLogin()}
         )
         loginNavGraph(
-            onLoginSuccess = { appState.navigateToHome() }
+            onNavigateToHome = { appState.navigateToHome() }
         )
         homeNavGraph(
             padding = paddingValues,

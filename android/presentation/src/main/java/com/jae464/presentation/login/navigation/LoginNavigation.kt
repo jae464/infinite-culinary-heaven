@@ -12,11 +12,11 @@ fun NavController.navigateLogin(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.loginNavGraph(
-    onLoginSuccess: () -> Unit
+    onNavigateToHome: () -> Unit
 ) {
     composable<Route.Login>() { navBackStackEntry ->
         LoginRoute(
-            onLoginSuccess = onLoginSuccess
+            onNavigateToHome = onNavigateToHome
         )
     }
 }
