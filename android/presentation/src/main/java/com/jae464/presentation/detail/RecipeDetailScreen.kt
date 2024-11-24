@@ -180,7 +180,7 @@ fun RecipeItem(
                     }
                     Spacer(modifier = Modifier.padding(vertical = 16.dp))
                     recipe.steps.forEachIndexed { index, step ->
-                        StepItem(step = step)
+                        StepItem(step = step, index = index + 1)
                     }
                 }
             }
@@ -200,7 +200,7 @@ fun IngredientItem(ingredient: Ingredient) {
 }
 
 @Composable
-fun StepItem(step: Step) {
+fun StepItem(step: Step, index: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -213,7 +213,7 @@ fun StepItem(step: Step) {
                 .padding(end = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(text = "${step.step}.", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "${index}.", fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Text(text = step.description, fontSize = 16.sp, lineHeight = 20.sp)
         }
 
