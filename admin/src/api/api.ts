@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080', // API 서버 주소
+  // baseURL: 'http://localhost:8080', // API 서버 주소
+  baseURL: 'http://52.78.188.164:8080', // API 서버 주소
 });
 
 export const loginAPI = async (id: string, password: string) => {
