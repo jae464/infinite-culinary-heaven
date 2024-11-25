@@ -26,6 +26,7 @@ public class LocalImageStorageClient implements ImageStorageClient {
     @Override
     public String uploadImage(MultipartFile file) {
         try {
+            System.out.println("로컬에 업로드 합니다.");
             Path storageDir = Paths.get(imageStoragePath);
 
             if (Files.notExists(storageDir)) {
