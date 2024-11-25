@@ -61,9 +61,9 @@ jobs:
           script: |
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/backend/docker-compose.yml down
-            sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/backend/docker-compose.yml up -d
-            cd culinary-heaven/            
             sudo docker rm -f $(sudo docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest
             sudo docker stop $(sudo docker ps -aq)
+            sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/backend/docker-compose.yml up -d
+            cd culinary-heaven/                        
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest            
             sudo docker run -d --name culinary-heaven -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/culinary-heaven:latest
