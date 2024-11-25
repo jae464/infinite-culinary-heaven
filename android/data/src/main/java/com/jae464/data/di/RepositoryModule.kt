@@ -3,13 +3,11 @@ package com.jae464.data.di
 import com.jae464.data.repository.DefaultContestRepository
 import com.jae464.data.repository.DefaultRecipeRepository
 import com.jae464.data.repository.FakeBookMarkRepository
-import com.jae464.data.repository.FakeContestRepository
-import com.jae464.data.repository.FakeRecipeRepository
-import com.jae464.data.repository.FakeUserRepository
+import com.jae464.data.repository.FakeAuthRepository
 import com.jae464.domain.repository.BookMarkRepository
 import com.jae464.domain.repository.ContestRepository
 import com.jae464.domain.repository.RecipeRepository
-import com.jae464.domain.repository.UserRepository
+import com.jae464.domain.repository.AuthRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,8 +33,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindUserRepository(
-        userRepositoryImpl: FakeUserRepository
-    ): UserRepository
+        userRepositoryImpl: FakeAuthRepository
+    ): AuthRepository
 
     @Binds
     @Singleton

@@ -2,7 +2,7 @@ package com.jae464.presentation.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jae464.domain.repository.UserRepository
+import com.jae464.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MyPageUiState())
     val uiState: StateFlow<MyPageUiState> = _uiState.asStateFlow()
@@ -24,7 +24,7 @@ class MyPageViewModel @Inject constructor(
 
     private fun fetchUserInfo() {
         viewModelScope.launch {
-            userRepository.getUserInfo()
+            authRepository.getUserInfo()
                 .onSuccess { userInfo ->
                     _uiState.update { state -> state.copy(userInfo = userInfo) }
                 }

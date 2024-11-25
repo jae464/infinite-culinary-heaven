@@ -17,7 +17,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-    private val BASE_URL = "http://10.0.2.2:8080/"
+//    private val BASE_URL = "http://10.0.2.2:8080/"
+    private val BASE_URL = "http://54.158.214.225:8080/"
 
     @Provides
     @Singleton
