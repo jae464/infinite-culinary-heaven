@@ -62,6 +62,7 @@ jobs:
           envs: DOCKERHUB_USERNAME
           key: ${{ secrets.EC2_KEY }}
           script: |
+            export DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin            
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml down
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml up -d
