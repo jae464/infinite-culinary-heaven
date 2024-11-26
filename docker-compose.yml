@@ -16,7 +16,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: culinary
-      MYSQL_USER: culinary
+      MYSQL_USER: root
       MYSQL_PASSWORD: culinary
       TZ: Asia/Seoul
     command:
