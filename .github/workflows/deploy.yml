@@ -54,12 +54,14 @@ jobs:
 
       - name: Deploy server to AWS EC2
         uses: appleboy/ssh-action@master
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
+          envs: DOCKERHUB_USERNAME
           key: ${{ secrets.EC2_KEY }}
           script: |
-            echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-            export DOCKERHUB_USERNAME=${{secrets.DOCKERHUB_USERNAME}}
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin            
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml down
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml up -d
