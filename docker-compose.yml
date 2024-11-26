@@ -1,6 +1,6 @@
 services:
   backend:
-    image: jae464/culinary-heaven:latest
+    image: ${DOCKERHUB_USERNAME}/culinary-heaven:latest
     container_name: culinary-heaven-app
     restart: always
     environment:
