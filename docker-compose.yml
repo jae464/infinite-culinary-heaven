@@ -1,4 +1,13 @@
 services:
+  backend:
+    image: ${DOCKERHUB_USERNAME}/culinary-heaven:latest
+    container_name: culinary-heaven-app
+    restart: always
+    environment:
+      TZ: Asia/Seoul
+    depends_on:
+      - mysql
+
   mysql:
     image: mysql:8.0.33
     container_name: culinary-heaven-mysql
@@ -10,10 +19,14 @@ services:
       MYSQL_USER: culinary
       MYSQL_PASSWORD: culinary
       TZ: Asia/Seoul
-    command: [ "mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_general_ci" ]
+    command:
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_general_ci",
+      ]
     volumes:
       - db_data:/var/lib/mysql
 
 volumes:
   db_data:
-
