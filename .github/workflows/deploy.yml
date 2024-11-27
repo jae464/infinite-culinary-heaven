@@ -69,7 +69,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin       
-            export AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}}
-            export AWS_SECRET_KEY=${{secrets.AWS_SECRET_KEY}}
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml down
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml up -d
+            docker image prune -a -f
