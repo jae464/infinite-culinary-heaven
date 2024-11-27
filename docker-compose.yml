@@ -4,6 +4,8 @@ services:
     container_name: culinary-heaven-app
     restart: always
     environment:
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
       TZ: Asia/Seoul
     depends_on:
       - mysql

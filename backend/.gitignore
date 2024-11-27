@@ -39,4 +39,3 @@ out/
 .gitattributes
 
 /images
-/src/main/resources/application-cloud.yml
