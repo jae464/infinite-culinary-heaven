@@ -1,5 +1,6 @@
 package com.jae464.data.di
 
+import com.jae464.data.remote.api.AuthService
 import com.jae464.data.remote.api.ContestService
 import com.jae464.data.remote.api.RecipeService
 import dagger.Module
@@ -24,5 +25,11 @@ object ApiServiceModule {
     fun provideRecipeService(
         @NoAuthRetrofit retrofit: Retrofit
     ): RecipeService = retrofit.create(RecipeService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAuthService(
+        @NoAuthRetrofit retrofit: Retrofit
+    ): AuthService = retrofit.create(AuthService::class.java)
 
 }

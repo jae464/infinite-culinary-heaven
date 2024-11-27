@@ -40,6 +40,9 @@ fun LoginRoute(
         event.collect {
             when (it) {
                 is LoginEvent.LoginSuccess -> onNavigateToHome()
+                is LoginEvent.LoginFailed -> {
+                    Log.d("LoginRoute", "LoginFailed")
+                }
             }
         }
     }

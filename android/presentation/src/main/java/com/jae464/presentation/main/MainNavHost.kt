@@ -24,7 +24,7 @@ fun MainNavHost(
     ) {
         splashNavGraph(
             onNavigateToHome = { appState.navigateToHome() },
-            onNavigateToLogin = { appState.navigateToLogin()}
+            onNavigateToLogin = { appState.navigateToLogin() }
         )
         loginNavGraph(
             onNavigateToHome = { appState.navigateToHome() }

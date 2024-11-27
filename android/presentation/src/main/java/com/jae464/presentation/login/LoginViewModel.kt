@@ -4,9 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApiClient
+import com.jae464.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val authRepository: AuthRepository
 ): ViewModel() {
 
     private val _uiEvent = MutableSharedFlow<LoginEvent>()
@@ -28,6 +27,13 @@ class LoginViewModel @Inject constructor(
                 // todo 서버에 login 요청
                 Log.d("LoginViewModel" , intent.accessToken)
                 viewModelScope.launch {
+                    val tokenInfo = authRepository.login(intent.accessToken, "kakao")
+                    Log.d("LoginViewModel", "tokenInfo : $tokenInfo")
+                    if (tokenInfo.isSuccess) {
+                        authRepository.saveAccessToken(tokenInfo.getOrNull()!!.accessToken)
+                    } else {
+                        _uiEvent.emit(LoginEvent.LoginFailed)
+                    }
                     _uiEvent.emit(LoginEvent.LoginSuccess)
                 }
             }
