@@ -7,5 +7,7 @@ jwt:
   secret-access: culinaryheavenculinaryheavenculinaryheavenculinaryheavenculinaryheaven
   secret-refresh: culinaryheavenculinaryheavenculinaryheavenculinaryheavenculinaryheavenrefresh
   access-token-validity-in-seconds: 1800
-  refresh-token-validity-in-seconds: 1296000
-
+  refresh-token-validity-in-se:conds: 1296000
+logging:
+  level:
+    org.springframework.boot.context.config: TRACE
