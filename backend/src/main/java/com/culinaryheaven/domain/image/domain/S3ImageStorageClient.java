@@ -34,8 +34,8 @@ public class S3ImageStorageClient implements ImageStorageClient {
     @Override
     public String uploadImage(MultipartFile file) {
         System.out.println("S3에 업로드 합니다.");
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             String contentType = file.getContentType();
             ObjectMetadata metadata= new ObjectMetadata();
 
@@ -53,7 +53,7 @@ public class S3ImageStorageClient implements ImageStorageClient {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
-        return "";
+        return s3Client.getUrl(bucket, IMAGE_PATH + fileName).toString();
     }
 
     @Override
