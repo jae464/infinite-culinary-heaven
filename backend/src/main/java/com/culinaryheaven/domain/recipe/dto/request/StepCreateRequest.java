@@ -11,8 +11,9 @@ public record StepCreateRequest(
         @Schema(description = "레시피 단계 설명")
         String description,
 
+        // todo 지우기
         @Schema(description = "레시피 단계 이미지 URL")
-        String ImageUrl
+        String imageUrl
 
 ) {
         public Step toEntity(String storedStepImageUrl, Recipe recipe) {

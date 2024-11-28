@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.recipe.domain;
 
 import com.culinaryheaven.common.BaseTimeEntity;
 import com.culinaryheaven.domain.contest.domain.Contest;
+import com.culinaryheaven.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,6 +30,10 @@ public class Recipe extends BaseTimeEntity {
     private String thumbnailImage;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
 
@@ -48,11 +53,13 @@ public class Recipe extends BaseTimeEntity {
     public Recipe(String title,
                   String description,
                   String thumbnailImage,
+                  User user,
                   Contest contest
     ) {
         this.title = title;
         this.description = description;
         this.thumbnailImage = thumbnailImage;
+        this.user = user;
         this.contest = contest;
     }
 

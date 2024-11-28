@@ -66,7 +66,7 @@ public class RecipeService {
         }
 
         for (StepCreateRequest stepRequest : request.steps()) {
-            String stepImageUrl = imageStorageClient.uploadImage(imageMap.get(stepRequest.ImageUrl()));
+            String stepImageUrl = imageStorageClient.uploadImage(imageMap.get(stepRequest.imageUrl()));
 
             Step step = stepRequest.toEntity(stepImageUrl, savedRecipe);
             stepRepository.save(step);
