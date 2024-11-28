@@ -8,6 +8,10 @@ import jakarta.validation.constraints.NotNull;
 public record StepCreateRequest(
 
         @NotNull
+        @Schema(description = "레시피 단계 순서")
+        int step,
+
+        @NotNull
         @Schema(description = "레시피 단계 설명")
         String description,
 
@@ -18,6 +22,7 @@ public record StepCreateRequest(
 ) {
         public Step toEntity(String storedStepImageUrl, Recipe recipe) {
                 return Step.builder()
+                        .step(step)
                         .description(description)
                         .image(storedStepImageUrl)
                         .recipe(recipe)

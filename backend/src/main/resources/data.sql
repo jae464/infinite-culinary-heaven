@@ -29,8 +29,8 @@ VALUES ('2024-11-22T11:11:11','2024-11-22T11:11:11','휴게소 알감자', '휴�
 INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('감자', '50g', 1);
 INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('소금', '적당히', 1);
 
-INSERT INTO step (description, image, recipe_id) VALUES ('먼저 감자를 삶습니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_sample.jpg', 1);
-INSERT INTO step (description, image, recipe_id) VALUES ('감자에 양념을 뿌립니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_2_sample.jpg', 1);
+INSERT INTO step (step, description, image, recipe_id) VALUES (1, '먼저 감자를 삶습니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_sample.jpg', 1);
+INSERT INTO step (step, description, image, recipe_id) VALUES (2, '감자에 양념을 뿌립니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_2_sample.jpg', 1);
 
 INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, user_id, contest_id, competition_count, win_count)
 VALUES ('2024-11-25T11:11:11','2024-11-25T11:11:11','들기름 계란 후라이', '간단하고 맛있는 들기름 계란후라이','https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/recipe_egg_sample.jpg',1, 4, 0, 0);
@@ -38,5 +38,5 @@ VALUES ('2024-11-25T11:11:11','2024-11-25T11:11:11','들기름 계란 후라이'
 INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('계란', '3개', 2);
 INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('소금', '적당히', 2);
 
-INSERT INTO step (description, image, recipe_id) VALUES ('먼저 감자를 삶습니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_sample.jpg', 2);
-INSERT INTO step (description, image, recipe_id) VALUES ('감자에 양념을 뿌립니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_2_sample.jpg', 2);
+INSERT INTO step (step, description, image, recipe_id) VALUES (1, '먼저 감자를 삶습니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_sample.jpg', 2);
+INSERT INTO step (step, description, image, recipe_id) VALUES (2, '감자에 양념을 뿌립니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_2_sample.jpg', 2);

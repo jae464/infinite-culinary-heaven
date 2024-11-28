@@ -33,6 +33,9 @@ public class S3ImageStorageClient implements ImageStorageClient {
 
     @Override
     public String uploadImage(MultipartFile file) {
+
+        if (file == null) { return null; }
+
         System.out.println("S3에 업로드 합니다.");
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         try {

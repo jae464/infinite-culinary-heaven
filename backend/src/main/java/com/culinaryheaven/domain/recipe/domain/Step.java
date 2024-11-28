@@ -17,6 +17,9 @@ public class Step {
     private Long id;
 
     @Column(nullable = false)
+    private int step;
+
+    @Column(nullable = false)
     private String description;
 
     @Column
@@ -27,7 +30,8 @@ public class Step {
     private Recipe recipe;
 
     @Builder
-    public Step(String description, String image, Recipe recipe) {
+    public Step(int step, String description, String image, Recipe recipe) {
+        this.step = step;
         this.description = description;
         this.image = image;
         this.recipe = recipe;

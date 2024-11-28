@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,11 +38,11 @@ public class Recipe extends BaseTimeEntity {
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
 
-    @OneToMany(mappedBy = "recipe")
-    private List<Ingredient> ingredients;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ingredient> ingredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe")
-    private List<Step> steps;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Step> steps = new ArrayList<>();
 
     @Column(nullable = false, name = "competition_count")
     private int competitionCount = 0;

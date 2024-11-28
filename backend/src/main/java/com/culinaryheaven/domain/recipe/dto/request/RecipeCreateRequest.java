@@ -3,6 +3,7 @@ package com.culinaryheaven.domain.recipe.dto.request;
 import com.culinaryheaven.domain.contest.domain.Contest;
 import com.culinaryheaven.domain.recipe.domain.Ingredient;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
+import com.culinaryheaven.domain.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
@@ -35,8 +36,9 @@ public record RecipeCreateRequest(
         List<StepCreateRequest> steps
 ) {
 
-    public Recipe toEntity(String storedThumbnailImageUrl, Contest contest) {
+    public Recipe toEntity(User user, String storedThumbnailImageUrl, Contest contest) {
         return Recipe.builder()
+                .user(user)
                 .title(title)
                 .description(description)
                 .thumbnailImage(storedThumbnailImageUrl)
