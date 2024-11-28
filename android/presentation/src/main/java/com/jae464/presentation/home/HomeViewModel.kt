@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
         fetchRecipePreviews()
     }
 
-    private fun fetchRecipePreviews() {
+    fun fetchRecipePreviews() {
         viewModelScope.launch {
             runCatching {
                 val currentContest = contestRepository.getCurrentContest().getOrThrow()

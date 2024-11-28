@@ -23,7 +23,7 @@ object ApiServiceModule {
     @Provides
     @Singleton
     fun provideRecipeService(
-        @NoAuthRetrofit retrofit: Retrofit
+        @AuthRetrofit retrofit: Retrofit
     ): RecipeService = retrofit.create(RecipeService::class.java)
 
     @Provides

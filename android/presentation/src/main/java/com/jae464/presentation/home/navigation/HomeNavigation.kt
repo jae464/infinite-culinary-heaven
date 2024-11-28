@@ -19,7 +19,9 @@ fun NavController.navigateHome(navOptions: NavOptions) {
 fun NavGraphBuilder.homeNavGraph(
     padding: PaddingValues,
     onClickRecipe: (Long) -> Unit,
-    onClickRegister: () -> Unit
+    onClickRegister: () -> Unit,
+    isRefresh: Boolean,
+    resetIsRefresh: () -> Unit
 ) {
     composable<MainTabRoute.Home>(
         enterTransition = {
@@ -60,7 +62,9 @@ fun NavGraphBuilder.homeNavGraph(
         HomeRoute(
             padding = padding,
             onClickRecipe = onClickRecipe,
-            onClickRegister = onClickRegister
+            onClickRegister = onClickRegister,
+            isRefresh = isRefresh,
+            resetIsRefresh = resetIsRefresh
         )
     }
 }

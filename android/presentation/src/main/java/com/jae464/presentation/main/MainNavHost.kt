@@ -32,7 +32,9 @@ fun MainNavHost(
         homeNavGraph(
             padding = paddingValues,
             onClickRecipe = { appState.navigateToRecipeDetail(it) },
-            onClickRegister = { appState.navigateToRecipeRegister() }
+            onClickRegister = { appState.navigateToRecipeRegister() },
+            isRefresh = appState.navController.currentBackStackEntry?.savedStateHandle?.get<Boolean>("isRefresh") ?: false,
+            resetIsRefresh = { appState.navController.currentBackStackEntry?.savedStateHandle?.set("isRefresh", false) }
         )
         contestHistoryNavGraph(
             padding = paddingValues
@@ -48,7 +50,11 @@ fun MainNavHost(
             onBackClick = { appState.popBackStack() }
         )
         recipeRegisterNavGraph(
-            onBackClick = { appState.popBackStack() }
+            onBackClick = { appState.popBackStack() },
+            onNavigateToHome = {
+                appState.navController.previousBackStackEntry?.savedStateHandle?.set("isRefresh", true)
+                appState.popBackStack()
+            }
         )
     }
 }
