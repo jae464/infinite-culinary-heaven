@@ -28,7 +28,7 @@ import javax.inject.Inject
 class RecipeRegisterViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val recipeRepository: RecipeRepository,
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeRegisterUiState())
     val uiState = _uiState.asStateFlow()
@@ -88,35 +88,43 @@ class RecipeRegisterViewModel @Inject constructor(
     }
 
     private fun submit() {
-        val thumbnailImageUri = _uiState.value.thumbnailImage?.toUri()
-
-        var thumbnailImageFile: File? = null
-
-        if (thumbnailImageUri != null) {
-            thumbnailImageFile = convertToFile(thumbnailImageUri)
-        }
-
-        val stepFiles = _uiState.value.steps.map {
-            val stepUri = it.imageUrl?.toUri()
-            if (stepUri != null) {
-                convertToFile(stepUri)
-            } else {
-                null
-            }
-        }
-
-        val imageFiles = (listOfNotNull(thumbnailImageFile) + stepFiles).filterNotNull().distinct()
-
         viewModelScope.launch {
+            if (!validateForm()) return@launch
+
+            val thumbnailImageUri = _uiState.value.thumbnailImage?.toUri()
+            var thumbnailImageFile: File? = null
+
+            if (thumbnailImageUri != null) {
+                thumbnailImageFile = convertToFile(thumbnailImageUri)
+            }
+
+            val stepFiles = _uiState.value.steps.map {
+                val stepUri = it.imageUrl?.toUri()
+                if (stepUri != null) {
+                    convertToFile(stepUri)
+                } else {
+                    null
+                }
+            }
+
+            val imageFiles =
+                (listOfNotNull(thumbnailImageFile) + stepFiles).filterNotNull().distinct()
+
             _uiState.update { state -> state.copy(isRegistering = true) }
+
             recipeRepository.registerRecipe(
                 images = imageFiles,
                 thumbnailImage = thumbnailImageFile?.name,
                 title = _uiState.value.title,
                 description = _uiState.value.description,
                 ingredients = _uiState.value.ingredients,
-                steps = _uiState.value.steps.map { step -> step.copy(imageUrl = if (step.imageUrl != null) getFileName(
-                    step.imageUrl!!.toUri()) else null) }
+                steps = _uiState.value.steps.map { step ->
+                    step.copy(
+                        imageUrl = if (step.imageUrl != null) getFileName(
+                            step.imageUrl!!.toUri()
+                        ) else null
+                    )
+                }
             ).onSuccess {
                 _uiState.update { state -> state.copy(isRegistering = false) }
                 _event.emit(RecipeRegisterEvent.RegisterSuccess)
@@ -126,6 +134,40 @@ class RecipeRegisterViewModel @Inject constructor(
             }
 
         }
+
+    }
+
+    private suspend fun validateForm(): Boolean {
+        val title = _uiState.value.title
+        val description = _uiState.value.description
+        val ingredients = _uiState.value.ingredients
+        val steps = _uiState.value.steps
+        val thumbnailImage = _uiState.value.thumbnailImage
+
+        if (title.isBlank()) {
+            _event.emit(RecipeRegisterEvent.ShowToast("제목을 입력하세요."))
+            return false
+        }
+        if (description.isBlank()) {
+            _event.emit(RecipeRegisterEvent.ShowToast("설명을 입력하세요."))
+            return false
+        }
+        if (ingredients.isEmpty()) {
+            _event.emit(RecipeRegisterEvent.ShowToast("하나 이상의 재료를 입력하세요."))
+            return false
+        }
+        if (steps.isEmpty()) {
+            _event.emit(RecipeRegisterEvent.ShowToast("하나 이상의 단계를 입력하세요."))
+            return false
+        }
+        if (thumbnailImage == null) {
+            _event.emit(RecipeRegisterEvent.ShowToast("대표 이미지를 설정하세요."))
+            return false
+        }
+
+        return true
+
+
     }
 
     private fun convertToFile(uri: Uri): File? {

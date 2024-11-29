@@ -4,6 +4,7 @@ import android.Manifest
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -23,12 +24,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -45,8 +50,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,6 +64,8 @@ import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Step
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.ui.theme.Gray20
+import com.jae464.presentation.ui.theme.Red10
+import com.jae464.presentation.util.addFocusCleaner
 import kotlinx.coroutines.launch
 
 @Composable
@@ -73,12 +83,15 @@ fun RecipeRegisterRoute(
     LaunchedEffect(Unit) {
         event.collect {
             when (it) {
-                RecipeRegisterEvent.RegisterSuccess -> {
+                is RecipeRegisterEvent.RegisterSuccess -> {
                     Toast.makeText(context, "등록이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     onRegisterSuccess()
                 }
-                RecipeRegisterEvent.RegisterFailure -> {
-                    onShowSnackBar("등록에 실패했습니다.", null)
+                is RecipeRegisterEvent.RegisterFailure -> {
+                    Toast.makeText(context, "등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+                is RecipeRegisterEvent.ShowToast -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -100,12 +113,26 @@ fun RecipeRegisterScreen(
     onBackClick: () -> Unit
 ) {
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
+
+
+    LaunchedEffect(uiState.steps) {
+        if (uiState.steps.isNotEmpty()) {
+            scrollState.animateScrollTo(scrollState.maxValue)
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .addFocusCleaner(focusManager)
+    ) {
         Column(
             modifier = Modifier
                 .statusBarsPadding()
                 .padding(bottom = 84.dp)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
 
             HeavenTopAppBar(
@@ -146,7 +173,8 @@ fun RecipeRegisterScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .size(48.dp),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
+                enabled = !uiState.isRegistering
             ) {
                 Text(text = "등록 하기")
             }
@@ -173,8 +201,11 @@ fun RegisterForm(
             thumbnailImage = uiState.thumbnailImage,
             onChangeThumbnailImage = onChangeThumbnailImage
         )
+
         Text(text = "제목", fontWeight = FontWeight.Bold)
+
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = uiState.title,
             onValueChange = onChangeTitle,
@@ -253,22 +284,14 @@ fun RecipeThumbnailImage(
 
     val context = LocalContext.current
 
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            onChangeThumbnailImage(uri.toString())
-        }
-    )
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            galleryLauncher.launch("image/*") // 권한 허용 시 갤러리 열기
-        } else {
-            Toast.makeText(context, "권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-        }
+    val galleryLauncher = rememberGalleryLauncher {
+        onChangeThumbnailImage(it.toString())
     }
+
+    val permissionLauncher = rememberPermissionLauncher(
+        onGranted = { galleryLauncher.launch("image/*") },
+        onDenied = { Toast.makeText(context, "권한이 필요합니다.", Toast.LENGTH_SHORT).show() }
+    )
 
     Box(
         modifier = Modifier
@@ -318,9 +341,13 @@ fun IngredientItem(
         Button(
             onClick = onClickDelete,
             modifier = Modifier.height(36.dp),
-            shape = RoundedCornerShape(8.dp)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Red10,
+                contentColor = Color.White
+            ),
+            shape = CircleShape
         ) {
-            Text(text = "삭제")
+            Icon(imageVector = Icons.Default.Remove, contentDescription = null, tint = Color.White)
         }
     }
 }
@@ -330,6 +357,7 @@ fun IngredientForm(
     onAddIngredient: (Ingredient) -> Unit
 ) {
     var currentIngredient by remember { mutableStateOf(Ingredient("", "")) }
+    val focusRequester = remember { FocusRequester() }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -340,7 +368,7 @@ fun IngredientForm(
             value = currentIngredient.name,
             onValueChange = { currentIngredient = currentIngredient.copy(name = it) },
             label = { Text("재료 이름") },
-            modifier = Modifier.weight(4f),
+            modifier = Modifier.weight(4f).focusRequester(focusRequester),
             shape = RoundedCornerShape(8.dp),
             colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Gray20)
         )
@@ -357,12 +385,13 @@ fun IngredientForm(
                 if (currentIngredient.name.isNotEmpty() && currentIngredient.quantity.isNotEmpty()) {
                     onAddIngredient(currentIngredient)
                     currentIngredient = Ingredient("", "")
+                    focusRequester.requestFocus()
                 }
             },
             modifier = Modifier.height(36.dp),
-            shape = RoundedCornerShape(8.dp)
+            shape = CircleShape
         ) {
-            Text(text = "추가")
+            Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = Color.White)
         }
     }
 }
@@ -399,9 +428,13 @@ fun StepItem(
         Button(
             onClick = onClickDelete,
             modifier = Modifier.height(36.dp),
-            shape = RoundedCornerShape(8.dp)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Red10,
+                contentColor = Color.White
+            ),
+            shape = CircleShape
         ) {
-            Text(text = "삭제")
+            Icon(imageVector = Icons.Default.Remove, contentDescription = null, tint = Color.White)
 
         }
     }
@@ -415,24 +448,15 @@ fun StepForm(
     var currentStep by remember { mutableStateOf(Step(1, "", "")) }
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
 
-
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            selectedImageUri = uri
-            currentStep = currentStep.copy(imageUrl = uri.toString())
-        }
-    )
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            galleryLauncher.launch("image/*") // 권한 허용 시 갤러리 열기
-        } else {
-            Toast.makeText(context, "권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-        }
+    val galleryLauncher = rememberGalleryLauncher { uri ->
+        selectedImageUri = uri
+        currentStep = currentStep.copy(imageUrl = uri.toString())
     }
+
+    val permissionLauncher = rememberPermissionLauncher(
+        onGranted = { galleryLauncher.launch("image/*") },
+        onDenied = { Toast.makeText(context, "권한이 필요합니다.", Toast.LENGTH_SHORT).show() }
+    )
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -479,14 +503,46 @@ fun StepForm(
         }
         Button(
             onClick = {
-                onAddStep(currentStep)
-                currentStep = Step(1, "", "")
-                selectedImageUri = null
+                if (currentStep.description.isNotEmpty()) {
+                    onAddStep(currentStep)
+                    currentStep = Step(1, "", "")
+                    selectedImageUri = null
+                }
             },
             modifier = Modifier.height(36.dp),
-            shape = RoundedCornerShape(8.dp)
+            shape = CircleShape
         ) {
-            Text(text = "추가")
+            Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = Color.White)
         }
     }
+}
+
+@Composable
+fun rememberGalleryLauncher(
+    onImageSelected: (Uri?) -> Unit
+): ManagedActivityResultLauncher<String, Uri?> {
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            onImageSelected(uri)
+        }
+    )
+    return galleryLauncher
+}
+
+@Composable
+fun rememberPermissionLauncher(
+    onGranted: () -> Unit,
+    onDenied: () -> Unit
+): ManagedActivityResultLauncher<String, Boolean> {
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            onGranted()
+        } else {
+            onDenied()
+        }
+    }
+    return permissionLauncher
 }

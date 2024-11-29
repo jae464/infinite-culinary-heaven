@@ -14,8 +14,9 @@ val PaperGray = Color(0xFFFDFDFD)
 
 val Gray20 = Color(0xffe9e9e9)
 
-val Green2 = Color(0xFFB9E4C9)
 val Green5 = Color(0xFF81C784)
 val Green10 = Color(0xFF4CAF50)
 val Green20 = Color(0xFF4a6e1c)
-val PastelGreen = Color(0xFFC7E9C0)
+
+val Red10 = Color(0xFFFF6F6F)
+
