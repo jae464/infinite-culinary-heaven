@@ -9,4 +9,5 @@ data class RecipeRegisterUiState(
     val description: String = "",
     val ingredients: List<Ingredient> = emptyList(),
     val steps: List<Step> = emptyList(),
+    val isRegistering: Boolean = false
 )

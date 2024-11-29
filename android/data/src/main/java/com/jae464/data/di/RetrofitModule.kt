@@ -9,11 +9,11 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttp
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.io.IOException
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -35,11 +35,31 @@ object RetrofitModule {
             val accessToken = runBlocking {
                 authRepository.getAccessToken()
             }
-            val request = chain.request()
-            val newRequest = request.newBuilder()
+            val request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $accessToken")
                 .build()
-            chain.proceed(newRequest)
+
+            val response = chain.proceed(request)
+
+            if (response.code == 401) {
+                response.close()
+
+                runBlocking {
+                    authRepository.refreshToken()
+                        .onFailure { throw IOException(it.message) }
+                }
+
+                val newAccessToken = runBlocking {
+                    authRepository.getAccessToken()
+                }
+
+                val newRequest = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer $newAccessToken")
+                    .build()
+
+                return@Interceptor chain.proceed(newRequest)
+            }
+            return@Interceptor response
         }
     }
 

@@ -27,14 +27,14 @@ class LoginViewModel @Inject constructor(
                 // todo 서버에 login 요청
                 Log.d("LoginViewModel" , intent.accessToken)
                 viewModelScope.launch {
-                    val tokenInfo = authRepository.login(intent.accessToken, "kakao")
-                    Log.d("LoginViewModel", "tokenInfo : $tokenInfo")
-                    if (tokenInfo.isSuccess) {
-                        authRepository.saveAccessToken(tokenInfo.getOrNull()!!.accessToken)
-                    } else {
-                        _uiEvent.emit(LoginEvent.LoginFailed)
-                    }
-                    _uiEvent.emit(LoginEvent.LoginSuccess)
+                    authRepository.login(intent.accessToken, "kakao")
+                        .onSuccess {
+                            Log.d("LoginViewModel", "login success")
+                            _uiEvent.emit(LoginEvent.LoginSuccess)
+                        }
+                        .onFailure {
+                            _uiEvent.emit(LoginEvent.LoginFailed)
+                        }
                 }
             }
             is LoginIntent.Logout -> TODO()

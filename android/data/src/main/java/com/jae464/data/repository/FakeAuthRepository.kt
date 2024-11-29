@@ -14,6 +14,10 @@ class FakeAuthRepository @Inject constructor() : AuthRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun saveRefreshToken(refreshToken: String) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getUserInfo(): Result<UserInfo> {
         return Result.success(
             UserInfo(
@@ -24,6 +28,14 @@ class FakeAuthRepository @Inject constructor() : AuthRepository {
     }
 
     override suspend fun getAccessToken(): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getRefreshToken(): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun refreshToken(): Result<TokenInfo> {
         TODO("Not yet implemented")
     }
 }

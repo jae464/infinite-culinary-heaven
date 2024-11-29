@@ -62,7 +62,18 @@ class AppState(
         navController.navigateLogin(navOptions)
     }
 
-    fun navigateToHome() {
+    fun navigateSplashToHome() {
+        val navOptions = navOptions {
+            popUpTo(Route.Splash) {
+                inclusive = true
+            }
+        }
+
+        navController.navigateHome(navOptions)
+
+    }
+
+    fun navigateLoginToHome() {
         val navOptions = navOptions {
             popUpTo(Route.Login) {
                 inclusive = true

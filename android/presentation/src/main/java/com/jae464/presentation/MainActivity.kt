@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jae464.presentation.main.MainBottomBar
@@ -22,12 +26,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
+
             CulinaryHeavenTheme {
+
                 val appState = rememberAppState()
+                val snackBarHostState = remember { SnackbarHostState() }
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     content = { padding ->
-                        MainNavHost(appState = appState, paddingValues = padding)
+                        MainNavHost(
+                            appState = appState,
+                            paddingValues = padding,
+                            onShowSnackBar = { message, action ->
+                                snackBarHostState.showSnackbar(
+                                    message = message,
+                                    actionLabel = action,
+                                )
+                            }
+                        )
                     },
                     bottomBar = {
                         MainBottomBar(
@@ -40,9 +58,9 @@ class MainActivity : ComponentActivity() {
                             onTabSelected = {
                                 appState.navigate(it)
                             }
-
                         )
                     },
+                    snackbarHost = { SnackbarHost(snackBarHostState) }
                 )
             }
         }

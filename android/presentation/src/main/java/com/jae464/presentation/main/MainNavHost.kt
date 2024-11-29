@@ -16,18 +16,19 @@ import com.jae464.presentation.splash.navigation.splashNavGraph
 @Composable
 fun MainNavHost(
     appState: AppState,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onShowSnackBar: suspend (String, String?) -> Unit
 ) {
     NavHost(
         navController = appState.navController,
         startDestination = appState.startDestination,
     ) {
         splashNavGraph(
-            onNavigateToHome = { appState.navigateToHome() },
+            onNavigateToHome = { appState.navigateSplashToHome() },
             onNavigateToLogin = { appState.navigateToLogin() }
         )
         loginNavGraph(
-            onNavigateToHome = { appState.navigateToHome() }
+            onNavigateToHome = { appState.navigateLoginToHome() }
         )
         homeNavGraph(
             padding = paddingValues,
@@ -54,7 +55,8 @@ fun MainNavHost(
             onNavigateToHome = {
                 appState.navController.previousBackStackEntry?.savedStateHandle?.set("isRefresh", true)
                 appState.popBackStack()
-            }
+            },
+            onShowSnackBar = onShowSnackBar
         )
     }
 }

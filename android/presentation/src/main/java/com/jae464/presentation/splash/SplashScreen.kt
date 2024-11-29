@@ -3,7 +3,6 @@ package com.jae464.presentation.splash
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,6 +12,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.ui.theme.Green5
 import kotlinx.coroutines.delay
@@ -20,12 +20,28 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashRoute(
     onNavigateToLogin: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
+
+    val event = viewModel.event
+
     LaunchedEffect(Unit) {
+        event.collect {
+            when(it) {
+                SplashEvent.AutoLoginSuccess -> {
+                    onNavigateToHome()
+                }
+                SplashEvent.AutoLoginFailed -> {
+                    onNavigateToLogin()
+                }
+            }
+        }
         // todo login 상태 여부 확인. 일단 로그인 안되어있는걸로 가정
-        delay(1000)
-        onNavigateToLogin()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.handleIntent(SplashIntent.TryAutoLogin)
     }
 
     Box(

@@ -108,6 +108,7 @@ class RecipeRegisterViewModel @Inject constructor(
         val imageFiles = (listOfNotNull(thumbnailImageFile) + stepFiles).filterNotNull().distinct()
 
         viewModelScope.launch {
+            _uiState.update { state -> state.copy(isRegistering = true) }
             recipeRepository.registerRecipe(
                 images = imageFiles,
                 thumbnailImage = thumbnailImageFile?.name,
@@ -117,10 +118,13 @@ class RecipeRegisterViewModel @Inject constructor(
                 steps = _uiState.value.steps.map { step -> step.copy(imageUrl = if (step.imageUrl != null) getFileName(
                     step.imageUrl!!.toUri()) else null) }
             ).onSuccess {
+                _uiState.update { state -> state.copy(isRegistering = false) }
                 _event.emit(RecipeRegisterEvent.RegisterSuccess)
             }.onFailure {
+                _uiState.update { state -> state.copy(isRegistering = false) }
                 _event.emit(RecipeRegisterEvent.RegisterFailure)
             }
+
         }
     }
 

@@ -56,25 +56,29 @@ import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Step
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.ui.theme.Gray20
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeRegisterRoute(
     recipeId: Long?,
     onBackClick: () -> Unit,
     onRegisterSuccess: () -> Unit,
+    onShowSnackBar: suspend (String, String?) -> Unit,
     viewModel: RecipeRegisterViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val event = viewModel.event
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         event.collect {
             when (it) {
                 RecipeRegisterEvent.RegisterSuccess -> {
+                    Toast.makeText(context, "등록이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     onRegisterSuccess()
                 }
                 RecipeRegisterEvent.RegisterFailure -> {
-
+                    onShowSnackBar("등록에 실패했습니다.", null)
                 }
             }
         }
