@@ -6,5 +6,5 @@ data class RecipePreview(
     val imageUrl: String,
     val description: String,
     val score: Float,
-    val author: String
+    val author: String,
 )

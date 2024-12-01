@@ -15,7 +15,8 @@ data class RecipePreviewResponse(
     val thumbnailImage: String,
     val steps: List<StepResponse>,
     val ingredients: List<IngredientResponse>,
-    val contest: ContestResponse
+    val contest: ContestResponse,
+    val isOwner: Boolean?
 )
 
 @Serializable
@@ -49,7 +50,8 @@ fun RecipePreviewResponse.toRecipeDomain() = Recipe(
     score = 5f,
     author = "익명",
     ingredients = ingredients.map { it.toDomain() },
-    steps = steps.map { it.toDomain() }
+    steps = steps.map { it.toDomain() },
+    isOwner = isOwner ?: false
 )
 
 fun IngredientResponse.toDomain() = Ingredient(

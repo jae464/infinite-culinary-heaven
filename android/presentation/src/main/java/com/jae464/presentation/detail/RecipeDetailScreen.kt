@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -94,6 +95,14 @@ fun RecipeDetailScreen(
                         imageVector = Icons.Default.BookmarkBorder,
                         contentDescription = null
                     )
+                }
+                if (uiState.recipe?.isOwner == true) {
+                    IconButton(onClick = {  }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         )

@@ -16,6 +16,7 @@ interface RecipeRepository {
         title: String,
         description: String,
         ingredients: List<Ingredient>,
-        steps: List<Step>
+        steps: List<Step>,
+        contestId: Long
     ): Result<Unit>
 }

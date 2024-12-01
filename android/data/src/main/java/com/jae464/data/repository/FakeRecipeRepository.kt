@@ -127,6 +127,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                         imageUrl = "https://mblogthumb-phinf.pstatic.net/20140814_67/99jinga_14079837901420Jjea_JPEG/IMG_6699.JPG?type=w420"
                     )
                 ),
+                isOwner = true
             )
         )
 
@@ -138,7 +139,8 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         title: String,
         description: String,
         ingredients: List<Ingredient>,
-        steps: List<Step>
+        steps: List<Step>,
+        contestId: Long
     ): Result<Unit> {
         TODO("Not yet implemented")
     }

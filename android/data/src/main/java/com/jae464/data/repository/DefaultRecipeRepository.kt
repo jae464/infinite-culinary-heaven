@@ -86,7 +86,8 @@ class DefaultRecipeRepository @Inject constructor(
         title: String,
         description: String,
         ingredients: List<Ingredient>,
-        steps: List<Step>
+        steps: List<Step>,
+        contestId: Long
     ): Result<Unit> {
 
         Log.d(
@@ -112,7 +113,7 @@ class DefaultRecipeRepository @Inject constructor(
                 )
             },
             imageUrl = thumbnailImage?.toUri()?.lastPathSegment ?: "",
-            contestId = 4
+            contestId = contestId
         )
 
         val files = images.map {
@@ -123,14 +124,12 @@ class DefaultRecipeRepository @Inject constructor(
         val body = Json.encodeToString(RecipeCreateRequest.serializer(), request)
             .toRequestBody("application/json".toMediaType())
 
-        recipeService.postRecipe(images = files, body = body)
+        val response = recipeService.postRecipe(images = files, body = body)
 
-
-        return Result.success(Unit)
-//        return if (response.isSuccessful) {
-//            Result.success(Unit)
-//        } else {
-//            Result.failure(Exception("network error"))
-//        }
+        return if (response.isSuccessful) {
+            Result.success(Unit)
+        } else {
+            Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
+        }
     }
 }

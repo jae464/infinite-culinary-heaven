@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Step
+import com.jae464.domain.repository.ContestRepository
 import com.jae464.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,6 +29,7 @@ import javax.inject.Inject
 class RecipeRegisterViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val recipeRepository: RecipeRepository,
+    private val contestRepository: ContestRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeRegisterUiState())
@@ -110,6 +112,9 @@ class RecipeRegisterViewModel @Inject constructor(
             val imageFiles =
                 (listOfNotNull(thumbnailImageFile) + stepFiles).filterNotNull().distinct()
 
+            // todo Home에서 넘어올때 argument로 넘겨주는 방식으로 바꿀 필요 있음
+            val currentContest = contestRepository.getCurrentContest().getOrNull() ?: return@launch
+
             _uiState.update { state -> state.copy(isRegistering = true) }
 
             recipeRepository.registerRecipe(
@@ -124,11 +129,13 @@ class RecipeRegisterViewModel @Inject constructor(
                             step.imageUrl!!.toUri()
                         ) else null
                     )
-                }
+                },
+                contestId = currentContest.id
             ).onSuccess {
                 _uiState.update { state -> state.copy(isRegistering = false) }
                 _event.emit(RecipeRegisterEvent.RegisterSuccess)
             }.onFailure {
+                Log.d("RecipeRegisterViewModel", "registerRecipe: $it")
                 _uiState.update { state -> state.copy(isRegistering = false) }
                 _event.emit(RecipeRegisterEvent.RegisterFailure)
             }

@@ -9,6 +9,7 @@ data class Recipe(
     val author: String,
     val ingredients: List<Ingredient>,
     val steps: List<Step>,
+    val isOwner: Boolean
 )
 
 data class Ingredient(
