@@ -8,10 +8,7 @@ import com.culinaryheaven.domain.auth.dto.response.ReissueResponse;
 import com.culinaryheaven.domain.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,6 +33,7 @@ public class AuthController {
         return ResponseEntity.ok().body(loginResponse);
     }
 
+
     @PostMapping("/reissue")
     public ResponseEntity<ReissueResponse> reissue(
             @RequestBody ReissueRequest request
@@ -43,6 +41,5 @@ public class AuthController {
         ReissueResponse reissueResponse = authService.reissue(request);
         return ResponseEntity.ok().body(reissueResponse);
     }
-
 
 }

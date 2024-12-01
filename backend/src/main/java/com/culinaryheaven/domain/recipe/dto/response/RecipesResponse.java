@@ -15,7 +15,7 @@ public record RecipesResponse(
     public static RecipesResponse of(Slice<Recipe> recipes) {
         List<RecipeResponse> recipeResponses = recipes.getContent()
                 .stream()
-                .map(RecipeResponse::of)
+                .map(recipe -> RecipeResponse.of(recipe, null))
                 .toList();
 
         return new RecipesResponse(recipeResponses);

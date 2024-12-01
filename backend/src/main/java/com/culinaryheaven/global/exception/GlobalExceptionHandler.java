@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static com.culinaryheaven.global.exception.ErrorCode.INTERNAL_SERVER_ERROR;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -17,13 +19,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ExceptionResponse> handleCustomException(CustomException ex, HttpServletRequest request) {
         logger.warn(String.format(LOG_FORMAT_WARN, ex.getMessage(), request.getRequestURI()));
-        return ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(new ExceptionResponse(ex.getMessage()));
+        return ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(new ExceptionResponse(ex.getErrorCode().name(), ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception ex, HttpServletRequest request) {
         logger.warn(String.format(LOG_FORMAT_ERROR, ex.getMessage(), request.getRequestURI()));
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionResponse(INTERNAL_SERVER_ERROR.name(), ex.getMessage()));
     }
 
 }

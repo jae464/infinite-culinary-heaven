@@ -52,9 +52,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             response.getWriter().write(
                     mapper.writeValueAsString(
-                            new ExceptionResponse(ex.getMessage())
+                            new ExceptionResponse(ex.getErrorCode().name(), ex.getMessage())
                     )
             );
+            return;
+        } catch (Exception e) {
+            filterChain.doFilter(request, response);
             return;
         }
         System.out.println("doFilter");

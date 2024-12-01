@@ -87,12 +87,14 @@ public class RecipeService {
             recipe.getSteps().add(savedStep);
         }
 
-        return RecipeResponse.of(savedRecipe);
+        return RecipeResponse.of(savedRecipe, true);
     }
 
     public RecipeResponse getRecipeById(Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        return RecipeResponse.of(recipe);
+        User user = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
+        return RecipeResponse.of(recipe, recipe.getUser().getId().equals(user.getId()));
     }
 
     public RecipesResponse getAllRecipes(Pageable pageable) {

@@ -28,9 +28,12 @@ public record RecipeResponse(
         List<IngredientResponse> ingredients,
 
         @Schema(description = "레시피가 등록된 대회 정보")
-        ContestResponse contest
+        ContestResponse contest,
+
+        @Schema(description = "소유자 여부")
+        Boolean isOwner
 ) {
-    public static RecipeResponse of(Recipe recipe) {
+    public static RecipeResponse of(Recipe recipe, Boolean isOwner) {
         return new RecipeResponse(
                 recipe.getId(),
                 recipe.getTitle(),
@@ -38,7 +41,8 @@ public record RecipeResponse(
                 recipe.getThumbnailImage(),
                 StepsResponse.of(recipe.getSteps()).steps(),
                 IngredientsResponse.of(recipe.getIngredients()).ingredients(),
-                ContestResponse.of(recipe.getContest())
+                ContestResponse.of(recipe.getContest()),
+                isOwner
         );
     }
 }

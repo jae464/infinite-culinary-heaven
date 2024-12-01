@@ -74,6 +74,7 @@ public class AuthService {
             if (jwtTokenProvider.validateRefreshToken(request.refreshToken())) {
                 Claims claims = jwtTokenProvider.getClaimsFromToken(request.refreshToken(), TokenType.REFRESH);
                 String userId = claims.getSubject();
+                userRepository.findByOauthId(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
                 String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
                 String newAccessToken = jwtTokenProvider.provideToken(Long.parseLong(userId), TokenType.ACCESS, role);
                 String newRefreshToken = jwtTokenProvider.provideToken(Long.parseLong(userId), TokenType.REFRESH, role);

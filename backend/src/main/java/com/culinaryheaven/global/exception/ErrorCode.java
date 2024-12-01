@@ -8,6 +8,11 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에 오류가 발생했습니다."),
+
+    // user
+    USER_NOT_FOUNT(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
+
     // contest
     TOPIC_INGREDIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 재료입니다."),
     CONTEST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 대회를 찾을수 없습니다."),
@@ -21,6 +26,7 @@ public enum ErrorCode {
     AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, "인증에 실패했습니다."),
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 엑세스 토큰입니다."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 리프레쉬 토큰입니다."),
+
     //kakao
     KAKAO_INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "카카오 API 통신에 실패했습니다."),
 
