@@ -35,6 +35,7 @@ public record ContestCreateRequest(
 ) {
     public Contest toEntity(TopicIngredient topicIngredient) {
         return Contest.builder()
+                .name(name)
                 .description(description)
                 .topicIngredient(topicIngredient)
                 .startDate(startDate)

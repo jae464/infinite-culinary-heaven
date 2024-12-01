@@ -19,6 +19,9 @@ public class Contest {
     private Long id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
@@ -32,7 +35,8 @@ public class Contest {
     private TopicIngredient topicIngredient;
 
     @Builder
-    public Contest(String description, LocalDateTime startDate, LocalDateTime endDate, TopicIngredient topicIngredient) {
+    public Contest(String name, String description, LocalDateTime startDate, LocalDateTime endDate, TopicIngredient topicIngredient) {
+        this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;

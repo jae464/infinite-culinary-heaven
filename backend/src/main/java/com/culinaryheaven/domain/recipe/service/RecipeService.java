@@ -20,7 +20,7 @@ import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -98,12 +98,12 @@ public class RecipeService {
     }
 
     public RecipesResponse getAllRecipes(Pageable pageable) {
-        Slice<Recipe> recipes = recipeRepository.findAll(pageable);
+        Page<Recipe> recipes = recipeRepository.findAll(pageable);
         return RecipesResponse.of(recipes);
     }
 
     public RecipesResponse getRecipesByContestId(Pageable pageable, Long id) {
-        Slice<Recipe> recipes = recipeRepository.findAllByContestId(pageable, id);
+        Page<Recipe> recipes = recipeRepository.findAllByContestId(pageable, id);
         return RecipesResponse.of(recipes);
     }
 

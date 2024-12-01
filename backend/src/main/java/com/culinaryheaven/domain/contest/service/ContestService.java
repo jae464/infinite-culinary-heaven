@@ -10,8 +10,9 @@ import com.culinaryheaven.domain.contest.repository.TopicIngredientRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -38,7 +39,7 @@ public class ContestService {
     }
 
     public ContestsResponse getAllContests(Pageable pageable) {
-        Slice<Contest> contests = contestRepository.findAll(pageable);
+        Page<Contest> contests = contestRepository.findAll(pageable);
         return ContestsResponse.of(contests);
     }
 

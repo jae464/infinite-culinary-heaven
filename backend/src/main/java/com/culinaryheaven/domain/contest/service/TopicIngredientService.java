@@ -8,7 +8,7 @@ import com.culinaryheaven.domain.contest.repository.TopicIngredientRepository;
 import com.culinaryheaven.domain.image.domain.ImageStorageClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +35,7 @@ public class TopicIngredientService {
     public TopicIngredientsResponse getAllTopicIngredients(
             Pageable pageable
     ) {
-        Slice<TopicIngredient> topicIngredients = topicIngredientRepository.findAll(pageable);
+        Page<TopicIngredient> topicIngredients = topicIngredientRepository.findAll(pageable);
         return TopicIngredientsResponse.of(topicIngredients);
     }
 }
