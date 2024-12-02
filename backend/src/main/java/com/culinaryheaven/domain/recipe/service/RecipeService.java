@@ -107,5 +107,18 @@ public class RecipeService {
         return RecipesResponse.of(recipes);
     }
 
+    @Transactional
+    public void deleteByRecipeId(Long id) {
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
+        User user = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
+
+        if (!recipe.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.AUTHORIZATION_FAILED);
+        }
+
+        recipeRepository.delete(recipe);
+    }
+
 
 }
