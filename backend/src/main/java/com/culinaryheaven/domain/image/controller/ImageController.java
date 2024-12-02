@@ -37,6 +37,5 @@ public class ImageController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return new ResponseEntity<>(res, headers, HttpStatus.OK);
-
     }
 }

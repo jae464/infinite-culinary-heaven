@@ -26,6 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
@@ -41,8 +43,16 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/contests").permitAll()
                         .requestMatchers(HttpMethod.POST, "/topic-ingredients").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/topic-ingredients").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/recipes").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/recipes/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/auth").permitAll()
                         .anyRequest().permitAll()
+                )
+                .exceptionHandling(
+                        exceptions ->
+                                exceptions
+                                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                                        .accessDeniedHandler(customAccessDeniedHandler)
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

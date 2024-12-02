@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에 오류가 발생했습니다."),
-
+    FORBIDDEN(HttpStatus.FORBIDDEN,"접근이 제한된 리소스입니다."),
     // user
     USER_NOT_FOUNT(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
 
