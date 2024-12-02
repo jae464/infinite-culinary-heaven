@@ -1,15 +1,17 @@
 package com.jae464.presentation.home.navigation
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.jae464.presentation.home.HomeRoute
 import com.jae464.presentation.main.MainTabRoute
+import com.jae464.presentation.util.navigation.StateHandleKey
 import com.jae464.presentation.util.navigation.getMainTabDirection
 
 fun NavController.navigateHome(navOptions: NavOptions) {
@@ -20,8 +22,6 @@ fun NavGraphBuilder.homeNavGraph(
     padding: PaddingValues,
     onClickRecipe: (Long) -> Unit,
     onClickRegister: () -> Unit,
-    isRefresh: Boolean,
-    resetIsRefresh: () -> Unit
 ) {
     composable<MainTabRoute.Home>(
         enterTransition = {
@@ -59,12 +59,20 @@ fun NavGraphBuilder.homeNavGraph(
             null
         }
     ) {
+        val isRefresh = it.savedStateHandle.getStateFlow(StateHandleKey.IS_REFRESH_KEY, false).collectAsState()
+
+        LaunchedEffect(Unit) {
+            if (isRefresh.value) {
+                it.savedStateHandle.remove<Boolean>(StateHandleKey.IS_REFRESH_KEY)
+            }
+
+        }
+
         HomeRoute(
             padding = padding,
             onClickRecipe = onClickRecipe,
             onClickRegister = onClickRegister,
-            isRefresh = isRefresh,
-            resetIsRefresh = resetIsRefresh
+            isRefresh = isRefresh.value
         )
     }
 }

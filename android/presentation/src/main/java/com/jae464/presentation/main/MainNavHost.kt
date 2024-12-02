@@ -12,6 +12,7 @@ import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
 import com.jae464.presentation.bookmark.navigation.bookMarkNavGraph
 import com.jae464.presentation.login.navigation.loginNavGraph
 import com.jae464.presentation.splash.navigation.splashNavGraph
+import com.jae464.presentation.util.navigation.StateHandleKey
 
 @Composable
 fun MainNavHost(
@@ -34,8 +35,6 @@ fun MainNavHost(
             padding = paddingValues,
             onClickRecipe = { appState.navigateToRecipeDetail(it) },
             onClickRegister = { appState.navigateToRecipeRegister() },
-            isRefresh = appState.navController.currentBackStackEntry?.savedStateHandle?.get<Boolean>("isRefresh") ?: false,
-            resetIsRefresh = { appState.navController.currentBackStackEntry?.savedStateHandle?.set("isRefresh", false) }
         )
         contestHistoryNavGraph(
             padding = paddingValues
@@ -48,12 +47,16 @@ fun MainNavHost(
             padding = paddingValues
         )
         recipeDetailNavGraph(
-            onBackClick = { appState.popBackStack() }
+            onBackClick = { appState.popBackStack() },
+            onNavigateToHome = {
+                appState.navController.previousBackStackEntry?.savedStateHandle?.set(StateHandleKey.IS_REFRESH_KEY, true)
+                appState.popBackStack()
+            },
         )
         recipeRegisterNavGraph(
             onBackClick = { appState.popBackStack() },
             onNavigateToHome = {
-                appState.navController.previousBackStackEntry?.savedStateHandle?.set("isRefresh", true)
+                appState.navController.previousBackStackEntry?.savedStateHandle?.set(StateHandleKey.IS_REFRESH_KEY, true)
                 appState.popBackStack()
             },
             onShowSnackBar = onShowSnackBar

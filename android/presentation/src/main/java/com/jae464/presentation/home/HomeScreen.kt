@@ -3,6 +3,7 @@ package com.jae464.presentation.home
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,15 +41,13 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     onClickRecipe: (Long) -> Unit,
     onClickRegister: () -> Unit,
-    isRefresh: Boolean = false,
-    resetIsRefresh: () -> Unit
+    isRefresh: Boolean = false
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         if (isRefresh) {
             viewModel.fetchRecipePreviews()
-            resetIsRefresh()
         }
     }
 
@@ -68,7 +67,8 @@ fun HomeScreen(
     onClickRecipe: (Long) -> Unit = {},
     onClickRegister: () -> Unit = {}
 ) {
-    val context = LocalContext.current
+
+    Log.d("HomeScreen", "Home Screen is Rendered.")
 
     Box(
         modifier = Modifier

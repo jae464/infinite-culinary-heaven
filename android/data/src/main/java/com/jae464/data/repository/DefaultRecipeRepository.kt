@@ -15,7 +15,6 @@ import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.model.Step
 import com.jae464.domain.repository.RecipeRepository
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonEncoder
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -126,6 +125,15 @@ class DefaultRecipeRepository @Inject constructor(
 
         val response = recipeService.postRecipe(images = files, body = body)
 
+        return if (response.isSuccessful) {
+            Result.success(Unit)
+        } else {
+            Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
+        }
+    }
+
+    override suspend fun deleteRecipeById(recipeId: Long): Result<Unit> {
+        val response = recipeService.deleteRecipeById(recipeId)
         return if (response.isSuccessful) {
             Result.success(Unit)
         } else {

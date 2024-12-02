@@ -19,4 +19,7 @@ interface RecipeRepository {
         steps: List<Step>,
         contestId: Long
     ): Result<Unit>
+    suspend fun deleteRecipeById(
+        recipeId: Long
+    ): Result<Unit>
 }

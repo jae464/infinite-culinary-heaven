@@ -1,5 +1,6 @@
 package com.jae464.presentation.detail
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,12 +53,26 @@ import com.jae464.presentation.ui.theme.Gray20
 fun RecipeDetailRoute(
     recipeId: Long,
     viewModel: RecipeDetailViewModel = hiltViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val event = viewModel.event
+    val context = LocalContext.current
 
     LaunchedEffect(recipeId) {
         viewModel.handleIntent(RecipeDetailIntent.FetchRecipe(recipeId))
+    }
+
+    LaunchedEffect(Unit) {
+        event.collect {
+            when (it) {
+                RecipeDetailEvent.DeleteSuccess -> {
+                    Toast.makeText(context, "삭제에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                    onNavigateToHome()
+                }
+            }
+        }
     }
 
     RecipeDetailScreen(
@@ -97,7 +113,11 @@ fun RecipeDetailScreen(
                     )
                 }
                 if (uiState.recipe?.isOwner == true) {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = {
+                        if (recipe != null) {
+                            onIntent(RecipeDetailIntent.DeleteRecipe(recipe.id))
+                        }
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = null

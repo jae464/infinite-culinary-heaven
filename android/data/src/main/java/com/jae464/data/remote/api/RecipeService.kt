@@ -1,13 +1,11 @@
 package com.jae464.data.remote.api
 
-import android.adservices.adid.AdId
-import com.jae464.data.remote.model.request.RecipeCreateRequest
 import com.jae464.data.remote.model.response.RecipePreviewResponse
 import com.jae464.data.remote.model.response.RecipePreviewsResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -28,4 +26,7 @@ interface RecipeService {
         @Part images: List<MultipartBody.Part>,
         @Part("request") body: RequestBody
     ): Response<Unit>
+
+    @DELETE("/recipes/{recipeId}")
+    suspend fun deleteRecipeById(@Path("recipeId") recipeId: Long): Response<Unit>
 }
