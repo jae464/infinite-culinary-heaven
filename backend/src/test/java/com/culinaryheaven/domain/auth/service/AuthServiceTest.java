@@ -1,6 +1,5 @@
 package com.culinaryheaven.domain.auth.service;
 
-import com.culinaryheaven.domain.auth.domain.OAuth2Type;
 import com.culinaryheaven.domain.auth.domain.TokenType;
 import com.culinaryheaven.domain.auth.dto.request.AdminLoginRequest;
 import com.culinaryheaven.domain.auth.dto.request.ReissueRequest;
@@ -24,10 +23,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {

@@ -51,24 +51,23 @@ class ContestServiceTest {
     @Test
     void 주제재료로_새로운_대회를_생성한다() {
         // Given
-        Contest contest = fixtureMonkey.giveMeOne(Contest.class);
         TopicIngredient topicIngredient = fixtureMonkey.giveMeOne(TopicIngredient.class);
-        Contest savedContest = fixtureMonkey.giveMeBuilder(Contest.class)
-                .set("id", contest.getId())
+        Contest contest = fixtureMonkey.giveMeBuilder(Contest.class)
+                .set("id", any(Long.class))
                 .set("topicIngredient", topicIngredient)
                 .sample();
 
         ContestCreateRequest request = new ContestCreateRequest(contest.getName(), contest.getDescription(), contest.getStartDate(), contest.getEndDate(), topicIngredient.getId());
 
         when(topicIngredientRepository.findById(request.topicIngredientId())).thenReturn(Optional.of(topicIngredient));
-        when(contestRepository.save(any(Contest.class))).thenReturn(savedContest);
+        when(contestRepository.save(any(Contest.class))).thenReturn(contest);
 
         // When
         ContestResponse response = contestService.create(request);
 
         // Then
         assertNotNull(response);
-        assertEquals(savedContest.getId(), response.id());
+        assertEquals(contest.getId(), response.id());
         verify(topicIngredientRepository).findById(request.topicIngredientId());
         verify(contestRepository).save(any(Contest.class));
     }
