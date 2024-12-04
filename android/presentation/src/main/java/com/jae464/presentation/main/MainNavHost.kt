@@ -5,14 +5,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import com.jae464.presentation.AppState
 import com.jae464.presentation.detail.navigation.recipeDetailNavGraph
-import com.jae464.presentation.history.navigation.contestHistoryNavGraph
+import com.jae464.presentation.contest.navigation.contestHistoryNavGraph
 import com.jae464.presentation.home.navigation.homeNavGraph
 import com.jae464.presentation.mypage.navigation.myPageNavGraph
 import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
 import com.jae464.presentation.bookmark.navigation.bookMarkNavGraph
+import com.jae464.presentation.contestdetail.navigation.contestDetailNavGraph
 import com.jae464.presentation.login.navigation.loginNavGraph
 import com.jae464.presentation.splash.navigation.splashNavGraph
-import com.jae464.presentation.util.navigation.StateHandleKey
+import com.jae464.presentation.util.StateHandleKey
 
 @Composable
 fun MainNavHost(
@@ -37,7 +38,8 @@ fun MainNavHost(
             onClickRegister = { appState.navigateToRecipeRegister() },
         )
         contestHistoryNavGraph(
-            padding = paddingValues
+            padding = paddingValues,
+            onClickContest = { appState.navigateToContestDetail(it) }
         )
         bookMarkNavGraph(
             padding = paddingValues,
@@ -60,6 +62,10 @@ fun MainNavHost(
                 appState.popBackStack()
             },
             onShowSnackBar = onShowSnackBar
+        )
+        contestDetailNavGraph(
+            onBackClick = { appState.popBackStack() },
+            onClickRecipe = { appState.navigateToRecipeDetail(it) }
         )
     }
 }

@@ -25,6 +25,11 @@ sealed interface Route {
         override val name: String = "login"
     }
 
+    @Serializable
+    data class ContestDetail(val contestId: Long): Route {
+        override val name: String = "contest_detail"
+    }
+
 }
 
 sealed interface MainTabRoute : Route {

@@ -1,6 +1,5 @@
-package com.jae464.presentation.history.component
+package com.jae464.presentation.contest.component
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,14 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jae464.domain.model.Contest
-import com.jae464.presentation.toFormattedString
+import com.jae464.presentation.util.toFormattedString
 
 @Composable
-fun ContestItem(contest: Contest) {
+fun ContestItem(contest: Contest, onClickContest: (Long) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        onClick = { onClickContest(contest.id) }
     ) {
         Row {
             AsyncImage(

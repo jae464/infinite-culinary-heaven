@@ -21,6 +21,7 @@ class FakeAuthRepository @Inject constructor() : AuthRepository {
     override suspend fun getUserInfo(): Result<UserInfo> {
         return Result.success(
             UserInfo(
+                id = 1L,
                 name = "이민재",
                 profileImageUrl = "https://www.studiopeople.kr/common/img/default_profile.png"
             )

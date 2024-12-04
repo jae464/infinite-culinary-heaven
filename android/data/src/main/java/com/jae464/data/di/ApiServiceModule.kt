@@ -1,8 +1,10 @@
 package com.jae464.data.di
 
 import com.jae464.data.remote.api.AuthService
+import com.jae464.data.remote.api.BookMarkService
 import com.jae464.data.remote.api.ContestService
 import com.jae464.data.remote.api.RecipeService
+import com.jae464.data.remote.api.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +33,17 @@ object ApiServiceModule {
     fun provideAuthService(
         @NoAuthRetrofit retrofit: Retrofit
     ): AuthService = retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserService(
+        @AuthRetrofit retrofit: Retrofit
+    ): UserService = retrofit.create(UserService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideBookMarkService(
+        @AuthRetrofit retrofit: Retrofit
+    ): BookMarkService = retrofit.create(BookMarkService::class.java)
 
 }

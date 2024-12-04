@@ -67,6 +67,7 @@ class DefaultAuthRepository @Inject constructor(
         // todo change
         return Result.success(
             UserInfo(
+                id = 1,
                 name = "이민재",
                 profileImageUrl = "https://www.studiopeople.kr/common/img/default_profile.png"
             )

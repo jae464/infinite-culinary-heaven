@@ -37,7 +37,6 @@ fun SplashRoute(
                 }
             }
         }
-        // todo login 상태 여부 확인. 일단 로그인 안되어있는걸로 가정
     }
 
     LaunchedEffect(Unit) {

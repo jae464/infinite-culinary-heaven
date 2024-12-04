@@ -13,6 +13,7 @@ fun getMainTabDirection(
     val targetRoute = targetDestination.getRoute()
 
     if (startRoute != null && targetRoute != null) {
+
         val diff = targetRoute.ordinal - startRoute.ordinal
         return when {
             diff < 0 -> {

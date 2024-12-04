@@ -13,6 +13,7 @@ data class RecipePreviewResponse(
     val title: String,
     val description: String,
     val thumbnailImage: String,
+    val writerInfoResponse: WriterInfoResponse,
     val steps: List<StepResponse>,
     val ingredients: List<IngredientResponse>,
     val contest: ContestResponse,
@@ -39,7 +40,7 @@ fun RecipePreviewResponse.toRecipePreviewDomain() = RecipePreview(
     imageUrl = adjustLocalhostUrl(thumbnailImage),
     description = description,
     score = 5f,
-    author = "익명",
+    author = writerInfoResponse.nickname,
 )
 
 fun RecipePreviewResponse.toRecipeDomain() = Recipe(

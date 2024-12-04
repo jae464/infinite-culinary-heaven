@@ -71,6 +71,10 @@ fun RecipeDetailRoute(
                     Toast.makeText(context, "삭제에 성공했습니다.", Toast.LENGTH_SHORT).show()
                     onNavigateToHome()
                 }
+
+                RecipeDetailEvent.AddBookMarkSuccess -> {
+                    Toast.makeText(context, "북마크에 추가했습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -106,7 +110,12 @@ fun RecipeDetailScreen(
             navigationIcon = Icons.Default.ArrowBack,
             onNavigationClick = onBackClick,
             actions = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = {
+                    if (recipe != null) {
+                        onIntent(RecipeDetailIntent.AddBookMark(recipe.id))
+                    }
+
+                }) {
                     Icon(
                         imageVector = Icons.Default.BookmarkBorder,
                         contentDescription = null

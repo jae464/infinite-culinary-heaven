@@ -1,4 +1,4 @@
-package com.jae464.presentation.history
+package com.jae464.presentation.contest
 
 import com.jae464.domain.model.Contest
 

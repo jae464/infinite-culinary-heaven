@@ -1,4 +1,4 @@
-package com.jae464.presentation.history.navigation
+package com.jae464.presentation.contest.navigation
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.jae464.presentation.history.ContestHistoryRoute
+import com.jae464.presentation.contest.ContestHistoryRoute
 
 
 import com.jae464.presentation.main.MainTabRoute
@@ -17,7 +17,8 @@ fun NavController.navigateContestHistory(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.contestHistoryNavGraph(
-    padding: PaddingValues
+    padding: PaddingValues,
+    onClickContest: (Long) -> Unit
 ) {
     composable<MainTabRoute.ContestHistory>(
         enterTransition = {
@@ -43,6 +44,6 @@ fun NavGraphBuilder.contestHistoryNavGraph(
             }
         },
     ) {
-        ContestHistoryRoute(padding = padding)
+        ContestHistoryRoute(padding = padding, onClickContest = onClickContest)
     }
 }

@@ -11,7 +11,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.jae464.presentation.home.HomeRoute
 import com.jae464.presentation.main.MainTabRoute
-import com.jae464.presentation.util.navigation.StateHandleKey
+import com.jae464.presentation.util.StateHandleKey
 import com.jae464.presentation.util.navigation.getMainTabDirection
 
 fun NavController.navigateHome(navOptions: NavOptions) {

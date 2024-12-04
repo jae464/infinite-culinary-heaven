@@ -2,6 +2,7 @@ package com.jae464.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jae464.domain.repository.BookMarkRepository
 import com.jae464.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeDetailViewModel @Inject constructor(
-    private val recipeRepository: RecipeRepository
+    private val recipeRepository: RecipeRepository,
+    private val bookMarkRepository: BookMarkRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
@@ -29,6 +31,7 @@ class RecipeDetailViewModel @Inject constructor(
         when (intent) {
             is RecipeDetailIntent.FetchRecipe -> fetchRecipe(intent.recipeId)
             is RecipeDetailIntent.DeleteRecipe -> deleteRecipe(intent.recipeId)
+            is RecipeDetailIntent.AddBookMark -> addBookMark(intent.recipeId)
         }
     }
 
@@ -46,6 +49,18 @@ class RecipeDetailViewModel @Inject constructor(
             recipeRepository.deleteRecipeById(recipeId)
                 .onSuccess {
                     _event.emit(RecipeDetailEvent.DeleteSuccess)
+                }
+        }
+    }
+
+    private fun addBookMark(recipeId: Long) {
+        viewModelScope.launch {
+            bookMarkRepository.addBookMark(recipeId)
+                .onSuccess {
+                    _event.emit(RecipeDetailEvent.AddBookMarkSuccess)
+                }
+                .onFailure {
+
                 }
         }
     }

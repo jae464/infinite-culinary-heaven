@@ -35,6 +35,7 @@ import coil.compose.AsyncImage
 import com.jae464.domain.model.UserInfo
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
+import com.jae464.presentation.util.ImageConstants
 
 @Composable
 fun MyPageRoute(
@@ -81,18 +82,28 @@ fun MyProfile(
         ) {
             if (userInfo != null) {
                 AsyncImage(
-                    model = userInfo.profileImageUrl,
+                    model = userInfo.profileImageUrl ?: ImageConstants.DEFAULT_PROFILE_IMAGE_URL,
                     contentDescription = "user_image",
                     modifier = Modifier
                         .clip(CircleShape)
                         .height(64.dp),
                     contentScale = ContentScale.Fit
                 )
-                Text(
-                    text = userInfo.name,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 20.sp
-                )
+                Row(
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = userInfo.name,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        text = "#${userInfo.id}",
+                        color = Color.DarkGray,
+                        fontSize = 12.sp
+                    )
+                }
             }
             else {
                 Text(text = "로그인이 필요한 서비스입니다.")

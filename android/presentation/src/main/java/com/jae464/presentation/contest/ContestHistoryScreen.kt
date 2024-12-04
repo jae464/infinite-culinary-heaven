@@ -1,4 +1,4 @@
-package com.jae464.presentation.history
+package com.jae464.presentation.contest
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,23 +16,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.jae464.presentation.history.component.ContestItem
+import com.jae464.presentation.contest.component.ContestItem
 
 @Composable
 fun ContestHistoryRoute(
     padding: PaddingValues,
-    viewModel: ContestHistoryViewModel = hiltViewModel()
+    viewModel: ContestHistoryViewModel = hiltViewModel(),
+    onClickContest: (Long) -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ContestHistoryScreen(padding = padding, uiState = uiState)
+    ContestHistoryScreen(padding = padding, uiState = uiState, onClickContest = onClickContest)
 }
 
 @Composable
 fun ContestHistoryScreen(
     padding: PaddingValues,
-    uiState: ContestHistoryUiState
+    uiState: ContestHistoryUiState,
+    onClickContest: (Long) -> Unit = {}
 ) {
     LazyColumn(
         modifier = Modifier.padding(padding).padding(horizontal = 16.dp).fillMaxSize(),
@@ -48,7 +50,7 @@ fun ContestHistoryScreen(
             )
         }
         items(uiState.contests.size) { index ->
-            ContestItem(uiState.contests[index])
+            ContestItem(uiState.contests[index], onClickContest = onClickContest)
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 8.dp),
                 thickness = 0.5.dp
