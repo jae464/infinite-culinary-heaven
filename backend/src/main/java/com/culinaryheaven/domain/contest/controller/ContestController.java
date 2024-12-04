@@ -7,6 +7,8 @@ import com.culinaryheaven.domain.contest.service.ContestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +30,8 @@ public class ContestController {
 
     @GetMapping
     public ResponseEntity<ContestsResponse> getAllContests(
-            Pageable pageable
-    ) {
+            @PageableDefault(sort = "startDate", direction = Sort.Direction.DESC) Pageable pageable
+            ) {
         ContestsResponse contestsResponse = contestService.getAllContests(pageable);
         return ResponseEntity.ok().body(contestsResponse);
     }

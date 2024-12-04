@@ -6,7 +6,7 @@ import com.culinaryheaven.domain.auth.dto.request.ReissueRequest;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
 import com.culinaryheaven.domain.auth.dto.response.ReissueResponse;
 import com.culinaryheaven.domain.auth.infrastructure.JwtTokenProvider;
-import com.culinaryheaven.domain.auth.infrastructure.dto.response.UserInfoResponse;
+import com.culinaryheaven.domain.auth.infrastructure.dto.response.OAuth2UserInfoResponse;
 import com.culinaryheaven.domain.auth.infrastructure.kakao.KakaoOAuth2Client;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
@@ -57,12 +57,12 @@ class AuthServiceTest {
         // Given
         String oauth2Type = "KAKAO";
         String oauth2AccessToken = "validAccessToken";
-        UserInfoResponse userInfoResponse = new UserInfoResponse(12345L);
+        OAuth2UserInfoResponse OAuth2UserInfoResponse = new OAuth2UserInfoResponse(12345L);
         String accessToken = "accessToken";
         String refreshToken = "refreshToken";
         User user = fixtureMonkey.giveMeOne(User.class);
 
-        when(oAuth2Client.getUserInfo(oauth2AccessToken)).thenReturn(userInfoResponse);
+        when(oAuth2Client.getUserInfo(oauth2AccessToken)).thenReturn(OAuth2UserInfoResponse);
         when(jwtTokenProvider.provideToken(12345L, TokenType.ACCESS, "ROLE_USER")).thenReturn(accessToken);
         when(jwtTokenProvider.provideToken(12345L, TokenType.REFRESH, "ROLE_USER")).thenReturn(refreshToken);
         when(userRepository.findByOauthId("12345")).thenReturn(Optional.of(user));

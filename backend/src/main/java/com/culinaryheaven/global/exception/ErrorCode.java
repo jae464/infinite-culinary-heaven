@@ -20,6 +20,10 @@ public enum ErrorCode {
     //recipe
     RECIPE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 레시피를 찾을수 없습니다."),
 
+    // bookmark
+    ALREADY_EXISTS_BOOKMARK(HttpStatus.CONFLICT, "이미 존재하는 북마크입니다."),
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 북마크입니다."),
+
     // security
     INVALID_OAUTH2_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 입니다."),
     INVALID_TOKEN_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 토큰 타입입니다."),

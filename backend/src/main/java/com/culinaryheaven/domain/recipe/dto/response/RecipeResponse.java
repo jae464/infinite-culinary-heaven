@@ -21,6 +21,9 @@ public record RecipeResponse(
         @Schema(description = "레시피 대표 이미지 URL")
         String thumbnailImage,
 
+        @Schema(description = "소유자 정보")
+        WriterInfoResponse writerInfoResponse,
+
         @Schema(description = "레시피 스텝")
         List<StepResponse> steps,
 
@@ -39,6 +42,7 @@ public record RecipeResponse(
                 recipe.getTitle(),
                 recipe.getDescription(),
                 recipe.getThumbnailImage(),
+                WriterInfoResponse.of(recipe.getUser()),
                 StepsResponse.of(recipe.getSteps()).steps(),
                 IngredientsResponse.of(recipe.getIngredients()).ingredients(),
                 ContestResponse.of(recipe.getContest()),

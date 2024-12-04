@@ -2,7 +2,7 @@ package com.culinaryheaven.domain.auth.infrastructure.kakao;
 
 import com.culinaryheaven.domain.auth.domain.OAuth2Type;
 import com.culinaryheaven.domain.auth.infrastructure.OAuth2Client;
-import com.culinaryheaven.domain.auth.infrastructure.dto.response.UserInfoResponse;
+import com.culinaryheaven.domain.auth.infrastructure.dto.response.OAuth2UserInfoResponse;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class KakaoOAuth2Client implements OAuth2Client {
     }
 
     @Override
-    public UserInfoResponse getUserInfo(String accessToken) {
+    public OAuth2UserInfoResponse getUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + accessToken);
@@ -35,11 +35,11 @@ public class KakaoOAuth2Client implements OAuth2Client {
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
 
         try {
-            ResponseEntity<UserInfoResponse> response = restTemplate.exchange(
+            ResponseEntity<OAuth2UserInfoResponse> response = restTemplate.exchange(
                     USER_INFO_URL,
                     HttpMethod.GET,
                     request,
-                    UserInfoResponse.class
+                    OAuth2UserInfoResponse.class
             );
             System.out.println(response);
             return response.getBody();

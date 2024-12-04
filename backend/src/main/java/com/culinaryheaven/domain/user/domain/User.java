@@ -18,8 +18,11 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String username;
+
+    @Column
+    private String profileImageUrl;
 
     @Column
     private String oauthId;
@@ -33,6 +36,14 @@ public class User extends BaseTimeEntity {
         this.username = username;
         this.oauthId = oauthId;
         this.oauthType = oauthType;
+    }
+
+    public void updateUsername(String username) {
+        this.username = username;
+    }
+
+    public void updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
 }

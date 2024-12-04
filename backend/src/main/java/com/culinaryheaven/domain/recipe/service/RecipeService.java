@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
+
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
     private final ContestRepository contestRepository;
@@ -91,9 +92,9 @@ public class RecipeService {
 
     public RecipeResponse getRecipeById(Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        User user = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
+        User currentUser = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
-        return RecipeResponse.of(recipe, recipe.getUser().getId().equals(user.getId()));
+        return RecipeResponse.of(recipe, recipe.getUser().getId().equals(currentUser.getId()));
     }
 
     public RecipesResponse getAllRecipes(Pageable pageable) {

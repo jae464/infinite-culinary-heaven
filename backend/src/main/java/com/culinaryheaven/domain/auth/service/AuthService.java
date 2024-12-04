@@ -7,10 +7,11 @@ import com.culinaryheaven.domain.auth.dto.request.ReissueRequest;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
 import com.culinaryheaven.domain.auth.dto.response.ReissueResponse;
 import com.culinaryheaven.domain.auth.infrastructure.JwtTokenProvider;
-import com.culinaryheaven.domain.auth.infrastructure.dto.response.UserInfoResponse;
+import com.culinaryheaven.domain.auth.infrastructure.dto.response.OAuth2UserInfoResponse;
 import com.culinaryheaven.domain.auth.infrastructure.kakao.KakaoOAuth2Client;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
+import com.culinaryheaven.domain.user.util.NickNameGenerator;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
@@ -33,17 +34,17 @@ public class AuthService {
     public LoginResponse login(String oauth2Type, String oauth2AccessToken) {
 
         if (OAuth2Type.from(oauth2Type) == OAuth2Type.KAKAO) {
-            UserInfoResponse userInfoResponse = oAuth2Client.getUserInfo(oauth2AccessToken);
+            OAuth2UserInfoResponse OAuth2UserInfoResponse = oAuth2Client.getUserInfo(oauth2AccessToken);
 
-            String accessToken = jwtTokenProvider.provideToken(userInfoResponse.id(), TokenType.ACCESS, "ROLE_USER");
-            String refreshToken = jwtTokenProvider.provideToken(userInfoResponse.id(), TokenType.REFRESH, "ROLE_USER");
+            String accessToken = jwtTokenProvider.provideToken(OAuth2UserInfoResponse.id(), TokenType.ACCESS, "ROLE_USER");
+            String refreshToken = jwtTokenProvider.provideToken(OAuth2UserInfoResponse.id(), TokenType.REFRESH, "ROLE_USER");
 
-            User savedUser = userRepository.findByOauthId(userInfoResponse.id().toString())
+            userRepository.findByOauthId(OAuth2UserInfoResponse.id().toString())
                             .orElseGet(() -> {
                                 User user = User.builder()
-                                        .username(OAuth2Type.KAKAO.getValue() + "_" +  UUID.randomUUID())
+                                        .username(NickNameGenerator.generateNickName())
                                         .oauthType(OAuth2Type.KAKAO)
-                                        .oauthId(userInfoResponse.id().toString())
+                                        .oauthId(OAuth2UserInfoResponse.id().toString())
                                         .build();
                                 return userRepository.save(user);
                             });

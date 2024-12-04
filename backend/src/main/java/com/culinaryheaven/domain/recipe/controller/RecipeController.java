@@ -6,6 +6,8 @@ import com.culinaryheaven.domain.recipe.dto.response.RecipesResponse;
 import com.culinaryheaven.domain.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,7 @@ public class RecipeController {
 
     @GetMapping
     public ResponseEntity<RecipesResponse> getAllRecipes(
-            Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) Long contestId
     ) {
         RecipesResponse recipesResponse;

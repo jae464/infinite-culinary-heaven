@@ -1,9 +1,7 @@
 package com.culinaryheaven.domain.image.domain;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.culinaryheaven.global.exception.CustomException;
@@ -24,7 +22,6 @@ import java.util.UUID;
 public class S3ImageStorageClient implements ImageStorageClient {
 
     private final AmazonS3 s3Client;
-    private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
