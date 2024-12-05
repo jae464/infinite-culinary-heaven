@@ -285,7 +285,9 @@ fun RecipeThumbnailImage(
     val context = LocalContext.current
 
     val galleryLauncher = rememberGalleryLauncher {
-        onChangeThumbnailImage(it.toString())
+        if (it != null) {
+            onChangeThumbnailImage(it.toString())
+        }
     }
 
     val permissionLauncher = rememberPermissionLauncher(
@@ -449,8 +451,10 @@ fun StepForm(
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
 
     val galleryLauncher = rememberGalleryLauncher { uri ->
-        selectedImageUri = uri
-        currentStep = currentStep.copy(imageUrl = uri.toString())
+        if (uri != null) {
+            selectedImageUri = uri
+            currentStep = currentStep.copy(imageUrl = uri.toString())
+        }
     }
 
     val permissionLauncher = rememberPermissionLauncher(

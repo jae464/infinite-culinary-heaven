@@ -15,7 +15,11 @@ import retrofit2.http.Query
 
 interface RecipeService {
     @GET("/recipes")
-    suspend fun getRecipePreviews(@Query("contestId") contestId: Long): Response<RecipePreviewsResponse>
+    suspend fun getRecipePreviews(
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 100, // todo page 로직 구현후 추후 수정
+        @Query("contestId") contestId: Long
+    ): Response<RecipePreviewsResponse>
 
     @GET("/recipes/{recipeId}")
     suspend fun getRecipeById(@Path("recipeId") recipeId: Long): Response<RecipePreviewResponse>

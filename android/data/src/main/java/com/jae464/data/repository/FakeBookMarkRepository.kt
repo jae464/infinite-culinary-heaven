@@ -15,10 +15,6 @@ class FakeBookMarkRepository @Inject constructor() : BookMarkRepository {
         )
     }
 
-    override fun getBookMarkFlow(): Flow<String> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun addBookMark(recipeId: Long): Result<Unit> {
         TODO("Not yet implemented")
     }
@@ -27,7 +23,13 @@ class FakeBookMarkRepository @Inject constructor() : BookMarkRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun isBookMarked(recipeId: Long): Result<Boolean> {
+    override fun getBookMarkedRecipeIds(): Flow<Set<String>> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun isBookMarked(recipeId: Long): Boolean {
+        TODO("Not yet implemented")
+    }
+
+
 }

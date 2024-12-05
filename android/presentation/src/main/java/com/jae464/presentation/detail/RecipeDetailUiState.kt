@@ -4,4 +4,5 @@ import com.jae464.domain.model.Recipe
 
 data class RecipeDetailUiState(
     val recipe: Recipe? = null,
+    val isBookMarked: Boolean = false
 )

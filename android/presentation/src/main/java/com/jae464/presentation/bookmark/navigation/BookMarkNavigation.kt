@@ -1,5 +1,6 @@
 package com.jae464.presentation.bookmark.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
@@ -41,6 +42,15 @@ fun NavGraphBuilder.bookMarkNavGraph(
                 )
             }
         },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(200)
+            )
+        },
+        popExitTransition = {
+            null
+        }
     ) {
         BookMarkRoute(
             padding = padding,

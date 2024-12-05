@@ -33,7 +33,7 @@ class DefaultRecipeRepository @Inject constructor(
 
     override suspend fun getRecipePreviewsByContestId(contestId: Long): Result<List<RecipePreview>> {
         Log.d("DefaultRecipeRepository", "getRecipePreviewsByContestId")
-        val response = recipeService.getRecipePreviews(contestId)
+        val response = recipeService.getRecipePreviews(contestId = contestId)
         Log.d("DefaultRecipeRepository", response.toString())
         return if (response.isSuccessful) {
             val recipeResponses = response.body()

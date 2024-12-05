@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -75,6 +76,10 @@ fun RecipeDetailRoute(
                 RecipeDetailEvent.AddBookMarkSuccess -> {
                     Toast.makeText(context, "북마크에 추가했습니다.", Toast.LENGTH_SHORT).show()
                 }
+
+                RecipeDetailEvent.DeleteBookMarkSuccess -> {
+                    Toast.makeText(context, "북마크에사 제거했습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -112,12 +117,17 @@ fun RecipeDetailScreen(
             actions = {
                 IconButton(onClick = {
                     if (recipe != null) {
-                        onIntent(RecipeDetailIntent.AddBookMark(recipe.id))
+                        if (uiState.isBookMarked) {
+                            onIntent(RecipeDetailIntent.DeleteBookMark(recipe.id))
+                        }
+                        else {
+                            onIntent(RecipeDetailIntent.AddBookMark(recipe.id))
+                        }
                     }
 
                 }) {
                     Icon(
-                        imageVector = Icons.Default.BookmarkBorder,
+                        imageVector = if (uiState.isBookMarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
                         contentDescription = null
                     )
                 }

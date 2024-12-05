@@ -32,6 +32,7 @@ class RecipeDetailViewModel @Inject constructor(
             is RecipeDetailIntent.FetchRecipe -> fetchRecipe(intent.recipeId)
             is RecipeDetailIntent.DeleteRecipe -> deleteRecipe(intent.recipeId)
             is RecipeDetailIntent.AddBookMark -> addBookMark(intent.recipeId)
+            is RecipeDetailIntent.DeleteBookMark -> deleteBookMark(intent.recipeId)
         }
     }
 
@@ -39,7 +40,7 @@ class RecipeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             recipeRepository.getRecipeById(recipeId)
                 .onSuccess { recipe ->
-                    _uiState.update { state -> state.copy(recipe = recipe) }
+                    _uiState.update { state -> state.copy(recipe = recipe, isBookMarked = bookMarkRepository.isBookMarked(recipe.id)) }
                 }
         }
     }
@@ -57,12 +58,27 @@ class RecipeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             bookMarkRepository.addBookMark(recipeId)
                 .onSuccess {
+                    _uiState.update { state -> state.copy(isBookMarked = true) }
                     _event.emit(RecipeDetailEvent.AddBookMarkSuccess)
                 }
                 .onFailure {
 
                 }
         }
+    }
+
+    private fun deleteBookMark(recipeId: Long) {
+        viewModelScope.launch {
+            bookMarkRepository.deleteBookMark(recipeId)
+                .onSuccess {
+                    _uiState.update { state -> state.copy(isBookMarked = false) }
+                    _event.emit(RecipeDetailEvent.DeleteBookMarkSuccess)
+                }
+                .onFailure {
+
+                }
+        }
+
     }
 
 }
