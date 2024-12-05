@@ -36,11 +36,11 @@ public class BookMarkController {
         return ResponseEntity.ok().body(bookMarksResponse);
     }
 
-    @DeleteMapping("/{bookMarkId}")
+    @DeleteMapping("/{recipeId}")
     public ResponseEntity<BookMarkResponse> delete(
-            @PathVariable Long bookMarkId
+            @PathVariable Long recipeId
     ) {
-        bookMarkService.deleteBookMark(bookMarkId);
+        bookMarkService.deleteBookMarkByRecipeId(recipeId);
         return ResponseEntity.noContent().build();
     }
 }

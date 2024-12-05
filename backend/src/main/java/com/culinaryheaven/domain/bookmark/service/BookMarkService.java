@@ -62,15 +62,18 @@ public class BookMarkService {
 
     }
 
-    public void deleteBookMark(Long bookMarkId) {
+    public void deleteBookMarkByRecipeId(Long recipeId) {
+        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id()).orElseThrow(
+                () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
+        );
 
-        BookMark bookMark = bookMarkRepository.findById(bookMarkId).orElseThrow(
+        BookMark bookMark = bookMarkRepository.findByRecipeIdAndUserId(recipeId, user.getId()).orElseThrow(
                 () -> new CustomException(ErrorCode.BOOKMARK_NOT_FOUND)
         );
 
         validateBookMarkOwner(bookMark);
 
-        bookMarkRepository.deleteById(bookMarkId);
+        bookMarkRepository.delete(bookMark);
     }
 
     private void validateBookMark(Long recipeId, Long userId) {
@@ -82,6 +85,7 @@ public class BookMarkService {
     }
 
     private void validateBookMarkOwner(BookMark bookMark) {
+        System.out.println("validateBookMarkOwner");
         User user = userRepository.findByOauthId(
                 securityUtil.getUserOAuth2Id()).orElseThrow(
                         () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
