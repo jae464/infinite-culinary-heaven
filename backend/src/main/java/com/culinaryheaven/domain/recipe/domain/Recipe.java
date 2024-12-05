@@ -1,6 +1,7 @@
 package com.culinaryheaven.domain.recipe.domain;
 
 import com.culinaryheaven.common.BaseTimeEntity;
+import com.culinaryheaven.domain.bookmark.domain.BookMark;
 import com.culinaryheaven.domain.contest.domain.Contest;
 import com.culinaryheaven.domain.user.domain.User;
 import jakarta.persistence.*;
@@ -37,6 +38,9 @@ public class Recipe extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookMark> bookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingredient> ingredients = new ArrayList<>();

@@ -18,7 +18,7 @@ public class BookMark extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "recipe_id", nullable = false)
+    @JoinColumn(name = "recipe_id", nullable = false, foreignKey = @ForeignKey(name = "fk_bookmark_recipe"))
     private Recipe recipe;
 
     @Column(nullable = false)
