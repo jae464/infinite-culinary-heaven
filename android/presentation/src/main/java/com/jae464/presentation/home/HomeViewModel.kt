@@ -27,14 +27,22 @@ class HomeViewModel @Inject constructor(
         fetchRecipePreviews()
     }
 
+    fun handleIntent(intent: HomeIntent) {
+        when (intent) {
+            is HomeIntent.FetchRecipePreviews -> fetchRecipePreviews()
+        }
+    }
+
     fun fetchRecipePreviews() {
         viewModelScope.launch {
             runCatching {
+                _uiState.update { state -> state.copy(isLoading = true) }
                 val currentContest = contestRepository.getCurrentContest().getOrThrow()
                 _uiState.update { state -> state.copy(currentContest = currentContest) }
 
                 val recipePreviews = recipeRepository.getRecipePreviewsByContestId(currentContest.id).getOrThrow()
                 _uiState.update { state -> state.copy(recipePreviews = recipePreviews, isLoading = false) }
+                _uiState.update { state -> state.copy(isLoading = false) }
             }.onFailure {
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed ${it.message}")
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed")

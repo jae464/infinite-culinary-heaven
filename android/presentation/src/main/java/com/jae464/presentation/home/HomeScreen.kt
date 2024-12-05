@@ -13,13 +13,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.component.RecipeItem
@@ -55,24 +61,35 @@ fun HomeRoute(
         padding = padding,
         uiState = uiState,
         onClickRecipe = onClickRecipe,
-        onClickRegister = onClickRegister
+        onClickRegister = onClickRegister,
+        onIntent = viewModel::handleIntent
     )
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     padding: PaddingValues,
     uiState: HomeUiState,
     onClickRecipe: (Long) -> Unit = {},
-    onClickRegister: () -> Unit = {}
+    onClickRegister: () -> Unit = {},
+    onIntent: (HomeIntent) -> Unit = {}
 ) {
 
     Log.d("HomeScreen", "Home Screen is Rendered.")
 
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = uiState.isLoading,
+        onRefresh = {
+            onIntent(HomeIntent.FetchRecipePreviews)
+        }
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .pullRefresh(pullRefreshState)
             .padding(padding)
     ) {
         LazyColumn(
@@ -114,6 +131,12 @@ fun HomeScreen(
         ) {
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
         }
+        PullRefreshIndicator(
+            refreshing = uiState.isLoading,
+            state = pullRefreshState,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+        )
     }
 }
 
