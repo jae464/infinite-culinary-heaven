@@ -6,6 +6,7 @@ import com.culinaryheaven.domain.auth.dto.request.ReissueRequest;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
 import com.culinaryheaven.domain.auth.dto.response.ReissueResponse;
 import com.culinaryheaven.domain.auth.service.AuthService;
+import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final SecurityUtil securityUtil;
 
     @PostMapping("/login/oauth2")
     public ResponseEntity<LoginResponse> oauth2Login(

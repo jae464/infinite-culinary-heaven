@@ -27,6 +27,7 @@ public enum ErrorCode {
     // security
     INVALID_OAUTH2_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 입니다."),
     INVALID_TOKEN_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 토큰 타입입니다."),
+    AUTHORIZATION_NOT_FOUND(HttpStatus.NOT_FOUND, "인증 정보를 찾을 수 없습니다."),
     AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, "인증에 실패했습니다."),
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 엑세스 토큰입니다."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 리프레쉬 토큰입니다."),

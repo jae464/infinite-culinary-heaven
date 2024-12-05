@@ -7,6 +7,7 @@ import com.culinaryheaven.domain.user.dto.response.UserInfoResponse;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
+import com.culinaryheaven.global.util.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,9 +20,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ImageStorageClient imageStorageClient;
+    private final SecurityUtil securityUtil;
 
     public UserInfoResponse getMyInfo() {
-        User user = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
+        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         return UserInfoResponse.of(
@@ -35,7 +37,7 @@ public class UserService {
             UserUpdateRequest request,
             MultipartFile profileImage
     ) {
-        User user = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
+        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         if (request.userNickname() != null) {

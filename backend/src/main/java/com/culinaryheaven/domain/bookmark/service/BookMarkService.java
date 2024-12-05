@@ -11,6 +11,7 @@ import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
+import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,11 +25,12 @@ public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
+    private final SecurityUtil securityUtil;
 
     public BookMarkResponse addBookMark(BookMarkCreateRequest request) {
 
         User user = userRepository.findByOauthId(
-                SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(
+                securityUtil.getUserOAuth2Id()).orElseThrow(
                 () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
         );
 
@@ -50,7 +52,7 @@ public class BookMarkService {
     public BookMarksResponse getAllBookMarks(Pageable pageable) {
 
         User user = userRepository.findByOauthId(
-                SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(
+                securityUtil.getUserOAuth2Id()).orElseThrow(
                 () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
         );
 
@@ -81,7 +83,7 @@ public class BookMarkService {
 
     private void validateBookMarkOwner(BookMark bookMark) {
         User user = userRepository.findByOauthId(
-                SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(
+                securityUtil.getUserOAuth2Id()).orElseThrow(
                         () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
         );
 

@@ -18,6 +18,7 @@ import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
+import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ public class RecipeService {
     private final ImageStorageClient imageStorageClient;
     private final StepRepository stepRepository;
     private final IngredientRepository ingredientRepository;
+    private final SecurityUtil securityUtil;
 
     @Transactional
     public RecipeResponse create(
@@ -67,8 +69,7 @@ public class RecipeService {
 
         String thumbnailUrl = imageStorageClient.uploadImage(imageMap.get(request.thumbnailImage()));
 
-        System.out.println("유저 oauth2 id : " + SecurityContextHolder.getContext().getAuthentication().getName());
-        User user = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
+        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id()).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
         Recipe recipe = request.toEntity(user, thumbnailUrl, contest);
 
         Recipe savedRecipe = recipeRepository.save(recipe);
@@ -92,7 +93,7 @@ public class RecipeService {
 
     public RecipeResponse getRecipeById(Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        User currentUser = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
+        User currentUser = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
         return RecipeResponse.of(recipe, recipe.getUser().getId().equals(currentUser.getId()));
     }
@@ -110,7 +111,7 @@ public class RecipeService {
     @Transactional
     public void deleteByRecipeId(Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        User user = userRepository.findByOauthId(SecurityContextHolder.getContext().getAuthentication().getName())
+        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         if (!recipe.getUser().getId().equals(user.getId())) {
