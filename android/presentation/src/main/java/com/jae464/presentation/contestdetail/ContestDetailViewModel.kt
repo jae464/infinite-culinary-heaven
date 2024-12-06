@@ -21,6 +21,9 @@ class ContestDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ContestDetailUiState())
     val uiState: StateFlow<ContestDetailUiState> = _uiState.asStateFlow()
 
+    private var currentage = 0
+    private var isLastPage = false
+
     fun handleIntent(intent: ContestDetailIntent) {
         when (intent) {
             is ContestDetailIntent.LoadContestDetail -> loadContestDetail(intent.contestId)
@@ -31,7 +34,12 @@ class ContestDetailViewModel @Inject constructor(
     private fun loadContestDetail(contestId: Long) {
         viewModelScope.launch {
             runCatching {
-                val recipePreviews = recipeRepository.getRecipePreviewsByContestId(contestId).getOrThrow()
+                val recipePreviews = recipeRepository.getRecipePreviewsByContestId(currentage, contestId).getOrThrow()
+                if (recipePreviews.isEmpty()) {
+                    isLastPage = true
+                } else {
+                    currentage++
+                }
                 _uiState.update { state -> state.copy(recipePreviews = recipePreviews) }
             }.onFailure {
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed ${it.message}")

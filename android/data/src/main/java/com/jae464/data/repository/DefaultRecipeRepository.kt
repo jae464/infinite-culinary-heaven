@@ -2,6 +2,9 @@ package com.jae464.data.repository
 
 import android.util.Log
 import androidx.core.net.toUri
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.jae464.data.remote.api.RecipeService
 import com.jae464.data.remote.model.request.IngredientCreateRequest
 import com.jae464.data.remote.model.request.RecipeCreateRequest
@@ -14,6 +17,7 @@ import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.model.Step
 import com.jae464.domain.repository.RecipeRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,9 +35,9 @@ class DefaultRecipeRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getRecipePreviewsByContestId(contestId: Long): Result<List<RecipePreview>> {
+    override suspend fun getRecipePreviewsByContestId(page: Int, contestId: Long): Result<List<RecipePreview>> {
         Log.d("DefaultRecipeRepository", "getRecipePreviewsByContestId")
-        val response = recipeService.getRecipePreviews(contestId = contestId)
+        val response = recipeService.getRecipePreviews(page = page, contestId = contestId)
         Log.d("DefaultRecipeRepository", response.toString())
         return if (response.isSuccessful) {
             val recipeResponses = response.body()
@@ -53,6 +57,45 @@ class DefaultRecipeRepository @Inject constructor(
         } else {
             Log.d("DefaultRecipeRepository", response.toString())
             Result.failure(Exception("network error"))
+        }
+    }
+
+    override fun getPagedRecipePreviewsByContestId(contestId: Long): PagingSource<Int, RecipePreview> {
+        return object : PagingSource<Int, RecipePreview>() {
+            override fun getRefreshKey(state: PagingState<Int, RecipePreview>): Int? {
+                return state.anchorPosition?.let { anchorPosition ->
+                    state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                        ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+                }
+            }
+
+            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RecipePreview> {
+                return try {
+
+                    val page = params.key ?: 0
+                    Log.d("DefaultRecipeRepository", "page: $page")
+
+                    val response = recipeService.getRecipePreviews(
+                        page = page,
+                        size = params.loadSize,
+                        contestId = contestId
+                    )
+
+                    if (response.isSuccessful) {
+                        val recipePreviews = response.body()?.toDomain() ?: emptyList()
+                        LoadResult.Page(
+                            data = recipePreviews,
+                            prevKey = if (page == 0) null else page - 1,
+                            nextKey = if (recipePreviews.isEmpty()) null else page + 1
+                        )
+                    } else {
+                        LoadResult.Error(Exception("Network Error: ${response.code()} ${response.message()}"))
+                    }
+                } catch (e: Exception) {
+                    LoadResult.Error(e)
+                }
+            }
+
         }
     }
 

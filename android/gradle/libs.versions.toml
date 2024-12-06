@@ -24,6 +24,7 @@ okhttp = "4.12.0"
 retrofit = "2.11.0"
 kakao = "2.20.6"
 datastore = "1.1.1"
+paging = "3.3.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +68,7 @@ retrofit-kotlin-serialization = { module = "com.squareup.retrofit2:converter-kot
 kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao" }
 
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore"}
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

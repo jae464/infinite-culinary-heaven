@@ -1,10 +1,9 @@
 package com.jae464.presentation.bookmark
 
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
@@ -14,7 +13,6 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,8 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.component.RecipeItem
-import com.jae464.presentation.home.HomeIntent
 import com.jae464.presentation.util.LaunchedEffectWithLifecycle
+import kotlin.math.min
 
 @Composable
 fun BookMarkRoute(
@@ -42,6 +40,7 @@ fun BookMarkRoute(
         onClickRecipe = onClickRecipe,
         onIntent = viewModel::handleIntent
     )
+
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -60,6 +59,8 @@ fun BookMarkScreen(
         }
     )
 
+    val offsetY = min(pullRefreshState.progress * 100, 80f)
+
     LaunchedEffectWithLifecycle {
         onIntent(BookMarkIntent.FetchBookMarkedRecipes)
     }
@@ -68,6 +69,7 @@ fun BookMarkScreen(
         modifier = Modifier
             .padding(padding)
             .fillMaxSize()
+            .offset(y = offsetY.dp)
             .pullRefresh(pullRefreshState)
     ) {
 

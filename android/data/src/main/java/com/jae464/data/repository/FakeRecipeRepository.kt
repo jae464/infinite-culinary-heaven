@@ -1,5 +1,7 @@
 package com.jae464.data.repository
 
+import androidx.paging.PagingSource
+import com.jae464.domain.model.Contest
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
@@ -17,6 +19,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2019/07/12/1c5436c0bab2b8385ee134cbe60243c71.jpg",
                 description = "감자와 베이컨으로 간단하게 만들수 있는 요리입니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "나폴리맛피아"
             ),
             RecipePreview(
@@ -25,6 +28,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://i.ibb.co/8Ys5Tc2/potato-1.jpg",
                 description = "고소한 치즈와 부드러운 감자가 어우러진 최고의 간식입니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "에드워드 리"
             ),
             RecipePreview(
@@ -33,6 +37,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2017/08/30/4c641aaf9fe89859966922d914a3c8f51.jpg",
                 description = "버터로 노릇하게 구운 감자가 입안을 사로잡습니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "트리플스타"
             ),
             RecipePreview(
@@ -41,6 +46,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2022/10/13/d0e19dee8c75fb7856df44c3b95655411.jpg",
                 description = "간단하면서도 깊은 맛을 자랑하는 휴게소 스타일의 알감자입니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "요리하는돌아이"
             )
         )
@@ -48,7 +54,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         return Result.success(recipePreviews)
     }
 
-    override suspend fun getRecipePreviewsByContestId(contestId: Long): Result<List<RecipePreview>> {
+    override suspend fun getRecipePreviewsByContestId(page: Int, contestId: Long): Result<List<RecipePreview>> {
         val mockData = listOf(
             RecipePreview(
                 id = 1L,
@@ -56,6 +62,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2019/07/12/1c5436c0bab2b8385ee134cbe60243c71.jpg",
                 description = "감자와 베이컨으로 간단하게 만들수 있는 요리입니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "나폴리맛피아"
             ),
             RecipePreview(
@@ -64,6 +71,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://i.ibb.co/8Ys5Tc2/potato-1.jpg",
                 description = "고소한 치즈와 부드러운 감자가 어우러진 최고의 간식입니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "에드워드 리"
             ),
             RecipePreview(
@@ -72,6 +80,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2017/08/30/4c641aaf9fe89859966922d914a3c8f51.jpg",
                 description = "버터로 노릇하게 구운 감자가 입안을 사로잡습니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "트리플스타"
             ),
             RecipePreview(
@@ -80,11 +89,16 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 imageUrl = "https://recipe1.ezmember.co.kr/cache/recipe/2022/10/13/d0e19dee8c75fb7856df44c3b95655411.jpg",
                 description = "간단하면서도 깊은 맛을 자랑하는 휴게소 스타일의 알감자입니다.",
                 score = 5.0f,
+                bookMarkCounts = 0,
                 author = "요리하는돌아이"
             )
         )
         val recipePreviews = List(10) { mockData }.flatten()
         return Result.success(recipePreviews)
+    }
+
+    override fun getPagedRecipePreviewsByContestId(contestId: Long): PagingSource<Int, RecipePreview> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun getRecipeById(id: Long): Result<Recipe> {
@@ -127,6 +141,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                         imageUrl = "https://mblogthumb-phinf.pstatic.net/20140814_67/99jinga_14079837901420Jjea_JPEG/IMG_6699.JPG?type=w420"
                     )
                 ),
+                bookMarkCounts = 0,
                 isOwner = true
             )
         )

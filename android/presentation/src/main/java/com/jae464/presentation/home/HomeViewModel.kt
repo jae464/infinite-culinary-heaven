@@ -1,7 +1,6 @@
 package com.jae464.presentation.home
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.ContestRepository
@@ -23,6 +22,9 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    private var currentPage = 0
+    private var isLastPage = false
+
     init {
         fetchRecipePreviews()
     }
@@ -30,18 +32,36 @@ class HomeViewModel @Inject constructor(
     fun handleIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.FetchRecipePreviews -> fetchRecipePreviews()
+            is HomeIntent.RefreshRecipePreviews -> refreshRecipePreviews()
         }
     }
 
-    fun fetchRecipePreviews() {
+    fun refreshRecipePreviews() {
+        currentPage = 0
+        isLastPage = false
+        _uiState.update { state -> state.copy(recipePreviews = emptyList()) }
+        fetchRecipePreviews()
+    }
+
+    private fun fetchRecipePreviews() {
         viewModelScope.launch {
             runCatching {
+
+                if (isLastPage) return@launch
+
                 _uiState.update { state -> state.copy(isLoading = true) }
                 val currentContest = contestRepository.getCurrentContest().getOrThrow()
                 _uiState.update { state -> state.copy(currentContest = currentContest) }
 
-                val recipePreviews = recipeRepository.getRecipePreviewsByContestId(currentContest.id).getOrThrow()
-                _uiState.update { state -> state.copy(recipePreviews = recipePreviews, isLoading = false) }
+                val recipePreviews = recipeRepository.getRecipePreviewsByContestId(page = currentPage, contestId = currentContest.id).getOrThrow()
+
+                if (recipePreviews.isEmpty()) {
+                    isLastPage = true
+                } else {
+                    currentPage++
+                }
+
+                _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + recipePreviews, isLoading = false) }
                 _uiState.update { state -> state.copy(isLoading = false) }
             }.onFailure {
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed ${it.message}")

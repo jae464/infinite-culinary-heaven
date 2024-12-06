@@ -17,6 +17,7 @@ data class RecipePreviewResponse(
     val steps: List<StepResponse>,
     val ingredients: List<IngredientResponse>,
     val contest: ContestResponse,
+    val bookMarkCounts: Int,
     val isOwner: Boolean?
 )
 
@@ -40,6 +41,7 @@ fun RecipePreviewResponse.toRecipePreviewDomain() = RecipePreview(
     imageUrl = adjustLocalhostUrl(thumbnailImage),
     description = description,
     score = 5f,
+    bookMarkCounts = bookMarkCounts,
     author = writerInfoResponse.nickname,
 )
 
@@ -52,6 +54,7 @@ fun RecipePreviewResponse.toRecipeDomain() = Recipe(
     author = "익명",
     ingredients = ingredients.map { it.toDomain() },
     steps = steps.map { it.toDomain() },
+    bookMarkCounts = bookMarkCounts,
     isOwner = isOwner ?: false
 )
 

@@ -36,7 +36,10 @@ fun NavGraphBuilder.contestHistoryNavGraph(
         exitTransition = {
             val direction = getMainTabDirection(initialState.destination, targetState.destination)
             if (direction == null) {
-                null
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(200)
+                )
             } else {
                 slideOutOfContainer(
                     towards = direction,
@@ -50,9 +53,6 @@ fun NavGraphBuilder.contestHistoryNavGraph(
                 animationSpec = tween(200)
             )
         },
-        popExitTransition = {
-            null
-        }
     ) {
         ContestHistoryRoute(padding = padding, onClickContest = onClickContest)
     }

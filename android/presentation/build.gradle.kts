@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.lifecycle)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.paging.compose)
 
     implementation(libs.kakao.user)
 }
