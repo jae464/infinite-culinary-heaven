@@ -48,12 +48,6 @@ public class Recipe extends BaseTimeEntity {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Step> steps = new ArrayList<>();
 
-    @Column(nullable = false, name = "competition_count")
-    private int competitionCount = 0;
-
-    @Column(nullable = false, name = "win_count")
-    private int winCount = 0;
-
     @Builder
     public Recipe(String title,
                   String description,
@@ -66,6 +60,10 @@ public class Recipe extends BaseTimeEntity {
         this.thumbnailImage = thumbnailImage;
         this.user = user;
         this.contest = contest;
+    }
+
+    public int getBookMarkCount() {
+        return bookmarks.size();
     }
 
 }

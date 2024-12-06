@@ -33,6 +33,9 @@ public record RecipeResponse(
         @Schema(description = "레시피가 등록된 대회 정보")
         ContestResponse contest,
 
+        @Schema(description = "북마크 개수")
+        int bookMarkCounts,
+
         @Schema(description = "소유자 여부")
         Boolean isOwner
 ) {
@@ -46,6 +49,7 @@ public record RecipeResponse(
                 StepsResponse.of(recipe.getSteps()).steps(),
                 IngredientsResponse.of(recipe.getIngredients()).ingredients(),
                 ContestResponse.of(recipe.getContest()),
+                recipe.getBookMarkCount(),
                 isOwner
         );
     }
