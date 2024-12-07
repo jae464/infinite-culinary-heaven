@@ -34,10 +34,7 @@ fun NavGraphBuilder.bookMarkNavGraph(
         exitTransition = {
             val direction = getMainTabDirection(initialState.destination, targetState.destination)
             if (direction == null) {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(200)
-                )
+                null
             } else {
                 slideOutOfContainer(
                     towards = direction,
@@ -50,9 +47,6 @@ fun NavGraphBuilder.bookMarkNavGraph(
                 towards = AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(200)
             )
-        },
-        popExitTransition = {
-            null
         }
     ) {
         BookMarkRoute(
