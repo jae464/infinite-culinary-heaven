@@ -20,4 +20,13 @@ public record RecipesResponse(
 
         return new RecipesResponse(recipeResponses);
     }
+
+    public static RecipesResponse of(List<Recipe> recipes) {
+        List<RecipeResponse> recipeResponses = recipes
+                .stream()
+                .map(recipe -> RecipeResponse.of(recipe, null))
+                .toList();
+
+        return new RecipesResponse(recipeResponses);
+    }
 }

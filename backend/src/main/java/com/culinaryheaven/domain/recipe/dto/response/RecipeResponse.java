@@ -1,7 +1,6 @@
 package com.culinaryheaven.domain.recipe.dto.response;
 
 import com.culinaryheaven.domain.contest.dto.response.ContestResponse;
-import com.culinaryheaven.domain.recipe.domain.Ingredient;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -36,6 +35,9 @@ public record RecipeResponse(
         @Schema(description = "북마크 개수")
         int bookMarkCounts,
 
+        @Schema(description = "좋아요 개수")
+        int likeCounts,
+
         @Schema(description = "소유자 여부")
         Boolean isOwner
 ) {
@@ -50,6 +52,7 @@ public record RecipeResponse(
                 IngredientsResponse.of(recipe.getIngredients()).ingredients(),
                 ContestResponse.of(recipe.getContest()),
                 recipe.getBookMarkCount(),
+                recipe.getLikeCount(),
                 isOwner
         );
     }

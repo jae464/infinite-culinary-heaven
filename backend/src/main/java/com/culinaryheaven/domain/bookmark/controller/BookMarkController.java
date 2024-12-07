@@ -1,6 +1,5 @@
 package com.culinaryheaven.domain.bookmark.controller;
 
-import com.culinaryheaven.domain.bookmark.dto.request.BookMarkCreateRequest;
 import com.culinaryheaven.domain.bookmark.dto.response.BookMarkResponse;
 import com.culinaryheaven.domain.bookmark.dto.response.BookMarksResponse;
 import com.culinaryheaven.domain.bookmark.service.BookMarkService;
@@ -10,8 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/bookmarks")

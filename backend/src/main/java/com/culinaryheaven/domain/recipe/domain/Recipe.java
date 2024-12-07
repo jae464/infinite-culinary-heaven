@@ -43,6 +43,9 @@ public class Recipe extends BaseTimeEntity {
     private List<BookMark> bookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeLike> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -64,6 +67,10 @@ public class Recipe extends BaseTimeEntity {
 
     public int getBookMarkCount() {
         return bookmarks.size();
+    }
+
+    public int getLikeCount() {
+        return likes.size();
     }
 
 }

@@ -21,7 +21,7 @@ public class RecipeLikeController {
         return ResponseEntity.ok(recipeLikeResponse);
     }
 
-    @DeleteMapping("/unlike/{recipeId}")
+    @DeleteMapping("/like/{recipeId}")
     public ResponseEntity<RecipeLikeResponse> delete(
             @PathVariable Long recipeId
     ) {
