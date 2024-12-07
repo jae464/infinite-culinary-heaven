@@ -45,12 +45,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun fetchRecipePreviews() {
+        if (isLastPage) return
+        if (isLoading) return
+
         viewModelScope.launch {
             runCatching {
-
-                if (isLastPage) return@launch
-                if (isLoading) return@launch
-
                 isLoading = true
 
                 _uiState.update { state -> state.copy(isLoading = true) }
@@ -71,7 +70,6 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { state -> state.copy(isLoading = false) }
             }.onFailure {
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed ${it.message}")
-                Log.e("HomeViewModel", "fetchRecipePreviews Failed")
             }
         }
     }

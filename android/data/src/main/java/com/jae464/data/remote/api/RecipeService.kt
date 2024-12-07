@@ -19,7 +19,7 @@ interface RecipeService {
     @GET("/recipes")
     suspend fun getRecipePreviews(
         @Query("page") page: Int = 0,
-        @Query("size") size: Int = 20, // todo page 로직 구현후 추후 수정
+        @Query("size") size: Int = 20,
         @Query("contestId") contestId: Long
     ): Response<RecipePreviewsResponse>
 

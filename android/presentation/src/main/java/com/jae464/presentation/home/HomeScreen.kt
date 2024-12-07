@@ -58,6 +58,7 @@ fun HomeRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        // 레시피 등록 화면에서 등록 후 넘어올때만 refresh
         if (isRefresh) {
             viewModel.refreshRecipePreviews()
             Log.d("HomeScreen", "isRefresh Fetching")
@@ -107,7 +108,7 @@ fun HomeScreen(
     val offsetY = min(pullRefreshState.progress * 100, 80f)
 
     LaunchedEffect(isScrollingToEnd) {
-        if (isScrollingToEnd && !uiState.isLoading && isRefresh) {
+        if (isScrollingToEnd && !uiState.isLoading && !isRefresh && uiState.recipePreviews.size >= 20) {
             Log.d("HomeScreen", "isScrollingToEnd Fetching")
             onIntent(HomeIntent.FetchRecipePreviews)
         }
