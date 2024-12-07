@@ -30,6 +30,13 @@ public class UserService {
 
     }
 
+    public UserInfoResponse getUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
+
+        return UserInfoResponse.of(user);
+    }
+
     @Transactional
     public UserInfoResponse updateMyInfo(
             UserUpdateRequest request,

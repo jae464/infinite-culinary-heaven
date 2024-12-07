@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -19,6 +21,14 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserInfoResponse> getMyInfo() {
         UserInfoResponse userInfoResponse = userService.getMyInfo();
+        return ResponseEntity.ok().body(userInfoResponse);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserInfoResponse> getUserInfo(
+            @PathVariable Long userId
+    ) {
+        UserInfoResponse userInfoResponse = userService.getUserInfo(userId);
         return ResponseEntity.ok().body(userInfoResponse);
     }
 
