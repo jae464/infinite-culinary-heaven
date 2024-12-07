@@ -1,5 +1,6 @@
 package com.culinaryheaven.domain.user.dto.response;
 
+import com.culinaryheaven.domain.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UserInfoResponse(
@@ -14,7 +15,7 @@ public record UserInfoResponse(
         String profileImageUrl
 
 ) {
-        public static UserInfoResponse of(Long id, String nickname, String profileImageUrl) {
-                return new UserInfoResponse(id, nickname, profileImageUrl);
+        public static UserInfoResponse of(User user) {
+                return new UserInfoResponse(user.getId(), user.getUsername(), user.getProfileImageUrl());
         }
 }

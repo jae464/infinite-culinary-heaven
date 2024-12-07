@@ -20,11 +20,11 @@ public class BookMarkController {
 
     private final BookMarkService bookMarkService;
 
-    @PostMapping
+    @PostMapping("/{recipeId}")
     public ResponseEntity<BookMarkResponse> create(
-            @RequestBody BookMarkCreateRequest bookMarkCreateRequest
+            @PathVariable Long recipeId
     ) {
-        BookMarkResponse bookMarkResponse = bookMarkService.addBookMark(bookMarkCreateRequest);
+        BookMarkResponse bookMarkResponse = bookMarkService.addBookMark(recipeId);
         return ResponseEntity.ok().body(bookMarkResponse);
     }
 

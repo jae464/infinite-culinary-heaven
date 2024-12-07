@@ -20,6 +20,10 @@ public enum ErrorCode {
     //recipe
     RECIPE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 레시피를 찾을수 없습니다."),
 
+    // recipe like
+    ALREADY_EXISTS_RECIPE_LIKE(HttpStatus.CONFLICT, "이미 좋아요 된 레시피입니다."),
+    RECIPE_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 좋아요입니다."),
+
     // bookmark
     ALREADY_EXISTS_BOOKMARK(HttpStatus.CONFLICT, "이미 존재하는 북마크입니다."),
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 북마크입니다."),

@@ -27,16 +27,16 @@ public class BookMarkService {
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
 
-    public BookMarkResponse addBookMark(BookMarkCreateRequest request) {
+    public BookMarkResponse addBookMark(Long recipeId) {
 
         User user = userRepository.findByOauthId(
                 securityUtil.getUserOAuth2Id()).orElseThrow(
                 () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
         );
 
-        validateBookMark(request.recipeId(), user.getId());
+        validateBookMark(recipeId, user.getId());
 
-        Recipe recipe = recipeRepository.findById(request.recipeId()).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
 
         BookMark bookMark = BookMark.builder()
                 .recipe(recipe)
@@ -71,7 +71,7 @@ public class BookMarkService {
                 () -> new CustomException(ErrorCode.BOOKMARK_NOT_FOUND)
         );
 
-        validateBookMarkOwner(bookMark);
+        validateBookMarkOwner(bookMark, user);
 
         bookMarkRepository.delete(bookMark);
     }
@@ -84,12 +84,7 @@ public class BookMarkService {
         }
     }
 
-    private void validateBookMarkOwner(BookMark bookMark) {
-        System.out.println("validateBookMarkOwner");
-        User user = userRepository.findByOauthId(
-                securityUtil.getUserOAuth2Id()).orElseThrow(
-                        () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
-        );
+    private void validateBookMarkOwner(BookMark bookMark, User user) {
 
         if (!bookMark.getUserId().equals(user.getId())) {
             throw new CustomException(ErrorCode.FORBIDDEN);

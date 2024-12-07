@@ -26,9 +26,7 @@ public class UserService {
         User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
-        return UserInfoResponse.of(
-                user.getId(), user.getUsername(), user.getProfileImageUrl()
-        );
+        return UserInfoResponse.of(user);
 
     }
 
@@ -49,7 +47,7 @@ public class UserService {
             user.updateProfileImageUrl(imageUrl);
         }
 
-        return UserInfoResponse.of(user.getId(), user.getUsername(), user.getProfileImageUrl());
+        return UserInfoResponse.of(user);
     }
 
 }
