@@ -52,7 +52,7 @@ class DefaultBookMarkRepository @Inject constructor(
 
     override suspend fun addBookMark(recipeId: Long): Result<Unit> {
 
-        val response = bookMarkService.addBookMark(BookMarkCreateRequest(recipeId))
+        val response = bookMarkService.addBookMark(recipeId)
         return if (response.isSuccessful) {
 
             dataStore.edit { preferences ->

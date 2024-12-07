@@ -60,12 +60,14 @@ fun HomeRoute(
     LaunchedEffect(Unit) {
         if (isRefresh) {
             viewModel.refreshRecipePreviews()
+            Log.d("HomeScreen", "isRefresh Fetching")
         }
     }
 
     HomeScreen(
         padding = padding,
         uiState = uiState,
+        isRefresh = isRefresh,
         onClickRecipe = onClickRecipe,
         onClickRegister = onClickRegister,
         onIntent = viewModel::handleIntent
@@ -78,6 +80,7 @@ fun HomeRoute(
 fun HomeScreen(
     padding: PaddingValues,
     uiState: HomeUiState,
+    isRefresh: Boolean,
     onClickRecipe: (Long) -> Unit = {},
     onClickRegister: () -> Unit = {},
     onIntent: (HomeIntent) -> Unit = {}
@@ -104,7 +107,8 @@ fun HomeScreen(
     val offsetY = min(pullRefreshState.progress * 100, 80f)
 
     LaunchedEffect(isScrollingToEnd) {
-        if (isScrollingToEnd && !uiState.isLoading) {
+        if (isScrollingToEnd && !uiState.isLoading && isRefresh) {
+            Log.d("HomeScreen", "isScrollingToEnd Fetching")
             onIntent(HomeIntent.FetchRecipePreviews)
         }
     }

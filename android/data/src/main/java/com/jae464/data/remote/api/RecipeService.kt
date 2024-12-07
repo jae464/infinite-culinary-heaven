@@ -1,7 +1,9 @@
 package com.jae464.data.remote.api
 
+import com.jae464.data.remote.model.response.RecipeLikeResponse
 import com.jae464.data.remote.model.response.RecipePreviewResponse
 import com.jae464.data.remote.model.response.RecipePreviewsResponse
+import com.jae464.data.remote.model.response.RecipeResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -22,13 +24,23 @@ interface RecipeService {
     ): Response<RecipePreviewsResponse>
 
     @GET("/recipes/{recipeId}")
-    suspend fun getRecipeById(@Path("recipeId") recipeId: Long): Response<RecipePreviewResponse>
+    suspend fun getRecipeById(@Path("recipeId") recipeId: Long): Response<RecipeResponse>
 
     @Multipart
     @POST("/recipes")
     suspend fun postRecipe(
         @Part images: List<MultipartBody.Part>,
         @Part("request") body: RequestBody
+    ): Response<Unit>
+
+    @POST("/recipes/like/{recipeId}")
+    suspend fun likeRecipe(
+        @Path("recipeId") recipeId: Long
+    ): Response<RecipeLikeResponse>
+
+    @DELETE("/recipes/like/{recipeId}")
+    suspend fun unlikeRecipe(
+        @Path("recipeId") recipeId: Long
     ): Response<Unit>
 
     @DELETE("/recipes/{recipeId}")

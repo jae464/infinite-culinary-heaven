@@ -10,6 +10,9 @@ data class Recipe(
     val ingredients: List<Ingredient>,
     val steps: List<Step>,
     val bookMarkCounts: Int,
+    val likeCounts: Int,
+    val isBookMarked: Boolean,
+    val isLiked: Boolean,
     val isOwner: Boolean
 )
 

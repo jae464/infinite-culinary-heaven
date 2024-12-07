@@ -1,5 +1,6 @@
 package com.jae464.presentation.detail
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,6 +53,8 @@ import com.jae464.domain.model.Step
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.detail.component.RecipeDetailContentBox
 import com.jae464.presentation.ui.theme.Gray20
+import com.jae464.presentation.ui.theme.Green10
+import com.jae464.presentation.ui.theme.Red10
 
 @Composable
 fun RecipeDetailRoute(
@@ -79,7 +84,15 @@ fun RecipeDetailRoute(
                 }
 
                 RecipeDetailEvent.DeleteBookMarkSuccess -> {
-                    Toast.makeText(context, "북마크에사 제거했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "북마크에서 제거했습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+                RecipeDetailEvent.LikeSuccess -> {
+                    Toast.makeText(context, "좋아요를 눌렀습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+                RecipeDetailEvent.UnlikeSuccess -> {
+                    Toast.makeText(context, "좋아요를 해제했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -100,8 +113,6 @@ fun RecipeDetailScreen(
     onIntent: (RecipeDetailIntent) -> Unit = {},
     onBackClick: () -> Unit
 ) {
-    val recipe = uiState.recipe
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -113,30 +124,48 @@ fun RecipeDetailScreen(
             .verticalScroll(rememberScrollState())
     ) {
         HeavenTopAppBar(
-            title = recipe?.title ?: "",
+            title = uiState.recipe?.title ?: "",
             navigationIcon = Icons.Default.ArrowBack,
             onNavigationClick = onBackClick,
             actions = {
-                IconButton(onClick = {
-                    if (recipe != null) {
-                        if (uiState.isBookMarked) {
-                            onIntent(RecipeDetailIntent.DeleteBookMark(recipe.id))
+                // todo 좋아요, 스크랩은 현재 테스트를 위해 다 보이게 했지만, 추후 본인이 아닐때만 표시되도록 수정
+                if (uiState.recipe != null) {
+                    IconButton(onClick = {
+                        if (uiState.recipe.isLiked) {
+                            onIntent(RecipeDetailIntent.UnlikeRecipe(uiState.recipe.id))
+                        } else {
+                            onIntent(RecipeDetailIntent.LikeRecipe(uiState.recipe.id))
                         }
-                        else {
-                            onIntent(RecipeDetailIntent.AddBookMark(recipe.id))
-                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            tint = if (uiState.recipe.isLiked) Red10 else Color.LightGray,
+                            contentDescription = null
+                        )
                     }
 
-                }) {
-                    Icon(
-                        imageVector = if (uiState.isBookMarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                        contentDescription = null
-                    )
+                    IconButton(onClick = {
+                        if (uiState.recipe.isBookMarked) {
+                            onIntent(RecipeDetailIntent.DeleteBookMark(uiState.recipe.id))
+                        } else {
+                            onIntent(RecipeDetailIntent.AddBookMark(uiState.recipe.id))
+                        }
+
+
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Bookmark,
+                            tint = if (uiState.recipe.isBookMarked) Green10 else Color.LightGray,
+                            contentDescription = null
+                        )
+                    }
                 }
+
+
                 if (uiState.recipe?.isOwner == true) {
                     IconButton(onClick = {
-                        if (recipe != null) {
-                            onIntent(RecipeDetailIntent.DeleteRecipe(recipe.id))
+                        if (uiState.recipe != null) {
+                            onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))
                         }
                     }) {
                         Icon(
@@ -151,8 +180,8 @@ fun RecipeDetailScreen(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
             thickness = 0.5.dp
         )
-        if (recipe != null) {
-            RecipeItem(recipe = recipe)
+        if (uiState.recipe != null) {
+            RecipeItem(recipe = uiState.recipe)
         }
     }
 }
@@ -257,7 +286,7 @@ fun StepItem(step: Step, index: Int) {
             .padding(8.dp),
         verticalAlignment = Alignment.Top
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 8.dp),

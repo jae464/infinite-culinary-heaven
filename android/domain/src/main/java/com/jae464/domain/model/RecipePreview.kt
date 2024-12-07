@@ -7,5 +7,6 @@ data class RecipePreview(
     val description: String,
     val score: Float,
     val bookMarkCounts: Int,
+    val likeCounts: Int,
     val author: String,
 )

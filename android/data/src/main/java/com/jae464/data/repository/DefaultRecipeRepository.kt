@@ -10,7 +10,6 @@ import com.jae464.data.remote.model.request.IngredientCreateRequest
 import com.jae464.data.remote.model.request.RecipeCreateRequest
 import com.jae464.data.remote.model.request.StepCreateRequest
 import com.jae464.data.remote.model.response.toDomain
-import com.jae464.data.remote.model.response.toRecipeDomain
 import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
@@ -105,7 +104,7 @@ class DefaultRecipeRepository @Inject constructor(
         return if (response.isSuccessful) {
             val recipeResponse = response.body()
             if (recipeResponse != null) {
-                Result.success(recipeResponse.toRecipeDomain())
+                Result.success(recipeResponse.toDomain())
             } else {
                 Result.failure(
                     Exception(
@@ -117,6 +116,41 @@ class DefaultRecipeRepository @Inject constructor(
                     )
                 )
             }
+        } else {
+            Result.failure(Exception("network error"))
+        }
+    }
+
+    override suspend fun likeRecipe(recipeId: Long): Result<Unit> {
+        val response = recipeService.likeRecipe(recipeId)
+
+        return if (response.isSuccessful) {
+            val recipeLikeResponse = response.body()
+            if (recipeLikeResponse != null) {
+                Result.success(Unit)
+            } else {
+                Result.failure(
+                    Exception(
+                        makeErrorResponse(
+                            response.code(),
+                            response.message(),
+                            response.errorBody().toString()
+                        )
+                    )
+                )
+            }
+        } else {
+            Result.failure(Exception("network error"))
+        }
+    }
+
+    override suspend fun unlikeRecipe(recipeId: Long): Result<Unit> {
+        val response = recipeService.unlikeRecipe(recipeId)
+
+        return if (response.isSuccessful) {
+
+            Result.success(Unit)
+
         } else {
             Result.failure(Exception("network error"))
         }

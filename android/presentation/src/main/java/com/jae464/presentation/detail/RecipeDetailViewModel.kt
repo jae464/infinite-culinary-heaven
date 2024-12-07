@@ -1,5 +1,6 @@
 package com.jae464.presentation.detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.BookMarkRepository
@@ -33,6 +34,8 @@ class RecipeDetailViewModel @Inject constructor(
             is RecipeDetailIntent.DeleteRecipe -> deleteRecipe(intent.recipeId)
             is RecipeDetailIntent.AddBookMark -> addBookMark(intent.recipeId)
             is RecipeDetailIntent.DeleteBookMark -> deleteBookMark(intent.recipeId)
+            is RecipeDetailIntent.LikeRecipe -> likeRecipe(intent.recipeId)
+            is RecipeDetailIntent.UnlikeRecipe -> unlikeRecipe(intent.recipeId)
         }
     }
 
@@ -40,7 +43,8 @@ class RecipeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             recipeRepository.getRecipeById(recipeId)
                 .onSuccess { recipe ->
-                    _uiState.update { state -> state.copy(recipe = recipe, isBookMarked = bookMarkRepository.isBookMarked(recipe.id)) }
+                    Log.d("RecipeDetailViewModel", "Recipe: $recipe")
+                    _uiState.update { state -> state.copy(recipe = recipe) }
                 }
         }
     }
@@ -58,7 +62,7 @@ class RecipeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             bookMarkRepository.addBookMark(recipeId)
                 .onSuccess {
-                    _uiState.update { state -> state.copy(isBookMarked = true) }
+                    _uiState.update { state -> state.copy(recipe = state.recipe?.copy(isBookMarked = true)) }
                     _event.emit(RecipeDetailEvent.AddBookMarkSuccess)
                 }
                 .onFailure {
@@ -71,7 +75,7 @@ class RecipeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             bookMarkRepository.deleteBookMark(recipeId)
                 .onSuccess {
-                    _uiState.update { state -> state.copy(isBookMarked = false) }
+                    _uiState.update { state -> state.copy(recipe = state.recipe?.copy(isBookMarked = false)) }
                     _event.emit(RecipeDetailEvent.DeleteBookMarkSuccess)
                 }
                 .onFailure {
@@ -79,6 +83,26 @@ class RecipeDetailViewModel @Inject constructor(
                 }
         }
 
+    }
+
+    private fun likeRecipe(recipeId: Long) {
+        viewModelScope.launch {
+            recipeRepository.likeRecipe(recipeId)
+                .onSuccess {
+                    _uiState.update { state -> state.copy(recipe = state.recipe?.copy(isLiked = true)) }
+                    _event.emit(RecipeDetailEvent.LikeSuccess)
+                }
+        }
+    }
+
+    private fun unlikeRecipe(recipeId: Long) {
+        viewModelScope.launch {
+            recipeRepository.unlikeRecipe(recipeId)
+                .onSuccess {
+                    _uiState.update { state -> state.copy(recipe = state.recipe?.copy(isLiked = false)) }
+                    _event.emit(RecipeDetailEvent.UnlikeSuccess)
+                }
+        }
     }
 
 }

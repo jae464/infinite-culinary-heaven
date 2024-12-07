@@ -14,7 +14,7 @@ data class BookMarkResponse(
 fun BookMarkResponse.toDomain(): BookMark {
     return BookMark(
         id = id,
-        recipe = recipe.toRecipePreviewDomain(),
+        recipe = recipe.toDomain(),
         userId = userId
     )
 }

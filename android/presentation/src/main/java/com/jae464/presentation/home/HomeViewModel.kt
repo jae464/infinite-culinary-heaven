@@ -24,6 +24,7 @@ class HomeViewModel @Inject constructor(
 
     private var currentPage = 0
     private var isLastPage = false
+    private var isLoading = false
 
     init {
         fetchRecipePreviews()
@@ -48,6 +49,9 @@ class HomeViewModel @Inject constructor(
             runCatching {
 
                 if (isLastPage) return@launch
+                if (isLoading) return@launch
+
+                isLoading = true
 
                 _uiState.update { state -> state.copy(isLoading = true) }
                 val currentContest = contestRepository.getCurrentContest().getOrThrow()
@@ -60,6 +64,8 @@ class HomeViewModel @Inject constructor(
                 } else {
                     currentPage++
                 }
+
+                isLoading = false
 
                 _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + recipePreviews, isLoading = false) }
                 _uiState.update { state -> state.copy(isLoading = false) }

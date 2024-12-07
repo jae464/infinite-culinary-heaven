@@ -20,6 +20,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "감자와 베이컨으로 간단하게 만들수 있는 요리입니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "나폴리맛피아"
             ),
             RecipePreview(
@@ -29,6 +30,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "고소한 치즈와 부드러운 감자가 어우러진 최고의 간식입니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "에드워드 리"
             ),
             RecipePreview(
@@ -38,6 +40,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "버터로 노릇하게 구운 감자가 입안을 사로잡습니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "트리플스타"
             ),
             RecipePreview(
@@ -47,6 +50,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "간단하면서도 깊은 맛을 자랑하는 휴게소 스타일의 알감자입니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "요리하는돌아이"
             )
         )
@@ -63,6 +67,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "감자와 베이컨으로 간단하게 만들수 있는 요리입니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "나폴리맛피아"
             ),
             RecipePreview(
@@ -72,6 +77,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "고소한 치즈와 부드러운 감자가 어우러진 최고의 간식입니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "에드워드 리"
             ),
             RecipePreview(
@@ -81,6 +87,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "버터로 노릇하게 구운 감자가 입안을 사로잡습니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "트리플스타"
             ),
             RecipePreview(
@@ -90,6 +97,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "간단하면서도 깊은 맛을 자랑하는 휴게소 스타일의 알감자입니다.",
                 score = 5.0f,
                 bookMarkCounts = 0,
+                likeCounts = 0,
                 author = "요리하는돌아이"
             )
         )
@@ -142,10 +150,21 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                     )
                 ),
                 bookMarkCounts = 0,
+                likeCounts = 0,
+                isBookMarked = false,
+                isLiked = false,
                 isOwner = true
             )
         )
 
+    }
+
+    override suspend fun likeRecipe(recipeId: Long): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun unlikeRecipe(recipeId: Long): Result<Unit> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun registerRecipe(
