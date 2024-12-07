@@ -9,22 +9,22 @@ import java.util.List;
 public record RecipesResponse(
 
         @Schema(description = "레시피 정보")
-        List<RecipeResponse> recipes
+        List<RecipePreviewResponse> recipes
 
 ) {
     public static RecipesResponse of(Page<Recipe> recipes) {
-        List<RecipeResponse> recipeResponses = recipes.getContent()
+        List<RecipePreviewResponse> recipeResponses = recipes.getContent()
                 .stream()
-                .map(recipe -> RecipeResponse.of(recipe, null))
+                .map(recipe -> RecipePreviewResponse.of(recipe))
                 .toList();
 
         return new RecipesResponse(recipeResponses);
     }
 
     public static RecipesResponse of(List<Recipe> recipes) {
-        List<RecipeResponse> recipeResponses = recipes
+        List<RecipePreviewResponse> recipeResponses = recipes
                 .stream()
-                .map(recipe -> RecipeResponse.of(recipe, null))
+                .map(recipe -> RecipePreviewResponse.of(recipe))
                 .toList();
 
         return new RecipesResponse(recipeResponses);

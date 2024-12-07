@@ -10,7 +10,7 @@ public record RecipeLikeResponse(
         Long id,
 
         @Schema(description = "레시피 정보")
-        RecipeResponse recipe,
+        RecipePreviewResponse recipe,
 
         @Schema(description = "유저 정보")
         UserInfoResponse user
@@ -18,7 +18,7 @@ public record RecipeLikeResponse(
 ) {
 
     public static RecipeLikeResponse of(RecipeLike recipeLike) {
-        return new RecipeLikeResponse(recipeLike.getId(), RecipeResponse.of(recipeLike.getRecipe(), false), UserInfoResponse.of(recipeLike.getUser()));
+        return new RecipeLikeResponse(recipeLike.getId(), RecipePreviewResponse.of(recipeLike.getRecipe()), UserInfoResponse.of(recipeLike.getUser()));
     }
 
 }

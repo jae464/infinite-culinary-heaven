@@ -1,6 +1,7 @@
 package com.culinaryheaven.domain.bookmark.dto.response;
 
 import com.culinaryheaven.domain.bookmark.domain.BookMark;
+import com.culinaryheaven.domain.recipe.dto.response.RecipePreviewResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -10,7 +11,7 @@ public record BookMarkResponse(
         Long id,
 
         @Schema(description = "레시피 정보")
-        RecipeResponse recipe,
+        RecipePreviewResponse recipe,
 
         @Schema(description = "유저 ID")
         Long userId
@@ -18,7 +19,7 @@ public record BookMarkResponse(
 ) {
 
     public static BookMarkResponse of(BookMark bookMark) {
-        return new BookMarkResponse(bookMark.getId(), RecipeResponse.of(bookMark.getRecipe(), false), bookMark.getUserId());
+        return new BookMarkResponse(bookMark.getId(), RecipePreviewResponse.of(bookMark.getRecipe()), bookMark.getUserId());
     }
 
 }
