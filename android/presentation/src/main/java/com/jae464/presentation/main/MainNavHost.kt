@@ -66,7 +66,8 @@ fun MainNavHost(
             onShowSnackBar = onShowSnackBar
         )
         recipeSearchNavGraph(
-            onBackClick = { appState.popBackStack() }
+            onBackClick = { appState.popBackStack() },
+            onRecipeClick = { appState.navigateToRecipeDetail(it) }
         )
         contestDetailNavGraph(
             onBackClick = { appState.popBackStack() },

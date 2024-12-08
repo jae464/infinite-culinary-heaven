@@ -221,8 +221,8 @@ class DefaultRecipeRepository @Inject constructor(
         }
     }
 
-    override suspend fun searchByKeyword(keyword: String): Result<List<RecipePreview>> {
-        val response = searchService.searchRecipes(keyword = keyword)
+    override suspend fun searchByKeyword(page: Int, keyword: String): Result<List<RecipePreview>> {
+        val response = searchService.searchRecipes(page = page, keyword = keyword)
         return if (response.isSuccessful) {
             val responseBody = response.body()
             if (responseBody != null) {

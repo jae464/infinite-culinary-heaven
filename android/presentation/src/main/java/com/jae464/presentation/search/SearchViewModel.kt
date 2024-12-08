@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +30,10 @@ class SearchViewModel @Inject constructor(
     private val _keyword = MutableStateFlow("")
     val keyword: StateFlow<String> = _keyword.asStateFlow()
 
+    private var currentPage = 0
+    private var isLastPage = false
+    private var isLoading = false
+
     init {
         observeKeywordChanges()
     }
@@ -35,6 +41,7 @@ class SearchViewModel @Inject constructor(
     fun handleIntent(intent: SearchIntent) {
         when (intent) {
             is SearchIntent.UpdateKeyword -> updateKeyword(intent.keyword)
+            is SearchIntent.FetchRecipePreviews -> fetchRecipePreviews(keyword.value)
         }
     }
 
@@ -48,15 +55,34 @@ class SearchViewModel @Inject constructor(
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
             .onEach { keyword ->
-                recipeRepository.searchByKeyword(keyword)
-                    .onSuccess {
-                        _uiState.value = _uiState.value.copy(recipes = it)
-                    }
-                    .onFailure {
-                        Log.e("SearchViewModel", "Error fetching recipes: $it")
-                    }
+                currentPage = 0
+                isLastPage = false
+                _uiState.update { state -> state.copy(recipePreviews = emptyList()) }
+                fetchRecipePreviews(keyword)
             }
-            .launchIn(viewModelScope) // viewModelScope에서 실행
+            .launchIn(viewModelScope)
+    }
+
+    private fun fetchRecipePreviews(keyword: String) {
+
+        if (isLastPage) return
+        if (keyword.isEmpty()) return
+
+        isLoading = true
+
+        viewModelScope.launch {
+            recipeRepository.searchByKeyword(currentPage, keyword)
+                .onSuccess {
+                    _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + it, isLoading = false) }
+                    currentPage++
+                    isLastPage = it.isEmpty()
+                    isLoading = false
+                }
+                .onFailure {
+                    Log.e("SearchViewModel", "Error fetching recipes: $it")
+                    isLoading = false
+                }
+        }
     }
 
 }

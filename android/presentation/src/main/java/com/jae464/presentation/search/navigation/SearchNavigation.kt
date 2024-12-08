@@ -14,7 +14,8 @@ fun NavController.navigateRecipeSearch(contestId: Long?) {
 }
 
 fun NavGraphBuilder.recipeSearchNavGraph(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onRecipeClick: (Long) -> Unit
 ) {
     composable<Route.RecipeSearch>(
         enterTransition = {
@@ -39,7 +40,8 @@ fun NavGraphBuilder.recipeSearchNavGraph(
         val contestId = navBackStackEntry.toRoute<Route.RecipeSearch>().contestId
         SearchRoute(
             contestId = contestId,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onRecipeClick = onRecipeClick
         )
     }
 
