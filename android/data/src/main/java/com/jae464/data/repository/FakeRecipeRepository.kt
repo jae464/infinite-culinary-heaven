@@ -183,4 +183,8 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun searchByKeyword(keyword: String): Result<List<RecipePreview>> {
+        TODO("Not yet implemented")
+    }
+
 }

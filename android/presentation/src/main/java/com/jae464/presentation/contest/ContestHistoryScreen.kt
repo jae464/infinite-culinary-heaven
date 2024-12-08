@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.contest.component.ContestItem
+import com.jae464.presentation.search.component.SearchTopAppBar
 
 @Composable
 fun ContestHistoryRoute(

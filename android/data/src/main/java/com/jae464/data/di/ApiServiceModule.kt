@@ -4,6 +4,7 @@ import com.jae464.data.remote.api.AuthService
 import com.jae464.data.remote.api.BookMarkService
 import com.jae464.data.remote.api.ContestService
 import com.jae464.data.remote.api.RecipeService
+import com.jae464.data.remote.api.SearchService
 import com.jae464.data.remote.api.UserService
 import dagger.Module
 import dagger.Provides
@@ -45,5 +46,11 @@ object ApiServiceModule {
     fun provideBookMarkService(
         @AuthRetrofit retrofit: Retrofit
     ): BookMarkService = retrofit.create(BookMarkService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSearchService(
+        @AuthRetrofit retrofit: Retrofit
+    ): SearchService = retrofit.create(SearchService::class.java)
 
 }

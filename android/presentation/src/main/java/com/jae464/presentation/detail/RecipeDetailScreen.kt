@@ -126,6 +126,7 @@ fun RecipeDetailScreen(
         HeavenTopAppBar(
             title = uiState.recipe?.title ?: "",
             navigationIcon = Icons.Default.ArrowBack,
+            useNavigationIcon = true,
             onNavigationClick = onBackClick,
             actions = {
                 // todo 좋아요, 스크랩은 현재 테스트를 위해 다 보이게 했지만, 추후 본인이 아닐때만 표시되도록 수정

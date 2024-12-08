@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.jae464.data.remote.api.RecipeService
+import com.jae464.data.remote.api.SearchService
 import com.jae464.data.remote.model.request.IngredientCreateRequest
 import com.jae464.data.remote.model.request.RecipeCreateRequest
 import com.jae464.data.remote.model.request.StepCreateRequest
@@ -27,7 +28,8 @@ import java.io.File
 import javax.inject.Inject
 
 class DefaultRecipeRepository @Inject constructor(
-    private val recipeService: RecipeService
+    private val recipeService: RecipeService,
+    private val searchService: SearchService
 ) : RecipeRepository {
 
     override suspend fun getRecipePreviews(): Result<List<RecipePreview>> {
@@ -59,6 +61,7 @@ class DefaultRecipeRepository @Inject constructor(
         }
     }
 
+    // todo delete
     override fun getPagedRecipePreviewsByContestId(contestId: Long): PagingSource<Int, RecipePreview> {
         return object : PagingSource<Int, RecipePreview>() {
             override fun getRefreshKey(state: PagingState<Int, RecipePreview>): Int? {
@@ -215,6 +218,20 @@ class DefaultRecipeRepository @Inject constructor(
             Result.success(Unit)
         } else {
             Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
+        }
+    }
+
+    override suspend fun searchByKeyword(keyword: String): Result<List<RecipePreview>> {
+        val response = searchService.searchRecipes(keyword = keyword)
+        return if (response.isSuccessful) {
+            val responseBody = response.body()
+            if (responseBody != null) {
+                Result.success(responseBody.toDomain())
+            } else {
+                Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
+            }
+        } else {
+            Result.failure(Exception("network error"))
         }
     }
 }

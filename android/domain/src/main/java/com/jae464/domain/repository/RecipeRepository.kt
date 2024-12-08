@@ -28,4 +28,5 @@ interface RecipeRepository {
     suspend fun deleteRecipeById(
         recipeId: Long
     ): Result<Unit>
+    suspend fun searchByKeyword(keyword: String): Result<List<RecipePreview>>
 }

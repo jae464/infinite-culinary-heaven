@@ -76,6 +76,7 @@ fun ContestDetailScreen(
         Column {
             HeavenTopAppBar(
                 title = "",
+                useNavigationIcon = true,
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = onBackClick,
             )

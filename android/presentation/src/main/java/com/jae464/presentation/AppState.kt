@@ -20,6 +20,7 @@ import com.jae464.presentation.bookmark.navigation.navigateBookMark
 import com.jae464.presentation.contestdetail.navigation.navigateContestDetail
 import com.jae464.presentation.login.navigation.navigateLogin
 import com.jae464.presentation.main.Route
+import com.jae464.presentation.search.navigation.navigateRecipeSearch
 
 @Stable
 class AppState(
@@ -91,6 +92,10 @@ class AppState(
 
     fun navigateToRecipeRegister(recipeId: Long? = null) {
         navController.navigateRecipeRegister(recipeId)
+    }
+
+    fun navigateToRecipeSearch(contestId: Long? = null) {
+        navController.navigateRecipeSearch(contestId)
     }
 
     fun navigateToContestDetail(contestId: Long) {

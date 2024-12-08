@@ -20,6 +20,7 @@ fun NavController.navigateHome(navOptions: NavOptions) {
 
 fun NavGraphBuilder.homeNavGraph(
     padding: PaddingValues,
+    onClickSearch: (Long?) -> Unit,
     onClickRecipe: (Long) -> Unit,
     onClickRegister: () -> Unit,
 ) {
@@ -70,6 +71,7 @@ fun NavGraphBuilder.homeNavGraph(
 
         HomeRoute(
             padding = padding,
+            onClickSearch = onClickSearch,
             onClickRecipe = onClickRecipe,
             onClickRegister = onClickRegister,
             isRefresh = isRefresh.value

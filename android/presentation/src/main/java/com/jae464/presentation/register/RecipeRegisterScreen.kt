@@ -138,6 +138,7 @@ fun RecipeRegisterScreen(
             HeavenTopAppBar(
                 title = "레시피 등록",
                 navigationIcon = Icons.Default.Close,
+                useNavigationIcon = true,
                 onNavigationClick = onBackClick,
                 actions = {
 

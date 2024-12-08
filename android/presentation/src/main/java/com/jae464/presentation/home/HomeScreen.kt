@@ -13,15 +13,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -40,17 +42,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.jae464.domain.model.RecipePreview
+import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.RecipeItem
 import com.jae464.presentation.home.component.WeeklyIngredientSection
+import com.jae464.presentation.ui.theme.Green5
 import kotlin.math.min
 
 @Composable
 fun HomeRoute(
     padding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
+    onClickSearch: (Long?) -> Unit,
     onClickRecipe: (Long) -> Unit,
     onClickRegister: () -> Unit,
     isRefresh: Boolean = false
@@ -69,6 +71,7 @@ fun HomeRoute(
         padding = padding,
         uiState = uiState,
         isRefresh = isRefresh,
+        onClickSearch = onClickSearch,
         onClickRecipe = onClickRecipe,
         onClickRegister = onClickRegister,
         onIntent = viewModel::handleIntent
@@ -76,12 +79,13 @@ fun HomeRoute(
 
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     padding: PaddingValues,
     uiState: HomeUiState,
     isRefresh: Boolean,
+    onClickSearch: (Long?) -> Unit = {},
     onClickRecipe: (Long) -> Unit = {},
     onClickRegister: () -> Unit = {},
     onIntent: (HomeIntent) -> Unit = {}
@@ -114,64 +118,91 @@ fun HomeScreen(
         }
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .pullRefresh(pullRefreshState)
-            .offset(y = offsetY.dp)
             .padding(padding)
     ) {
-        LazyColumn(
-            state = listState,
+        HeavenTopAppBar(
+            title = "요리맛짱",
+            paddingValues = padding,
+            useNavigationIcon = false,
+            actions = {
+                IconButton(onClick = {onClickSearch(uiState.currentContest?.id)}) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        tint = Green5,
+                        contentDescription = "search"
+                    )
+                }
+            }
+        )
+
+        Box(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .fillMaxSize()
+                .pullRefresh(pullRefreshState)
+                .offset(y = offsetY.dp)
         ) {
-            item {
-                Column {
-                    WeeklyIngredientSection(
-                        title = uiState.currentContest?.ingredient ?: "",
-                        imageUrl = uiState.currentContest?.imageUrl ?: "",
-                        description = uiState.currentContest?.description ?: ""
+
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxSize()
+            ) {
+                item {
+                    Column {
+                        WeeklyIngredientSection(
+                            title = uiState.currentContest?.ingredient ?: "",
+                            imageUrl = uiState.currentContest?.imageUrl ?: "",
+                            description = uiState.currentContest?.description ?: ""
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = uiState.currentContest?.description ?: "",
+                            color = Color.Black,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+
+                items(uiState.recipePreviews.size) { index ->
+                    RecipeItem(uiState.recipePreviews[index], onClickRecipe = onClickRecipe)
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        thickness = 0.5.dp
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = uiState.currentContest?.description ?: "",
-                        color = Color.Black,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
 
-            items(uiState.recipePreviews.size) { index ->
-                RecipeItem(uiState.recipePreviews[index], onClickRecipe = onClickRecipe)
-                HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    thickness = 0.5.dp
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd),
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = Color.White,
+                onClick = onClickRegister
+            ) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+            }
+
+            if (pullRefreshState.progress > 0f) {
+                PullRefreshIndicator(
+                    refreshing = uiState.isLoading,
+                    state = pullRefreshState,
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
                 )
             }
         }
 
-        FloatingActionButton(
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.BottomEnd),
-            shape = CircleShape,
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = Color.White,
-            onClick = onClickRegister
-        ) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = null)
-        }
-        PullRefreshIndicator(
-            refreshing = uiState.isLoading,
-            state = pullRefreshState,
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-        )
     }
+
+
 }
 
 fun Int.getResourceUri(context: Context): String {
