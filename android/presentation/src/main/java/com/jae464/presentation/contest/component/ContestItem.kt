@@ -48,7 +48,7 @@ fun ContestItem(contest: Contest, onClickContest: (Long) -> Unit) {
             ) {
                 Text(
                     text = contest.ingredient,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.secondary
                 )

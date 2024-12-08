@@ -163,7 +163,7 @@ fun HomeScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = uiState.currentContest?.description ?: "",
+                            text = uiState.currentContest?.title ?: "",
                             color = Color.Black,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.SemiBold

@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 @Serializable
 data class ContestResponse(
     val id: Long,
+    val title: String,
     val description: String,
     val startDate: String,
     val endDate: String,
@@ -23,6 +24,7 @@ data class TopicIngredientResponse(
 
 fun ContestResponse.toDomain() = Contest(
     id = id,
+    title = title,
     description = description,
     startDate = LocalDateTime.parse(startDate),
     ingredient = topicIngredient.name,
