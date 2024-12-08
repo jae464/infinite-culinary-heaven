@@ -10,6 +10,9 @@ public record ContestResponse(
         @Schema(description = "대회 ID", example = "1")
         Long id,
 
+        @Schema(description = "대회 이름")
+        String title,
+
         @Schema(description = "대회 설명", example = "창의로운 두부 요리를 뽐내봐요")
         String description,
 
@@ -33,6 +36,7 @@ public record ContestResponse(
     public static ContestResponse of(Contest contest) {
         return new ContestResponse(
                 contest.getId(),
+                contest.getName(),
                 contest.getDescription(),
                 contest.getStartDate(),
                 contest.getEndDate(),
