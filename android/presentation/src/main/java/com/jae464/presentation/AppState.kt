@@ -98,8 +98,8 @@ class AppState(
         navController.navigateRecipeSearch(contestId)
     }
 
-    fun navigateToContestDetail(contestId: Long) {
-        navController.navigateContestDetail(contestId)
+    fun navigateToContestDetail(contestId: Long, contestTitle: String) {
+        navController.navigateContestDetail(contestId, contestTitle)
     }
 
     fun popBackStack() {

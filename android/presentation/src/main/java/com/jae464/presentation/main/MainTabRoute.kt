@@ -31,7 +31,7 @@ sealed interface Route {
     }
 
     @Serializable
-    data class ContestDetail(val contestId: Long): Route {
+    data class ContestDetail(val contestId: Long, val contestTitle: String): Route {
         override val name: String = "contest_detail"
     }
 

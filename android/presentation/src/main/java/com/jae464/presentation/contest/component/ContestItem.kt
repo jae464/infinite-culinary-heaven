@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -25,12 +26,12 @@ import com.jae464.domain.model.Contest
 import com.jae464.presentation.util.toFormattedString
 
 @Composable
-fun ContestItem(contest: Contest, onClickContest: (Long) -> Unit) {
+fun ContestItem(contest: Contest, onClickContest: (Long, String) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        onClick = { onClickContest(contest.id) }
+        onClick = { onClickContest(contest.id, contest.title) }
     ) {
         Row {
             AsyncImage(
@@ -54,6 +55,8 @@ fun ContestItem(contest: Contest, onClickContest: (Long) -> Unit) {
                 )
                 Text(
                     text = contest.description,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(vertical = 4.dp)
                 )

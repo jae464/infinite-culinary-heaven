@@ -41,7 +41,7 @@ fun MainNavHost(
         )
         contestHistoryNavGraph(
             padding = paddingValues,
-            onClickContest = { appState.navigateToContestDetail(it) }
+            onClickContest = { id, title -> appState.navigateToContestDetail(id, title) }
         )
         bookMarkNavGraph(
             padding = paddingValues,

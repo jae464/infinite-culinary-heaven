@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,6 +30,7 @@ import com.jae464.presentation.home.HomeIntent
 @Composable
 fun ContestDetailRoute(
     contestId: Long,
+    contestTitle: String,
     onBackClick: () -> Unit,
     onClickRecipe: (Long) -> Unit,
     viewModel: ContestDetailViewModel = hiltViewModel()
@@ -37,6 +39,7 @@ fun ContestDetailRoute(
 
     ContestDetailScreen(
         uiState = uiState,
+        contestTitle = contestTitle,
         onBackClick = onBackClick,
         onClickRecipe = onClickRecipe,
         onIntent = viewModel::handleIntent
@@ -48,6 +51,7 @@ fun ContestDetailRoute(
 @Composable
 fun ContestDetailScreen(
     uiState: ContestDetailUiState,
+    contestTitle: String,
     onBackClick: () -> Unit,
     onClickRecipe: (Long) -> Unit = {},
     onIntent: (ContestDetailIntent) -> Unit = {}
@@ -71,12 +75,14 @@ fun ContestDetailScreen(
 
 
     Box(
-        modifier = Modifier.statusBarsPadding()
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
             .fillMaxSize()
     ) {
         Column {
             HeavenTopAppBar(
-                title = "",
+                title = contestTitle,
                 useNavigationIcon = true,
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = onBackClick,
@@ -86,7 +92,7 @@ fun ContestDetailScreen(
                 thickness = 0.5.dp
             )
             LazyColumn(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(16.dp),
                 state = listState
             ) {
                 items(uiState.recipePreviews.size) { index ->

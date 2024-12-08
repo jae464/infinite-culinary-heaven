@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jae464.domain.repository.ContestRepository
 import com.jae464.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,17 +29,16 @@ class ContestDetailViewModel @Inject constructor(
 
     init {
         contestId = savedStateHandle.get<Long>("contestId") ?: -1L
-        loadContestDetail(contestId)
+        fetchRecipePreviews(contestId)
     }
 
     fun handleIntent(intent: ContestDetailIntent) {
         when (intent) {
-            is ContestDetailIntent.LoadContestDetail -> loadContestDetail(contestId)
+            is ContestDetailIntent.LoadContestDetail -> fetchRecipePreviews(contestId)
         }
     }
 
-
-    private fun loadContestDetail(contestId: Long) {
+    private fun fetchRecipePreviews(contestId: Long) {
         if (isLastPage) return
 
         viewModelScope.launch {

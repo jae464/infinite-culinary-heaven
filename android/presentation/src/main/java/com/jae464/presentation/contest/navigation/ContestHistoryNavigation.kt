@@ -19,7 +19,7 @@ fun NavController.navigateContestHistory(navOptions: NavOptions) {
 
 fun NavGraphBuilder.contestHistoryNavGraph(
     padding: PaddingValues,
-    onClickContest: (Long) -> Unit
+    onClickContest: (Long, String) -> Unit
 ) {
     composable<MainTabRoute.ContestHistory>(
         enterTransition = {

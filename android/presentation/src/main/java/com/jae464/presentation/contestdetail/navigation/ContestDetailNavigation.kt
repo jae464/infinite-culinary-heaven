@@ -9,8 +9,8 @@ import androidx.navigation.toRoute
 import com.jae464.presentation.contestdetail.ContestDetailRoute
 import com.jae464.presentation.main.Route
 
-fun NavController.navigateContestDetail(contestId: Long) {
-    navigate(Route.ContestDetail(contestId))
+fun NavController.navigateContestDetail(contestId: Long, contestTitle: String) {
+    navigate(Route.ContestDetail(contestId, contestTitle))
 }
 
 fun NavGraphBuilder.contestDetailNavGraph(
@@ -38,7 +38,8 @@ fun NavGraphBuilder.contestDetailNavGraph(
         }
     ) { navBackStackEntry ->
         val contestId = navBackStackEntry.toRoute<Route.ContestDetail>().contestId
-        ContestDetailRoute(contestId = contestId, onBackClick = onBackClick, onClickRecipe = onClickRecipe)
+        val contestTitle = navBackStackEntry.toRoute<Route.ContestDetail>().contestTitle
+        ContestDetailRoute(contestId = contestId, contestTitle = contestTitle, onBackClick = onBackClick, onClickRecipe = onClickRecipe)
     }
 
 

@@ -17,13 +17,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.contest.component.ContestItem
-import com.jae464.presentation.search.component.SearchTopAppBar
 
 @Composable
 fun ContestHistoryRoute(
     padding: PaddingValues,
     viewModel: ContestHistoryViewModel = hiltViewModel(),
-    onClickContest: (Long) -> Unit
+    onClickContest: (Long, String) -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -35,7 +34,7 @@ fun ContestHistoryRoute(
 fun ContestHistoryScreen(
     padding: PaddingValues,
     uiState: ContestHistoryUiState,
-    onClickContest: (Long) -> Unit = {}
+    onClickContest: (Long, String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(padding).padding(horizontal = 16.dp).fillMaxSize(),
