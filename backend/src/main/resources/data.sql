@@ -62,7 +62,7 @@ INSERT INTO step (step, description, image, recipe_id) VALUES (2, '오징어를 
 
 -- 연어 요리 대회 레시피
 INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, user_id, contest_id)
-VALUES ('2024-12-09T11:11:11','2024-12-09T11:11:11','허니 연어 스테이크', '달콤한 허니 글레이즈로 만든 연어 스테이크입니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/recipe_salmon_sample.jpg', 1, 6);
+VALUES ('2024-12-09T00:00:01','2024-12-09T00:00:01','허니 연어 스테이크', '달콤한 허니 글레이즈로 만든 연어 스테이크입니다.', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/recipe_salmon_sample.jpg', 1, 6);
 
 INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('연어', '200g', 4);
 INSERT INTO ingredient (name, quantity, recipe_id) VALUES ('꿀', '2 큰술', 4);
