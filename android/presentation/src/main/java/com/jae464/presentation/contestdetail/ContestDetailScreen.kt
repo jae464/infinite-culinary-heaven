@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -79,6 +80,10 @@ fun ContestDetailScreen(
                 useNavigationIcon = true,
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = onBackClick,
+            )
+            HorizontalDivider(
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                thickness = 0.5.dp
             )
             LazyColumn(
                 modifier = Modifier.padding(horizontal = 16.dp),

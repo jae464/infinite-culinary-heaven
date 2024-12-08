@@ -46,7 +46,9 @@ object RetrofitModule {
 
                 runBlocking {
                     authRepository.refreshToken()
-                        .onFailure { throw IOException(it.message) }
+                        .onFailure {
+//                            throw IOException(it.message)
+                        }
                 }
 
                 val newAccessToken = runBlocking {

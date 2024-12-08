@@ -137,7 +137,10 @@ fun HomeScreen(
                 }
             }
         )
-
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+            thickness = 0.5.dp
+        )
         Box(
             modifier = Modifier
                 .fillMaxSize()

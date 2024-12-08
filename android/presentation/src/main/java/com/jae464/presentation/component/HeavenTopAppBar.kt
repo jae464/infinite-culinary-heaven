@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +29,14 @@ fun HeavenTopAppBar(
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.White),
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = title, fontWeight = FontWeight.Bold) },
+        title = {
+            Text(
+                text = title,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         navigationIcon = {
             if (useNavigationIcon && navigationIcon != null) {
                 IconButton(onClick = onNavigationClick) {
