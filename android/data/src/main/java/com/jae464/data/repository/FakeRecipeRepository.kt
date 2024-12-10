@@ -21,6 +21,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "나폴리맛피아"
             ),
             RecipePreview(
@@ -31,6 +32,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "에드워드 리"
             ),
             RecipePreview(
@@ -41,6 +43,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "트리플스타"
             ),
             RecipePreview(
@@ -51,6 +54,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "요리하는돌아이"
             )
         )
@@ -68,6 +72,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "나폴리맛피아"
             ),
             RecipePreview(
@@ -78,6 +83,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "에드워드 리"
             ),
             RecipePreview(
@@ -88,6 +94,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "트리플스타"
             ),
             RecipePreview(
@@ -98,6 +105,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 score = 5.0f,
                 bookMarkCounts = 0,
                 likeCounts = 0,
+                commentCounts = 0,
                 author = "요리하는돌아이"
             )
         )

@@ -2,6 +2,7 @@ package com.jae464.data.di
 
 import com.jae464.data.remote.api.AuthService
 import com.jae464.data.remote.api.BookMarkService
+import com.jae464.data.remote.api.CommentService
 import com.jae464.data.remote.api.ContestService
 import com.jae464.data.remote.api.RecipeService
 import com.jae464.data.remote.api.SearchService
@@ -52,5 +53,12 @@ object ApiServiceModule {
     fun provideSearchService(
         @AuthRetrofit retrofit: Retrofit
     ): SearchService = retrofit.create(SearchService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCommentService(
+        @AuthRetrofit retrofit: Retrofit
+    ): CommentService = retrofit.create(CommentService::class.java)
+
 
 }

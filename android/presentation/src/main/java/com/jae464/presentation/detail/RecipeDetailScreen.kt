@@ -3,27 +3,37 @@ package com.jae464.presentation.detail
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,15 +41,24 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -51,6 +70,7 @@ import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.Step
 import com.jae464.presentation.component.HeavenTopAppBar
+import com.jae464.presentation.detail.component.CommentItem
 import com.jae464.presentation.detail.component.RecipeDetailContentBox
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.ui.theme.Green10
@@ -69,6 +89,7 @@ fun RecipeDetailRoute(
 
     LaunchedEffect(recipeId) {
         viewModel.handleIntent(RecipeDetailIntent.FetchRecipe(recipeId))
+        viewModel.handleIntent(RecipeDetailIntent.FetchComments(recipeId))
     }
 
     LaunchedEffect(Unit) {
@@ -113,6 +134,18 @@ fun RecipeDetailScreen(
     onIntent: (RecipeDetailIntent) -> Unit = {},
     onBackClick: () -> Unit
 ) {
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
+    val minHeight = screenHeight * 0.5f
+    val maxHeight = screenHeight * 0.8f
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -131,50 +164,55 @@ fun RecipeDetailScreen(
             actions = {
                 // todo 좋아요, 스크랩은 현재 테스트를 위해 다 보이게 했지만, 추후 본인이 아닐때만 표시되도록 수정
                 if (uiState.recipe != null) {
-                    IconButton(onClick = {
-                        if (uiState.recipe.isLiked) {
-                            onIntent(RecipeDetailIntent.UnlikeRecipe(uiState.recipe.id))
-                        } else {
-                            onIntent(RecipeDetailIntent.LikeRecipe(uiState.recipe.id))
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        tint = if (uiState.recipe.isLiked) Red10 else Color.LightGray,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            if (uiState.recipe.isLiked) {
+                                onIntent(RecipeDetailIntent.UnlikeRecipe(uiState.recipe.id))
+                            } else {
+                                onIntent(RecipeDetailIntent.LikeRecipe(uiState.recipe.id))
+                            }
                         }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Favorite,
-                            tint = if (uiState.recipe.isLiked) Red10 else Color.LightGray,
-                            contentDescription = null
-                        )
-                    }
+                    )
+                    Spacer(modifier = Modifier.padding(end = 12.dp))
 
-                    IconButton(onClick = {
-                        if (uiState.recipe.isBookMarked) {
-                            onIntent(RecipeDetailIntent.DeleteBookMark(uiState.recipe.id))
-                        } else {
-                            onIntent(RecipeDetailIntent.AddBookMark(uiState.recipe.id))
+                    Icon(
+                        imageVector = Icons.Default.Bookmark,
+                        tint = if (uiState.recipe.isBookMarked) Green10 else Color.LightGray,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            if (uiState.recipe.isBookMarked) {
+                                onIntent(RecipeDetailIntent.DeleteBookMark(uiState.recipe.id))
+                            } else {
+                                onIntent(RecipeDetailIntent.AddBookMark(uiState.recipe.id))
+                            }
                         }
-
-
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Bookmark,
-                            tint = if (uiState.recipe.isBookMarked) Green10 else Color.LightGray,
-                            contentDescription = null
-                        )
-                    }
+                    )
+                    Spacer(modifier = Modifier.padding(end = 12.dp))
                 }
-
+                Icon(
+                    imageVector = Icons.Default.ChatBubbleOutline,
+                    tint = Green10,
+                    contentDescription = null,
+                    modifier = Modifier.clickable {
+                        showBottomSheet = true
+                    }
+                )
+                Spacer(modifier = Modifier.padding(end = 12.dp))
 
                 if (uiState.recipe?.isOwner == true) {
-                    IconButton(onClick = {
-                        if (uiState.recipe != null) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
                             onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))
                         }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = null
-                        )
-                    }
+                    )
+                    Spacer(modifier = Modifier.padding(end = 12.dp))
                 }
+
             }
         )
         HorizontalDivider(
@@ -183,6 +221,62 @@ fun RecipeDetailScreen(
         )
         if (uiState.recipe != null) {
             RecipeItem(recipe = uiState.recipe)
+        }
+
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                sheetState = bottomSheetState,
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                modifier = Modifier.wrapContentHeight()
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = minHeight, max = maxHeight)
+                            .padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(uiState.comments.size) {
+                            CommentItem(uiState.comments[it])
+                        }
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(
+                            value = uiState.commentInput,
+                            onValueChange = {
+                                onIntent(RecipeDetailIntent.UpdateCommentInput(it))
+                            },
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color(0xFFF5F5F5),
+                                focusedContainerColor = Color(0xFFF5F5F5),
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .weight(0.8f)
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+
+                        )
+                        Icon(
+                            imageVector = Icons.Default.Send,
+                            tint = Green10,
+                            contentDescription = null,
+                            modifier = Modifier.clickable {
+                                if (uiState.recipe != null) {
+                                    onIntent(RecipeDetailIntent.AddComment(uiState.recipe.id, uiState.commentInput))
+                                }
+                            }
+                        )
+                    }
+                }
+
+            }
         }
     }
 }
@@ -213,11 +307,18 @@ fun RecipeItem(
 
             RecipeDetailContentBox {
                 Column {
-                    Text(
-                        text = recipe.title,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        Text(
+                            text = recipe.title,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = recipe.description)
                 }
@@ -228,7 +329,7 @@ fun RecipeItem(
                     Text(
                         text = "재료",
                         style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 16.dp),
@@ -255,7 +356,7 @@ fun RecipeItem(
                         Text(
                             text = "조리순서",
                             style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
                     Spacer(modifier = Modifier.padding(vertical = 16.dp))
@@ -293,7 +394,7 @@ fun StepItem(step: Step, index: Int) {
                 .padding(end = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(text = "${index}.", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "${index}.", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
             Text(text = step.description, fontSize = 16.sp, lineHeight = 20.sp)
         }
 

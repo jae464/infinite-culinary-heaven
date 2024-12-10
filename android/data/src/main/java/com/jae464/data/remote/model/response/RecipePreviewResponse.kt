@@ -19,6 +19,7 @@ data class RecipePreviewResponse(
     val contest: ContestResponse,
     val bookMarkCounts: Int,
     val likeCounts: Int,
+    val commentCounts: Int,
 //    val isOwner: Boolean?
 )
 
@@ -30,6 +31,7 @@ fun RecipePreviewResponse.toDomain() = RecipePreview(
     score = 5f,
     bookMarkCounts = bookMarkCounts,
     likeCounts = likeCounts,
+    commentCounts = commentCounts,
     author = writerInfoResponse.nickname,
 )
 

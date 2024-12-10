@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +25,7 @@ class HomeViewModel @Inject constructor(
 
     private var currentPage = 0
     private var isLastPage = false
-    private var isLoading = false
+    private var isLoading = AtomicBoolean(false)
 
     init {
         fetchRecipePreviews()
@@ -46,11 +47,11 @@ class HomeViewModel @Inject constructor(
 
     private fun fetchRecipePreviews() {
         if (isLastPage) return
-        if (isLoading) return
+        if (isLoading.get()) return
 
         viewModelScope.launch {
             runCatching {
-                isLoading = true
+                isLoading.getAndSet(true)
 
                 _uiState.update { state -> state.copy(isLoading = true) }
                 val currentContest = contestRepository.getCurrentContest().getOrThrow()
@@ -64,7 +65,7 @@ class HomeViewModel @Inject constructor(
                     currentPage++
                 }
 
-                isLoading = false
+                isLoading.getAndSet(false)
 
                 _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + recipePreviews, isLoading = false) }
                 _uiState.update { state -> state.copy(isLoading = false) }

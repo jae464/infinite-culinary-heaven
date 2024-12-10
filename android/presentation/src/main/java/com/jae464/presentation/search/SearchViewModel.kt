@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +33,7 @@ class SearchViewModel @Inject constructor(
 
     private var currentPage = 0
     private var isLastPage = false
-    private var isLoading = false
+    private var isLoading = AtomicBoolean(false)
 
     init {
         observeKeywordChanges()
@@ -66,9 +67,10 @@ class SearchViewModel @Inject constructor(
     private fun fetchRecipePreviews(keyword: String) {
 
         if (isLastPage) return
+        if (isLoading.get()) return
         if (keyword.isEmpty()) return
 
-        isLoading = true
+        isLoading.getAndSet(true)
 
         viewModelScope.launch {
             recipeRepository.searchByKeyword(currentPage, keyword)
@@ -76,11 +78,11 @@ class SearchViewModel @Inject constructor(
                     _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + it, isLoading = false) }
                     currentPage++
                     isLastPage = it.isEmpty()
-                    isLoading = false
+                    isLoading.getAndSet(false)
                 }
                 .onFailure {
                     Log.e("SearchViewModel", "Error fetching recipes: $it")
-                    isLoading = false
+                    isLoading.getAndSet(false)
                 }
         }
     }

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.ChatBubbleOutline
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Card
@@ -31,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jae464.domain.model.RecipePreview
+import com.jae464.presentation.ui.theme.Green10
+import com.jae464.presentation.ui.theme.Red10
 
 @Composable
 fun RecipeItem(
@@ -43,7 +47,6 @@ fun RecipeItem(
             .fillMaxWidth()
             .clickable {
                 onClickRecipe(recipePreview.id)
-
             },
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -80,9 +83,9 @@ fun RecipeItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ThumbUp,
+                        imageVector = Icons.Default.Favorite,
                         contentDescription = null,
-                        tint = Color(0xffffe10b),
+                        tint = Red10,
                         modifier = Modifier.size(16.dp)
                     )
                     Text(
@@ -94,11 +97,23 @@ fun RecipeItem(
                     Icon(
                         imageVector = Icons.Default.Bookmark,
                         contentDescription = null,
-                        tint = Color(0xffffe10b),
+                        tint = Green10,
                         modifier = Modifier.size(16.dp)
                     )
                     Text(
                         text = recipePreview.bookMarkCounts.toString(),
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        imageVector = Icons.Default.ChatBubbleOutline,
+                        contentDescription = null,
+                        tint = Green10,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = recipePreview.commentCounts.toString(),
                         fontSize = 14.sp,
                         modifier = Modifier.padding(start = 4.dp)
                     )

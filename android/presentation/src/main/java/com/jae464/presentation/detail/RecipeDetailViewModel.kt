@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.BookMarkRepository
+import com.jae464.domain.repository.CommentRepository
 import com.jae464.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeDetailViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
-    private val bookMarkRepository: BookMarkRepository
+    private val bookMarkRepository: BookMarkRepository,
+    private val commentRepository: CommentRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
@@ -36,6 +38,10 @@ class RecipeDetailViewModel @Inject constructor(
             is RecipeDetailIntent.DeleteBookMark -> deleteBookMark(intent.recipeId)
             is RecipeDetailIntent.LikeRecipe -> likeRecipe(intent.recipeId)
             is RecipeDetailIntent.UnlikeRecipe -> unlikeRecipe(intent.recipeId)
+            is RecipeDetailIntent.AddComment -> addComment(intent.recipeId, intent.content)
+            is RecipeDetailIntent.DeleteComment -> TODO()
+            is RecipeDetailIntent.UpdateCommentInput -> updateCommentInput(intent.content)
+            is RecipeDetailIntent.FetchComments -> fetchComments(intent.recipeId)
         }
     }
 
@@ -104,5 +110,30 @@ class RecipeDetailViewModel @Inject constructor(
                 }
         }
     }
+
+    private fun fetchComments(recipeId: Long) {
+        viewModelScope.launch {
+            commentRepository.getCommentsByRecipeId(recipeId)
+                .onSuccess {
+                    _uiState.update { state -> state.copy(comments = it) }
+                }
+        }
+    }
+
+    private fun addComment(recipeId: Long, content: String) {
+        viewModelScope.launch {
+            commentRepository.addComment(recipeId, content)
+                .onSuccess {
+                    _uiState.update { state -> state.copy(commentInput = "") }
+                    fetchComments(recipeId)
+                }
+        }
+    }
+
+    private fun updateCommentInput(content: String) {
+        _uiState.update { state -> state.copy(commentInput = content) }
+    }
+
+
 
 }
