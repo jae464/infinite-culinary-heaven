@@ -21,7 +21,7 @@ INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_i
 VALUES ('제2회 대회', '토마토 요리 대회', '2024-11-11T00:00:00', '2024-11-17T23:59:59', 2);
 
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
-VALUES ('제4회 대회', '감자 요리 대회', '2024-11-18T00:00:00', '2024-11-24T23:59:59', 3);
+VALUES ('제3회 대회', '감자 요리 대회', '2024-11-18T00:00:00', '2024-11-24T23:59:59', 3);
 
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
 VALUES ('제4회 대회', '계란 요리 대회', '2024-11-25T00:00:00', '2024-12-01T23:59:59', 4);
