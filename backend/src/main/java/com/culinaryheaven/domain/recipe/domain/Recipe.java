@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.recipe.domain;
 
 import com.culinaryheaven.common.BaseTimeEntity;
 import com.culinaryheaven.domain.bookmark.domain.BookMark;
+import com.culinaryheaven.domain.comment.domain.Comment;
 import com.culinaryheaven.domain.contest.domain.Contest;
 import com.culinaryheaven.domain.user.domain.User;
 import jakarta.persistence.*;
@@ -46,6 +47,9 @@ public class Recipe extends BaseTimeEntity {
     private List<RecipeLike> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,5 +76,7 @@ public class Recipe extends BaseTimeEntity {
     public int getLikeCount() {
         return likes.size();
     }
+
+    public int getCommentCount() { return comments.size(); }
 
 }
