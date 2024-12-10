@@ -28,7 +28,10 @@ public record RecipePreviewResponse(
         int bookMarkCounts,
 
         @Schema(description = "좋아요 개수")
-        int likeCounts
+        int likeCounts,
+
+        @Schema(description = "댓글 개수")
+        int commentCounts
 
 ) {
     public static RecipePreviewResponse of(Recipe recipe) {
@@ -40,7 +43,8 @@ public record RecipePreviewResponse(
                 WriterInfoResponse.of(recipe.getUser()),
                 ContestResponse.of(recipe.getContest()),
                 recipe.getBookMarkCount(),
-                recipe.getLikeCount()
+                recipe.getLikeCount(),
+                recipe.getCommentCount()
         );
     }
 }
