@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.component.HeavenTopAppBar
+import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RecipeItem
 import com.jae464.presentation.home.component.WeeklyIngredientSection
 import com.jae464.presentation.ui.theme.Green5
@@ -58,6 +60,8 @@ fun HomeRoute(
     isRefresh: Boolean = false
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    MainTabBackHandler()
 
     LaunchedEffect(Unit) {
         // 레시피 등록 화면에서 등록 후 넘어올때만 refresh

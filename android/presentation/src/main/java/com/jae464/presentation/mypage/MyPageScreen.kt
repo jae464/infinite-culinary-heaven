@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.jae464.domain.model.UserInfo
+import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.util.ImageConstants
@@ -43,6 +44,8 @@ fun MyPageRoute(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    MainTabBackHandler()
 
     MyPageScreen(
         padding = padding,

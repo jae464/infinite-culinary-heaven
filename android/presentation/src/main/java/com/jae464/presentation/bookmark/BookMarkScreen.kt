@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RecipeItem
 import com.jae464.presentation.util.LaunchedEffectWithLifecycle
 import kotlin.math.min
@@ -33,6 +34,8 @@ fun BookMarkRoute(
     onClickRecipe: (Long) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    MainTabBackHandler()
 
     BookMarkScreen(
         padding = padding,
