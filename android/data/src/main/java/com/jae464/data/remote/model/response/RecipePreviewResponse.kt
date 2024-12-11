@@ -14,13 +14,10 @@ data class RecipePreviewResponse(
     val description: String,
     val thumbnailImageUrl: String,
     val writerInfoResponse: WriterInfoResponse,
-//    val steps: List<StepResponse>,
-//    val ingredients: List<IngredientResponse>,
     val contest: ContestResponse,
     val bookMarkCounts: Int,
     val likeCounts: Int,
     val commentCounts: Int,
-//    val isOwner: Boolean?
 )
 
 fun RecipePreviewResponse.toDomain() = RecipePreview(
