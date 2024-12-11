@@ -5,6 +5,7 @@ import com.culinaryheaven.domain.user.dto.response.UserInfoResponse;
 import com.culinaryheaven.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,10 +35,10 @@ public class UserController {
 
     @PatchMapping("/me")
     public ResponseEntity<UserInfoResponse> updateMyInfo(
-            @RequestPart(required = false) @Valid UserUpdateRequest userUpdateRequest,
+            @RequestPart(required = false) @Valid UserUpdateRequest request,
             @RequestPart(required = false) MultipartFile profileImage
     ) {
-        UserInfoResponse userInfoResponse = userService.updateMyInfo(userUpdateRequest, profileImage);
+        UserInfoResponse userInfoResponse = userService.updateMyInfo(request, profileImage);
         return ResponseEntity.ok().body(userInfoResponse);
     }
 
