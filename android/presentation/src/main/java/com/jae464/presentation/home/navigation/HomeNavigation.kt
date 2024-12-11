@@ -66,7 +66,6 @@ fun NavGraphBuilder.homeNavGraph(
             if (isRefresh.value) {
                 it.savedStateHandle.remove<Boolean>(StateHandleKey.IS_REFRESH_KEY)
             }
-
         }
 
         HomeRoute(

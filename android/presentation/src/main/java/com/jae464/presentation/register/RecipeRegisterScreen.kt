@@ -66,6 +66,8 @@ import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.ui.theme.Red10
 import com.jae464.presentation.util.addFocusCleaner
+import com.jae464.presentation.util.rememberGalleryLauncher
+import com.jae464.presentation.util.rememberPermissionLauncher
 import kotlinx.coroutines.launch
 
 @Composable
@@ -522,32 +524,3 @@ fun StepForm(
     }
 }
 
-@Composable
-fun rememberGalleryLauncher(
-    onImageSelected: (Uri?) -> Unit
-): ManagedActivityResultLauncher<String, Uri?> {
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            onImageSelected(uri)
-        }
-    )
-    return galleryLauncher
-}
-
-@Composable
-fun rememberPermissionLauncher(
-    onGranted: () -> Unit,
-    onDenied: () -> Unit
-): ManagedActivityResultLauncher<String, Boolean> {
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            onGranted()
-        } else {
-            onDenied()
-        }
-    }
-    return permissionLauncher
-}

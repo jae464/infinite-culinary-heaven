@@ -35,6 +35,11 @@ sealed interface Route {
         override val name: String = "contest_detail"
     }
 
+    @Serializable
+    data class ProfileEdit(val nickname: String, val profileImageUrl: String?): Route {
+        override val name: String = "profile_edit"
+    }
+
 }
 
 sealed interface MainTabRoute : Route {

@@ -1,5 +1,9 @@
 package com.jae464.presentation.util
 
+import android.net.Uri
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.Lifecycle
@@ -26,4 +30,34 @@ fun LaunchedEffectWithLifecycle(
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED, block)
         }
     }
+}
+
+@Composable
+fun rememberGalleryLauncher(
+    onImageSelected: (Uri?) -> Unit
+): ManagedActivityResultLauncher<String, Uri?> {
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            onImageSelected(uri)
+        }
+    )
+    return galleryLauncher
+}
+
+@Composable
+fun rememberPermissionLauncher(
+    onGranted: () -> Unit,
+    onDenied: () -> Unit
+): ManagedActivityResultLauncher<String, Boolean> {
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            onGranted()
+        } else {
+            onDenied()
+        }
+    }
+    return permissionLauncher
 }

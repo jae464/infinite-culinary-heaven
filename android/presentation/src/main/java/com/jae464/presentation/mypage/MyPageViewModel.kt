@@ -25,7 +25,7 @@ class MyPageViewModel @Inject constructor(
         fetchUserInfo()
     }
 
-    private fun fetchUserInfo() {
+    fun fetchUserInfo() {
         viewModelScope.launch {
             userRepository.getMyInfo()
                 .onSuccess { userInfo ->

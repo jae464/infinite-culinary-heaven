@@ -1,17 +1,22 @@
 package com.jae464.presentation.mypage
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FoodBank
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Dining
@@ -19,6 +24,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,27 +42,39 @@ import com.jae464.domain.model.UserInfo
 import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
+import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.util.ImageConstants
 
 @Composable
 fun MyPageRoute(
     padding: PaddingValues,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
+    onClickEditProfile: (String, String?) -> Unit,
+    isRefresh: Boolean
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MainTabBackHandler()
 
+    LaunchedEffect(Unit) {
+        if (isRefresh) {
+            viewModel.fetchUserInfo()
+            Log.d("HomeScreen", "isRefresh Fetching")
+        }
+    }
+
     MyPageScreen(
         padding = padding,
-        uiState = uiState
+        uiState = uiState,
+        onClickEditProfile = onClickEditProfile
     )
 }
 
 @Composable
 fun MyPageScreen(
     padding: PaddingValues,
-    uiState: MyPageUiState
+    uiState: MyPageUiState,
+    onClickEditProfile: (String, String?) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -65,8 +83,10 @@ fun MyPageScreen(
             .background(color = Gray20),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
         MyProfile(
-            userInfo = uiState.userInfo
+            userInfo = uiState.userInfo,
+            onClickEditProfile = onClickEditProfile
         )
         MyRecipe()
         MyContest()
@@ -75,7 +95,8 @@ fun MyPageScreen(
 
 @Composable
 fun MyProfile(
-    userInfo: UserInfo?
+    userInfo: UserInfo?,
+    onClickEditProfile: (String, String?) -> Unit
 ) {
     RoundedContentBox {
         Row(
@@ -89,7 +110,7 @@ fun MyProfile(
                     contentDescription = "user_image",
                     modifier = Modifier
                         .clip(CircleShape)
-                        .height(64.dp),
+                        .size(64.dp),
                     contentScale = ContentScale.Fit
                 )
                 Row(
@@ -105,6 +126,18 @@ fun MyProfile(
                         text = "#${userInfo.id}",
                         color = Color.DarkGray,
                         fontSize = 12.sp
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        tint = Color.DarkGray,
+                        contentDescription = "edit_profile",
+                        modifier = Modifier.clickable {
+                            onClickEditProfile(
+                                userInfo.name,
+                                userInfo.profileImageUrl
+                            )
+                        }
                     )
                 }
             }

@@ -20,6 +20,7 @@ import com.jae464.presentation.bookmark.navigation.navigateBookMark
 import com.jae464.presentation.contestdetail.navigation.navigateContestDetail
 import com.jae464.presentation.login.navigation.navigateLogin
 import com.jae464.presentation.main.Route
+import com.jae464.presentation.mypage.navigation.navigateProfileEdit
 import com.jae464.presentation.search.navigation.navigateRecipeSearch
 
 @Stable
@@ -100,6 +101,10 @@ class AppState(
 
     fun navigateToContestDetail(contestId: Long, contestTitle: String) {
         navController.navigateContestDetail(contestId, contestTitle)
+    }
+
+    fun navigateToProfileEdit(nickname: String, profileImageUrl: String?) {
+        navController.navigateProfileEdit(nickname, profileImageUrl)
     }
 
     fun popBackStack() {

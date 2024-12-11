@@ -12,6 +12,7 @@ import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
 import com.jae464.presentation.bookmark.navigation.bookMarkNavGraph
 import com.jae464.presentation.contestdetail.navigation.contestDetailNavGraph
 import com.jae464.presentation.login.navigation.loginNavGraph
+import com.jae464.presentation.mypage.navigation.profileEditNavGraph
 import com.jae464.presentation.search.navigation.recipeSearchNavGraph
 import com.jae464.presentation.splash.navigation.splashNavGraph
 import com.jae464.presentation.util.StateHandleKey
@@ -48,7 +49,8 @@ fun MainNavHost(
             onClickRecipe = { appState.navigateToRecipeDetail(it) }
         )
         myPageNavGraph(
-            padding = paddingValues
+            padding = paddingValues,
+            onNavigateProfileEdit = { nickname, profileImageUrl -> appState.navigateToProfileEdit(nickname, profileImageUrl) }
         )
         recipeDetailNavGraph(
             onBackClick = { appState.popBackStack() },
@@ -72,6 +74,13 @@ fun MainNavHost(
         contestDetailNavGraph(
             onBackClick = { appState.popBackStack() },
             onClickRecipe = { appState.navigateToRecipeDetail(it) }
+        )
+        profileEditNavGraph(
+            onBackClick = { appState.popBackStack() },
+            onNavigateToMyPage = {
+                appState.navController.previousBackStackEntry?.savedStateHandle?.set(StateHandleKey.IS_REFRESH_KEY, true)
+                appState.popBackStack()
+            }
         )
     }
 }

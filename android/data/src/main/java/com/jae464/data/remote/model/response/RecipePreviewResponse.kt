@@ -1,10 +1,7 @@
 package com.jae464.data.remote.model.response
 
 import com.jae464.data.util.adjustLocalhostUrl
-import com.jae464.domain.model.Ingredient
-import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
-import com.jae464.domain.model.Step
 import kotlinx.serialization.Serializable
 
 @Serializable
