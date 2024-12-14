@@ -48,7 +48,8 @@ class ProfileEditViewModel @Inject constructor(
             is ProfileEditIntent.UpdateProfile -> {
                 if (uiState.value.isNicknameChanged || uiState.value.isProfileImageChanged) {
                     viewModelScope.launch {
-                        userRepository.updateProfile(uiState.value.nickname, convertToFile(Uri.parse(uiState.value.profileImageUrl)))
+                        val file: File? = if (uiState.value.profileImageUrl != null) convertToFile(Uri.parse(uiState.value.profileImageUrl)) else null
+                        userRepository.updateProfile(uiState.value.nickname, file)
                             .onSuccess {
                                 _event.emit(ProfileEditEvent.UpdateProfileSuccess)
                             }
