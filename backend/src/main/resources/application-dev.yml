@@ -1,10 +1,14 @@
 spring:
   datasource:
-    url: "jdbc:mysql://mysql:3307/culinary"
+    url: "jdbc:mysql://mysql:3306/culinary?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul"
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
     properties:
@@ -12,3 +16,6 @@ spring:
         show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+image:
+  store:
+    dir: "${user.dir}/images"

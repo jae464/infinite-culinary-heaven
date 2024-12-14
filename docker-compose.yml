@@ -7,6 +7,10 @@ services:
     environment:
       AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
       AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: culinary
+      MYSQL_USER: culinary
+      MYSQL_PASSWORD: culinary
       TZ: Asia/Seoul
     depends_on:
       - mysql
