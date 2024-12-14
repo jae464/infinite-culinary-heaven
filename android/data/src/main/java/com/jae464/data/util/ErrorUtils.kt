@@ -1,10 +1,9 @@
 package com.jae464.data.util
 
-fun makeErrorResponse(code: Int, message: String, body: String): String {
+fun makeErrorResponse(code: Int, body: String?): String {
     return """
         {
-            code: $code,
-            message: $message,
+            code: $code,           
             body: $body
         }
     """.trimIndent()

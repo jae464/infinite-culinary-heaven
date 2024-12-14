@@ -11,6 +11,7 @@ import com.jae464.data.remote.model.request.IngredientCreateRequest
 import com.jae464.data.remote.model.request.RecipeCreateRequest
 import com.jae464.data.remote.model.request.StepCreateRequest
 import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.util.handleResponse
 import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
@@ -37,125 +38,35 @@ class DefaultRecipeRepository @Inject constructor(
     }
 
     override suspend fun getRecipePreviewsByContestId(page: Int, contestId: Long): Result<List<RecipePreview>> {
-        Log.d("DefaultRecipeRepository", "getRecipePreviewsByContestId")
-        val response = recipeService.getRecipePreviews(page = page, contestId = contestId)
-        Log.d("DefaultRecipeRepository", response.toString())
-        return if (response.isSuccessful) {
-            val recipeResponses = response.body()
-            if (recipeResponses != null) {
-                Result.success(recipeResponses.toDomain())
-            } else {
-                Result.failure(
-                    Exception(
-                        makeErrorResponse(
-                            response.code(),
-                            response.message(),
-                            response.errorBody().toString()
-                        )
-                    )
-                )
-            }
-        } else {
-            Log.d("DefaultRecipeRepository", response.toString())
-            Result.failure(Exception("network error"))
+        return handleResponse {
+            recipeService.getRecipePreviews(page = page, contestId = contestId)
+        }.mapCatching { response ->
+            response.toDomain()
         }
     }
 
-    // todo delete
-    override fun getPagedRecipePreviewsByContestId(contestId: Long): PagingSource<Int, RecipePreview> {
-        return object : PagingSource<Int, RecipePreview>() {
-            override fun getRefreshKey(state: PagingState<Int, RecipePreview>): Int? {
-                return state.anchorPosition?.let { anchorPosition ->
-                    state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                        ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-                }
-            }
-
-            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RecipePreview> {
-                return try {
-
-                    val page = params.key ?: 0
-                    Log.d("DefaultRecipeRepository", "page: $page")
-
-                    val response = recipeService.getRecipePreviews(
-                        page = page,
-                        size = params.loadSize,
-                        contestId = contestId
-                    )
-
-                    if (response.isSuccessful) {
-                        val recipePreviews = response.body()?.toDomain() ?: emptyList()
-                        LoadResult.Page(
-                            data = recipePreviews,
-                            prevKey = if (page == 0) null else page - 1,
-                            nextKey = if (recipePreviews.isEmpty()) null else page + 1
-                        )
-                    } else {
-                        LoadResult.Error(Exception("Network Error: ${response.code()} ${response.message()}"))
-                    }
-                } catch (e: Exception) {
-                    LoadResult.Error(e)
-                }
-            }
-
-        }
-    }
 
     override suspend fun getRecipeById(id: Long): Result<Recipe> {
-        val response = recipeService.getRecipeById(id)
-
-        return if (response.isSuccessful) {
-            val recipeResponse = response.body()
-            if (recipeResponse != null) {
-                Result.success(recipeResponse.toDomain())
-            } else {
-                Result.failure(
-                    Exception(
-                        makeErrorResponse(
-                            response.code(),
-                            response.message(),
-                            response.errorBody().toString()
-                        )
-                    )
-                )
-            }
-        } else {
-            Result.failure(Exception("network error"))
+        return handleResponse {
+            recipeService.getRecipeById(id)
+        }.mapCatching { response ->
+            response.toDomain()
         }
     }
 
     override suspend fun likeRecipe(recipeId: Long): Result<Unit> {
-        val response = recipeService.likeRecipe(recipeId)
-
-        return if (response.isSuccessful) {
-            val recipeLikeResponse = response.body()
-            if (recipeLikeResponse != null) {
-                Result.success(Unit)
-            } else {
-                Result.failure(
-                    Exception(
-                        makeErrorResponse(
-                            response.code(),
-                            response.message(),
-                            response.errorBody().toString()
-                        )
-                    )
-                )
-            }
-        } else {
-            Result.failure(Exception("network error"))
+        return handleResponse {
+            recipeService.likeRecipe(recipeId)
+        }.mapCatching { response ->
+            Result.success(Unit)
         }
     }
 
     override suspend fun unlikeRecipe(recipeId: Long): Result<Unit> {
-        val response = recipeService.unlikeRecipe(recipeId)
-
-        return if (response.isSuccessful) {
-
+        return handleResponse {
+            recipeService.unlikeRecipe(recipeId)
+        }.mapCatching { response ->
             Result.success(Unit)
-
-        } else {
-            Result.failure(Exception("network error"))
         }
     }
 
@@ -203,35 +114,26 @@ class DefaultRecipeRepository @Inject constructor(
         val body = Json.encodeToString(RecipeCreateRequest.serializer(), request)
             .toRequestBody("application/json".toMediaType())
 
-        val response = recipeService.postRecipe(images = files, body = body)
-
-        return if (response.isSuccessful) {
+        return handleResponse {
+            recipeService.postRecipe(images = files, body = body)
+        }.mapCatching {
             Result.success(Unit)
-        } else {
-            Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
         }
     }
 
     override suspend fun deleteRecipeById(recipeId: Long): Result<Unit> {
-        val response = recipeService.deleteRecipeById(recipeId)
-        return if (response.isSuccessful) {
+        return handleResponse {
+            recipeService.deleteRecipeById(recipeId)
+        }.mapCatching {
             Result.success(Unit)
-        } else {
-            Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
         }
     }
 
     override suspend fun searchByKeyword(page: Int, keyword: String): Result<List<RecipePreview>> {
-        val response = searchService.searchRecipes(page = page, keyword = keyword)
-        return if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-                Result.success(responseBody.toDomain())
-            } else {
-                Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
-            }
-        } else {
-            Result.failure(Exception("network error"))
+        return handleResponse {
+            searchService.searchRecipes(page = page, keyword = keyword)
+        }.mapCatching { response ->
+            response.toDomain()
         }
     }
 }

@@ -5,8 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.jae464.data.remote.api.BookMarkService
-import com.jae464.data.remote.model.request.BookMarkCreateRequest
 import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.util.handleResponse
 import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.BookMark
 import com.jae464.domain.repository.BookMarkRepository
@@ -23,63 +23,40 @@ class DefaultBookMarkRepository @Inject constructor(
     private val BOOKMARK_KEY = stringSetPreferencesKey("bookmark")
 
     override suspend fun getBookMarkedRecipes(): Result<List<BookMark>> {
-
-        val response = bookMarkService.getAllBookMarks()
-
-        return if (response.isSuccessful) {
-            val bookMarksResponse = response.body()
-            if (bookMarksResponse != null) {
-                dataStore.edit { preferences ->
-                    preferences[BOOKMARK_KEY] = bookMarksResponse.bookMarks.map { it.recipe.id.toString() }.toSet()
-                }
-                Result.success(bookMarksResponse.toDomain())
-            } else {
-                Result.failure(
-                    Exception(
-                        makeErrorResponse(
-                            response.code(),
-                            response.message(),
-                            response.errorBody().toString()
-                        )
-                    )
-                )
+        return handleResponse {
+            bookMarkService.getAllBookMarks()
+        }.mapCatching { bookMarksResponse ->
+            dataStore.edit { preferences ->
+                preferences[BOOKMARK_KEY] = bookMarksResponse.bookMarks.map { it.recipe.id.toString() }.toSet()
             }
-        } else {
-            Result.failure(Exception("network error"))
+            bookMarksResponse.toDomain()
         }
     }
 
 
     override suspend fun addBookMark(recipeId: Long): Result<Unit> {
 
-        val response = bookMarkService.addBookMark(recipeId)
-        return if (response.isSuccessful) {
-
+        return handleResponse {
+            bookMarkService.addBookMark(recipeId)
+        }.runCatching {
             dataStore.edit { preferences ->
                 val currentSet = preferences[BOOKMARK_KEY] ?: emptySet()
                 val updatedSet = currentSet + recipeId.toString()
                 preferences[BOOKMARK_KEY] = updatedSet
             }
-
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
         }
+
     }
 
     override suspend fun deleteBookMark(recipeId: Long): Result<Unit> {
-        val response = bookMarkService.deleteBookMark(recipeId)
-        return if (response.isSuccessful) {
-
+        return handleResponse {
+            bookMarkService.deleteBookMark(recipeId)
+        }.runCatching {
             dataStore.edit { preferences ->
                 val currentSet = preferences[BOOKMARK_KEY] ?: emptySet()
                 val updatedSet = currentSet - recipeId.toString()
                 preferences[BOOKMARK_KEY] = updatedSet
             }
-
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception(makeErrorResponse(response.code(), response.message(), response.errorBody().toString())))
         }
 
     }

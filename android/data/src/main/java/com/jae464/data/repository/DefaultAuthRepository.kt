@@ -9,6 +9,7 @@ import com.jae464.data.remote.api.AuthService
 import com.jae464.data.remote.model.request.LoginRequest
 import com.jae464.data.remote.model.request.RefreshTokenRequest
 import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.util.handleResponse
 import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.TokenInfo
 import com.jae464.domain.model.UserInfo
@@ -26,27 +27,10 @@ class DefaultAuthRepository @Inject constructor(
     private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
 
     override suspend fun login(accessToken: String, oauth2Type: String): Result<TokenInfo> {
-
-        val response = authService.login(LoginRequest(accessToken = accessToken, oauth2Type = oauth2Type))
-        Log.d("DefaultAuthRepository", response.toString())
-
-        return if (response.isSuccessful) {
-            val loginResponse = response.body()
-            if (loginResponse != null) {
-                saveAccessToken(loginResponse.accessToken)
-                saveRefreshToken(loginResponse.refreshToken)
-                Result.success(loginResponse.toDomain())
-            } else {
-                Result.failure(
-                    Exception(makeErrorResponse(
-                        response.code(),
-                        response.message(),
-                        response.errorBody().toString()
-                    ))
-                )
-            }
-        } else {
-            Result.failure(Exception("network error"))
+        return handleResponse {
+            authService.login(LoginRequest(accessToken = accessToken, oauth2Type = oauth2Type))
+        }.mapCatching {
+            it.toDomain()
         }
     }
 
@@ -88,25 +72,12 @@ class DefaultAuthRepository @Inject constructor(
 
     override suspend fun refreshToken(): Result<TokenInfo> {
         val refreshToken = getRefreshToken()
-        val response = authService.refreshToken(RefreshTokenRequest(refreshToken))
-
-        return if (response.isSuccessful) {
-            val loginResponse = response.body()
-            if (loginResponse != null) {
-                saveAccessToken(loginResponse.accessToken)
-                saveRefreshToken(loginResponse.refreshToken)
-                Result.success(loginResponse.toDomain())
-            } else {
-                Result.failure(
-                    Exception(makeErrorResponse(
-                        response.code(),
-                        response.message(),
-                        response.errorBody().toString()
-                    ))
-                )
-            }
-        } else {
-            Result.failure(Exception("network error"))
+        return handleResponse {
+            authService.refreshToken(RefreshTokenRequest(refreshToken))
+        }.mapCatching {
+            saveAccessToken(it.accessToken)
+            saveRefreshToken(it.refreshToken)
+            it.toDomain()
         }
     }
 

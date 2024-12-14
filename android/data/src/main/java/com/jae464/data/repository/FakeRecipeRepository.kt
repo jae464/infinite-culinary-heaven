@@ -113,10 +113,6 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         return Result.success(recipePreviews)
     }
 
-    override fun getPagedRecipePreviewsByContestId(contestId: Long): PagingSource<Int, RecipePreview> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun getRecipeById(id: Long): Result<Recipe> {
         return Result.success(
             Recipe(

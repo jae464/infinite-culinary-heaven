@@ -25,6 +25,7 @@ retrofit = "2.11.0"
 kakao = "2.20.6"
 datastore = "1.1.1"
 paging = "3.3.4"
+zoomable = "1.5.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +70,7 @@ kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao" }
 
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore"}
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging"}
+engawapg-lib-zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

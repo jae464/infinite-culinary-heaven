@@ -70,6 +70,7 @@ import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.Step
 import com.jae464.presentation.component.HeavenTopAppBar
+import com.jae464.presentation.component.ImageDetailDialog
 import com.jae464.presentation.detail.component.CommentItem
 import com.jae464.presentation.detail.component.RecipeDetailContentBox
 import com.jae464.presentation.ui.theme.Gray20
@@ -138,6 +139,9 @@ fun RecipeDetailScreen(
         skipPartiallyExpanded = true
     )
     var showBottomSheet by remember { mutableStateOf(false) }
+    var showImageDialog by remember { mutableStateOf(false) }
+    var imageUrl by remember { mutableStateOf("") }
+
     val scope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -220,9 +224,13 @@ fun RecipeDetailScreen(
             thickness = 0.5.dp
         )
         if (uiState.recipe != null) {
-            RecipeItem(recipe = uiState.recipe)
+            RecipeItem(recipe = uiState.recipe, onClickImage = {
+                showImageDialog = true
+                imageUrl = it
+            })
         }
 
+        // 댓글 BottomSheet 영역
         if (showBottomSheet) {
             ModalBottomSheet(
                 sheetState = bottomSheetState,
@@ -278,12 +286,22 @@ fun RecipeDetailScreen(
 
             }
         }
+
+    }
+    // 이미지 확대 Dialog 영역
+    if (showImageDialog && imageUrl.isNotBlank()) {
+        Log.d("RecipeDetailScreen", "Image Detail Dialog imageUrl: $imageUrl")
+        ImageDetailDialog(
+            imageUrl = imageUrl,
+            onDismiss = { showImageDialog = false }
+        )
     }
 }
 
 @Composable
 fun RecipeItem(
-    recipe: Recipe
+    recipe: Recipe,
+    onClickImage: (String) -> Unit,
 ) {
     Column {
         Column(
@@ -300,6 +318,9 @@ fun RecipeItem(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .clip(RoundedCornerShape(8.dp))
+                        .clickable {
+                            onClickImage(recipe.imageUrl)
+                        }
                         .height(240.dp),
                     contentScale = ContentScale.Fit
                 )
