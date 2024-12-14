@@ -34,7 +34,7 @@ public class BookMarkController {
     }
 
     @DeleteMapping("/{recipeId}")
-    public ResponseEntity<BookMarkResponse> delete(
+    public ResponseEntity<Void> delete(
             @PathVariable Long recipeId
     ) {
         bookMarkService.deleteBookMarkByRecipeId(recipeId);

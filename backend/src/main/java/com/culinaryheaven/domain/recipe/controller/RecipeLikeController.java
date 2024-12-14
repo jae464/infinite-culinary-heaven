@@ -22,7 +22,7 @@ public class RecipeLikeController {
     }
 
     @DeleteMapping("/like/{recipeId}")
-    public ResponseEntity<RecipeLikeResponse> delete(
+    public ResponseEntity<Void> delete(
             @PathVariable Long recipeId
     ) {
         recipeLikeService.unlikeRecipe(recipeId);
