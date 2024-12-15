@@ -26,6 +26,8 @@ kakao = "2.20.6"
 datastore = "1.1.1"
 paging = "3.3.4"
 zoomable = "1.5.2"
+google-services = "4.4.2"
+firebase-bom = "33.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -71,6 +73,10 @@ kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore"}
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging"}
 engawapg-lib-zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable"}
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx"}
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -80,4 +86,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+google-services = {id = "com.google.gms.google-services", version.ref = "google-services"}
 

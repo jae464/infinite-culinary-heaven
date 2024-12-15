@@ -88,4 +88,6 @@ dependencies {
     implementation(libs.engawapg.lib.zoomable)
 
     implementation(libs.kakao.user)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 }
