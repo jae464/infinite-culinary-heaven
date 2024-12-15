@@ -13,7 +13,6 @@ import org.springframework.core.io.ResourceLoader;
 import java.io.IOException;
 
 @Configuration
-@Profile("local")
 public class FirebaseConfiguration {
 
     @Value("${firebase.private-key-path}")
