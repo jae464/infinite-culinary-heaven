@@ -20,7 +20,7 @@ public class HealthController {
     @GetMapping("/health")
     public String health() {
         log.error("slack 알림 test");
-        return "OK1";
+        return "OK2";
     }
 
     @PostMapping("/notification")

@@ -21,9 +21,16 @@ jobs:
           echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> .env
           echo "SLACK_WEBHOOK_URI"=${{ secrets.SLACK_WEBHOOK_URI }} >> .env
 
-      - name: Save Firebase Key File to resources
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "culinary-heaven-firebase-adminsdk.json"
+          json: ${{ secrets.FIREBASE_ADMIN_JSON }}
+          dir: "backend/src/main/resources/"
+
+      - name: check resources
         run: |
-          echo "${{ secrets.FIREBASE_ADMIN_JSON }}" > backend/src/main/resources/culinary-heaven-firebase-adminsdk.json
           ls -al backend/src/main/resources
 
       - name: Set up JDK 17
