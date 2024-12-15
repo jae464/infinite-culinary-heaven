@@ -59,6 +59,9 @@ dependencies {
 	// prometheus
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 
+	// slack
+	implementation 'com.github.maricn:logback-slack-appender:1.6.1'
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

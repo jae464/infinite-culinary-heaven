@@ -11,6 +11,7 @@ services:
       MYSQL_DATABASE: culinary
       MYSQL_USER: culinary
       MYSQL_PASSWORD: culinary
+      SLACK_WEBHOOK_URI: ${SLACK_WEBHOOK_URI}
       TZ: Asia/Seoul
     depends_on:
       - mysql
