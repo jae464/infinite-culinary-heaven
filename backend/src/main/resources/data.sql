@@ -13,6 +13,8 @@ INSERT INTO topic_ingredient (name, image)
 VALUES ('오징어', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/squid_sample.jpeg');
 INSERT INTO topic_ingredient (name, image)
 VALUES ('연어', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/salmon_sample.jpg');
+INSERT INTO topic_ingredient (name, image)
+VALUES ('당근', 'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/carrot_sample.jpg');
 
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
 VALUES ('제1회 대회', '두부 요리 대회', '2024-11-04T00:00:00', '2024-11-10T23:59:59', 1);
@@ -33,6 +35,10 @@ INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_i
 VALUES ('제6회 연어 요리 대회',
         '이번주 주재료는 연어입니다. 자기만의 창의적인 요리를 뽐내봐요.',
         '2024-12-09T00:00:00', '2024-12-15T23:59:59', 6);
+
+INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
+VALUES ('제7회 당근 요리 대회', '이번 주 주재료는 당근입니다. 다양하고 창의적인 당근 요리를 기대합니다.',
+        '2024-12-16T00:00:00', '2024-12-22T23:59:59', 7);
 
 
 -- 감자 대회 레시피
