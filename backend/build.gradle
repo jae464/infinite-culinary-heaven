@@ -53,6 +53,11 @@ dependencies {
 	// fixture monkey
 	testImplementation 'com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.20'
 
+	// actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	// prometheus
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
