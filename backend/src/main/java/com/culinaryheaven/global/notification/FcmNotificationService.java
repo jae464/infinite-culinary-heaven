@@ -1,5 +1,9 @@
 package com.culinaryheaven.global.notification;
 
+import com.culinaryheaven.domain.device.domain.DeviceToken;
+import com.culinaryheaven.domain.device.repository.DeviceTokenRepository;
+import com.culinaryheaven.global.exception.CustomException;
+import com.culinaryheaven.global.exception.ErrorCode;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -13,17 +17,25 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FcmNotificationService {
 
-    public void sendMessage(String title, String body, String token) {
+    private final DeviceTokenRepository deviceTokenRepository;
+
+    public void sendNotification(String title, String body, Long userId) {
+
+        DeviceToken deviceToken = deviceTokenRepository.findByUserId(userId).orElseThrow(
+                () -> new CustomException(ErrorCode.DEVICE_TOKEN_NOT_FOUND)
+        );
+
         try {
             Notification notification = makeNotification(title, body);
             Message message = Message.builder()
                     .setNotification(notification)
-                    .setToken(token)
+                    .setToken(deviceToken.getToken())
                     .build();
             FirebaseMessaging.getInstance().send(message);
         } catch (FirebaseMessagingException e) {
             log.error(e.getMessage());
         }
+
     }
 
     private Notification makeNotification(final String title, final String body) {

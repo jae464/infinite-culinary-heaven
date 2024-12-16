@@ -37,6 +37,9 @@ public enum ErrorCode {
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 엑세스 토큰입니다."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 리프레쉬 토큰입니다."),
 
+    // device
+    DEVICE_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 디바이스 토큰입니다."),
+
     //kakao
     KAKAO_INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "카카오 API 통신에 실패했습니다."),
 
