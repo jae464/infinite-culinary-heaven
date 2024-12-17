@@ -2,10 +2,12 @@ package com.jae464.data.repository
 
 import android.util.Log
 import com.jae464.data.remote.api.UserService
+import com.jae464.data.remote.model.request.DeviceTokenUpdateRequest
 import com.jae464.data.remote.model.request.UserUpdateRequest
 import com.jae464.data.remote.model.response.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.data.util.makeErrorResponse
+import com.jae464.domain.model.DeviceToken
 import com.jae464.domain.model.UserInfo
 import com.jae464.domain.repository.UserRepository
 import kotlinx.serialization.json.Json
@@ -45,6 +47,14 @@ class DefaultUserRepository @Inject constructor(
 
         return handleResponse {
             userService.updateMyInfo(body = body, profileImage = multiFile)
+        }.mapCatching { response ->
+            response.toDomain()
+        }
+    }
+
+    override suspend fun updateDeviceToken(token: String): Result<DeviceToken> {
+        return handleResponse {
+            userService.updateDeviceToken(DeviceTokenUpdateRequest(token))
         }.mapCatching { response ->
             response.toDomain()
         }
