@@ -11,6 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,48 +22,50 @@ import com.jae464.presentation.main.MainTab
 import com.jae464.presentation.ui.theme.CulinaryHeavenTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+val LocalActivity = compositionLocalOf<ComponentActivity> { error("CompositionLocal LocalActivity not present") }
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            CompositionLocalProvider(LocalActivity provides this) {
+                CulinaryHeavenTheme {
 
+                    val appState = rememberAppState()
+                    val snackBarHostState = remember { SnackbarHostState() }
 
-            CulinaryHeavenTheme {
-
-                val appState = rememberAppState()
-                val snackBarHostState = remember { SnackbarHostState() }
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    content = { padding ->
-                        MainNavHost(
-                            appState = appState,
-                            paddingValues = padding,
-                            onShowSnackBar = { message, action ->
-                                snackBarHostState.showSnackbar(
-                                    message = message,
-                                    actionLabel = action,
-                                )
-                            }
-                        )
-                    },
-                    bottomBar = {
-                        MainBottomBar(
-                            modifier = Modifier
-                                .navigationBarsPadding()
-                                .padding(bottom = 14.dp),
-                            visible = appState.shouldShowBottomBar(),
-                            tabs = MainTab.entries.toList(),
-                            currentTab = appState.currentTab,
-                            onTabSelected = {
-                                appState.navigate(it)
-                            }
-                        )
-                    },
-                    snackbarHost = { SnackbarHost(snackBarHostState) }
-                )
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        content = { padding ->
+                            MainNavHost(
+                                appState = appState,
+                                paddingValues = padding,
+                                onShowSnackBar = { message, action ->
+                                    snackBarHostState.showSnackbar(
+                                        message = message,
+                                        actionLabel = action,
+                                    )
+                                }
+                            )
+                        },
+                        bottomBar = {
+                            MainBottomBar(
+                                modifier = Modifier
+                                    .navigationBarsPadding()
+                                    .padding(bottom = 14.dp),
+                                visible = appState.shouldShowBottomBar(),
+                                tabs = MainTab.entries.toList(),
+                                currentTab = appState.currentTab,
+                                onTabSelected = {
+                                    appState.navigate(it)
+                                }
+                            )
+                        },
+                        snackbarHost = { SnackbarHost(snackBarHostState) }
+                    )
+                }
             }
         }
     }
