@@ -22,7 +22,7 @@ public class HealthController {
 
     @PostMapping("/notification")
     public String notificationTest() {
-        fcmNotificationService.sendNotification("haha", "haha", 1L);
+        fcmNotificationService.sendRecipeLikeNotification("haha", "haha", 1L, 1L);
         return "OK1";
     }
 }

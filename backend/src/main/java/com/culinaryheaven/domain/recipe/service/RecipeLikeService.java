@@ -3,6 +3,7 @@ package com.culinaryheaven.domain.recipe.service;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.domain.RecipeLike;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeLikeResponse;
+import com.culinaryheaven.domain.recipe.event.RecipeLikeEvent;
 import com.culinaryheaven.domain.recipe.repository.RecipeLikeRepository;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
 import com.culinaryheaven.domain.user.domain.User;
@@ -10,8 +11,13 @@ import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import com.culinaryheaven.global.util.SecurityUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.core.ApplicationPushBuilder;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +27,9 @@ public class RecipeLikeService {
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
     private final RecipeRepository recipeRepository;
+    private final ApplicationEventPublisher publisher;
 
+    @Transactional
     public RecipeLikeResponse likeRecipe(Long recipeId) {
         User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
@@ -36,6 +44,7 @@ public class RecipeLikeService {
                 .build();
 
         RecipeLike savedRecipeLike = recipeLikeRepository.save(recipeLike);
+        publisher.publishEvent(new RecipeLikeEvent(recipe.getTitle(), recipe.getUser().getId(), recipe.getId()));
 
         return RecipeLikeResponse.of(savedRecipeLike);
     }

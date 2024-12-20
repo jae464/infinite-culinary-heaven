@@ -19,7 +19,7 @@ public class FcmNotificationService {
 
     private final DeviceTokenRepository deviceTokenRepository;
 
-    public void sendNotification(String title, String body, Long userId) {
+    public void sendRecipeLikeNotification(String title, String body, Long userId, Long recipeId) {
 
         DeviceToken deviceToken = deviceTokenRepository.findByUserId(userId).orElseThrow(
                 () -> new CustomException(ErrorCode.DEVICE_TOKEN_NOT_FOUND)
@@ -30,6 +30,7 @@ public class FcmNotificationService {
             Message message = Message.builder()
                     .setNotification(notification)
                     .setToken(deviceToken.getToken())
+                    .putData("recipeId", recipeId.toString())
                     .build();
             FirebaseMessaging.getInstance().send(message);
         } catch (FirebaseMessagingException e) {

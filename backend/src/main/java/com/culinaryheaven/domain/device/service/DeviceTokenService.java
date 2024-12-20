@@ -28,6 +28,7 @@ public class DeviceTokenService {
                 () -> {
                     DeviceToken deviceToken = DeviceToken.builder()
                             .token(request.token())
+                            .user(user)
                             .build();
                     return deviceTokenRepository.save(deviceToken);
                 }

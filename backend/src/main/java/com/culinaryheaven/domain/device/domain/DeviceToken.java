@@ -23,8 +23,9 @@ public class DeviceToken {
     private User user;
 
     @Builder
-    public DeviceToken(String token) {
+    public DeviceToken(String token, User user) {
         this.token = token;
+        this.user = user;
     }
 
 }

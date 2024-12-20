@@ -16,7 +16,8 @@ public class RecipeEventHandler {
 
     @TransactionalEventListener
     public void sendRecipeLikeNotification(RecipeLikeEvent recipeLikeEvent) {
-        fcmNotificationService.sendNotification("누군가 나의 레시피에 좋아요를 눌렀어요!", recipeLikeEvent.recipeTitle(), recipeLikeEvent.targetUserId());
+        log.info("Recipe like event: {}", recipeLikeEvent);
+        fcmNotificationService.sendRecipeLikeNotification("누군가 나의 레시피에 좋아요를 눌렀어요!", recipeLikeEvent.recipeTitle(), recipeLikeEvent.targetUserId(), recipeLikeEvent.recipeId());
     }
 
 }
