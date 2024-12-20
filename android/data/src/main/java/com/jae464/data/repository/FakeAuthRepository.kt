@@ -18,6 +18,7 @@ class FakeAuthRepository @Inject constructor() : AuthRepository {
         TODO("Not yet implemented")
     }
 
+
     override suspend fun getUserInfo(): Result<UserInfo> {
         return Result.success(
             UserInfo(

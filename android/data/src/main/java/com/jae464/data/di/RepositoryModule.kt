@@ -5,6 +5,7 @@ import com.jae464.data.repository.DefaultAuthRepository
 import com.jae464.data.repository.DefaultBookMarkRepository
 import com.jae464.data.repository.DefaultCommentRepository
 import com.jae464.data.repository.DefaultContestRepository
+import com.jae464.data.repository.DefaultDeviceTokenRepository
 import com.jae464.data.repository.DefaultRecipeRepository
 import com.jae464.data.repository.DefaultUserRepository
 import com.jae464.data.repository.FakeBookMarkRepository
@@ -14,6 +15,7 @@ import com.jae464.domain.repository.ContestRepository
 import com.jae464.domain.repository.RecipeRepository
 import com.jae464.domain.repository.AuthRepository
 import com.jae464.domain.repository.CommentRepository
+import com.jae464.domain.repository.DeviceTokenRepository
 import com.jae464.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -30,6 +32,12 @@ abstract class RepositoryModule {
     abstract fun bindAuthRepository(
         authRepositoryImpl: DefaultAuthRepository
     ): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDeviceTokenRepository(
+        deviceTokenRepositoryImpl: DefaultDeviceTokenRepository
+    ): DeviceTokenRepository
 
     @Binds
     @Singleton

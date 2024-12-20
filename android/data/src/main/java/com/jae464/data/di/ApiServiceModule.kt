@@ -4,6 +4,7 @@ import com.jae464.data.remote.api.AuthService
 import com.jae464.data.remote.api.BookMarkService
 import com.jae464.data.remote.api.CommentService
 import com.jae464.data.remote.api.ContestService
+import com.jae464.data.remote.api.DeviceTokenService
 import com.jae464.data.remote.api.RecipeService
 import com.jae464.data.remote.api.SearchService
 import com.jae464.data.remote.api.UserService
@@ -35,6 +36,12 @@ object ApiServiceModule {
     fun provideAuthService(
         @NoAuthRetrofit retrofit: Retrofit
     ): AuthService = retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDeviceTokenService(
+        @AuthRetrofit retrofit: Retrofit
+    ): DeviceTokenService = retrofit.create(DeviceTokenService::class.java)
 
     @Provides
     @Singleton

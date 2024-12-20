@@ -1,6 +1,5 @@
 package com.jae464.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -10,7 +9,6 @@ import com.jae464.data.remote.model.request.LoginRequest
 import com.jae464.data.remote.model.request.RefreshTokenRequest
 import com.jae464.data.remote.model.response.toDomain
 import com.jae464.data.util.handleResponse
-import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.TokenInfo
 import com.jae464.domain.model.UserInfo
 import com.jae464.domain.repository.AuthRepository
@@ -20,7 +18,7 @@ import javax.inject.Inject
 
 class DefaultAuthRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-    private val authService: AuthService
+    private val authService: AuthService,
 ) : AuthRepository {
 
     private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
@@ -30,6 +28,8 @@ class DefaultAuthRepository @Inject constructor(
         return handleResponse {
             authService.login(LoginRequest(accessToken = accessToken, oauth2Type = oauth2Type))
         }.mapCatching {
+            saveAccessToken(it.accessToken)
+            saveRefreshToken(it.refreshToken)
             it.toDomain()
         }
     }
@@ -45,7 +45,6 @@ class DefaultAuthRepository @Inject constructor(
             preferences[REFRESH_TOKEN_KEY] = refreshToken
         }
     }
-
 
     override suspend fun getUserInfo(): Result<UserInfo> {
         // todo change

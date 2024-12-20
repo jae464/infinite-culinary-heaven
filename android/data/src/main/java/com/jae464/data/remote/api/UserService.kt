@@ -24,7 +24,7 @@ interface UserService {
         @Part profileImage: MultipartBody.Part?
     ): Response<UserInfoResponse>
 
-    @PATCH("/device-toke")
+    @PATCH("/device-token")
     suspend fun updateDeviceToken(
         @Body request: DeviceTokenUpdateRequest
     ): Response<DeviceTokenResponse>

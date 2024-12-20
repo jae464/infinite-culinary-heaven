@@ -6,7 +6,6 @@ import com.jae464.data.remote.model.request.DeviceTokenUpdateRequest
 import com.jae464.data.remote.model.request.UserUpdateRequest
 import com.jae464.data.remote.model.response.toDomain
 import com.jae464.data.util.handleResponse
-import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.DeviceToken
 import com.jae464.domain.model.UserInfo
 import com.jae464.domain.repository.UserRepository
