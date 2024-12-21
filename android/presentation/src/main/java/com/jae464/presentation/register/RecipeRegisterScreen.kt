@@ -4,9 +4,6 @@ import android.Manifest
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -68,7 +65,6 @@ import com.jae464.presentation.ui.theme.Red10
 import com.jae464.presentation.util.addFocusCleaner
 import com.jae464.presentation.util.rememberGalleryLauncher
 import com.jae464.presentation.util.rememberPermissionLauncher
-import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeRegisterRoute(

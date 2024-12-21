@@ -47,8 +47,8 @@ fun rememberGalleryLauncher(
 
 @Composable
 fun rememberPermissionLauncher(
-    onGranted: () -> Unit,
-    onDenied: () -> Unit
+    onGranted: () -> Unit = {},
+    onDenied: () -> Unit = {}
 ): ManagedActivityResultLauncher<String, Boolean> {
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()

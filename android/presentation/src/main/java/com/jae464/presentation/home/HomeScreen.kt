@@ -1,8 +1,10 @@
 package com.jae464.presentation.home
 
+import android.Manifest
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
@@ -48,6 +50,7 @@ import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RecipeItem
 import com.jae464.presentation.home.component.WeeklyIngredientSection
 import com.jae464.presentation.ui.theme.Green5
+import com.jae464.presentation.util.rememberPermissionLauncher
 import kotlin.math.min
 
 @Composable
@@ -97,6 +100,8 @@ fun HomeScreen(
 
     Log.d("HomeScreen", "Home Screen is Rendered.")
 
+    val permissionLauncher = rememberPermissionLauncher()
+
     val listState = rememberLazyListState()
 
     val isScrollingToEnd by remember(uiState.recipePreviews) {
@@ -114,6 +119,12 @@ fun HomeScreen(
     )
 
     val offsetY = min(pullRefreshState.progress * 100, 80f)
+
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
 
     LaunchedEffect(isScrollingToEnd) {
         if (isScrollingToEnd && !uiState.isLoading && !isRefresh && uiState.recipePreviews.size >= 20) {
