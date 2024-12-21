@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,24 +21,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -230,7 +223,7 @@ fun RecipeDetailScreen(
             })
         }
 
-        // 댓글 BottomSheet 영역
+        // 댓글
         if (showBottomSheet) {
             ModalBottomSheet(
                 sheetState = bottomSheetState,
@@ -288,7 +281,6 @@ fun RecipeDetailScreen(
         }
 
     }
-    // 이미지 확대 Dialog 영역
     if (showImageDialog && imageUrl.isNotBlank()) {
         Log.d("RecipeDetailScreen", "Image Detail Dialog imageUrl: $imageUrl")
         ImageDetailDialog(
@@ -382,7 +374,7 @@ fun RecipeItem(
                     }
                     Spacer(modifier = Modifier.padding(vertical = 16.dp))
                     recipe.steps.forEachIndexed { index, step ->
-                        StepItem(step = step, index = index + 1)
+                        StepItem(step = step, index = index + 1, onClickImage = onClickImage)
                     }
                 }
             }
@@ -402,7 +394,8 @@ fun IngredientItem(ingredient: Ingredient) {
 }
 
 @Composable
-fun StepItem(step: Step, index: Int) {
+fun StepItem(step: Step, index: Int, onClickImage: (String) -> Unit) {
+    val imageUrl = step.imageUrl
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -419,13 +412,14 @@ fun StepItem(step: Step, index: Int) {
             Text(text = step.description, fontSize = 16.sp, lineHeight = 20.sp)
         }
 
-        if (step.imageUrl != null) {
+        if (imageUrl != null) {
             AsyncImage(
                 model = step.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onClickImage(imageUrl) },
                 contentScale = ContentScale.Crop
             )
         }
