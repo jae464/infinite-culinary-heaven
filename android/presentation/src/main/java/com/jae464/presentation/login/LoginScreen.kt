@@ -78,7 +78,7 @@ fun LoginScreen(
             contentDescription = "kakao login",
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth()
                 .clickable {
                     kakaoLogin(
