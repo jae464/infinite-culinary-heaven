@@ -33,6 +33,11 @@ public class DeviceTokenService {
                     return deviceTokenRepository.save(deviceToken);
                 }
         );
+
+        if (!savedDeviceToken.getToken().equals(request.token())) {
+            savedDeviceToken.updateToken(request.token());
+        }
+
         return DeviceTokenResponse.of(savedDeviceToken);
     }
 
