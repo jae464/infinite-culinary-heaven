@@ -79,4 +79,8 @@ public class Recipe extends BaseTimeEntity {
 
     public int getCommentCount() { return comments.size(); }
 
+    public void updateThumbnailImage(String thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
+    }
+
 }

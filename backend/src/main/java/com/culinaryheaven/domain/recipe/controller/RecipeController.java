@@ -1,6 +1,7 @@
 package com.culinaryheaven.domain.recipe.controller;
 
 import com.culinaryheaven.domain.recipe.dto.request.RecipeCreateRequest;
+import com.culinaryheaven.domain.recipe.dto.request.RecipeUpdateRequest;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipesResponse;
 import com.culinaryheaven.domain.recipe.service.RecipeService;
@@ -30,6 +31,15 @@ public class RecipeController {
     ) {
         RecipeResponse recipeResponse = recipeService.create(request, images);
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeResponse);
+    }
+
+    @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, path = "/{recipeId}")
+    public ResponseEntity<RecipeResponse> update(
+            @RequestPart List<MultipartFile> images,
+            @RequestPart RecipeUpdateRequest request,
+            @PathVariable Long recipeId) {
+        RecipeResponse recipeResponse = recipeService.updateRecipe(recipeId, request, images);
+        return ResponseEntity.ok().body(recipeResponse);
     }
 
     @GetMapping

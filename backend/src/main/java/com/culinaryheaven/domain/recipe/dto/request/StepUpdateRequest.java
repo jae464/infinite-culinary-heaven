@@ -5,7 +5,7 @@ import com.culinaryheaven.domain.recipe.domain.Step;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
-public record StepCreateRequest(
+public record StepUpdateRequest(
 
         @NotNull
         @Schema(description = "레시피 단계 순서")
@@ -16,7 +16,10 @@ public record StepCreateRequest(
         String description,
 
         @Schema(description = "레시피 단계 이미지 파일 이름")
-        String imageName
+        String imageName,
+
+        @Schema(description = "레시피 단계 이미지 URL")
+        String imageUrl
 
 ) {
     public Step toEntity(String storedStepImageUrl, Recipe recipe) {

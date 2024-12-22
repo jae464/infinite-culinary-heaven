@@ -6,9 +6,7 @@ import com.culinaryheaven.domain.image.domain.ImageStorageClient;
 import com.culinaryheaven.domain.recipe.domain.Ingredient;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.domain.Step;
-import com.culinaryheaven.domain.recipe.dto.request.IngredientCreateRequest;
-import com.culinaryheaven.domain.recipe.dto.request.RecipeCreateRequest;
-import com.culinaryheaven.domain.recipe.dto.request.StepCreateRequest;
+import com.culinaryheaven.domain.recipe.dto.request.*;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipesResponse;
 import com.culinaryheaven.domain.recipe.repository.IngredientRepository;
@@ -20,6 +18,7 @@ import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
@@ -48,9 +48,7 @@ public class RecipeService {
             RecipeCreateRequest request,
             List<MultipartFile> images
     ) {
-        Contest contest = contestRepository.findById(request.contestId()).orElseThrow(() -> new IllegalArgumentException(
-                "존재하지 않는 대회입니다."
-        ));
+        Contest contest = contestRepository.findById(request.contestId()).orElseThrow(() -> new CustomException(ErrorCode.CONTEST_NOT_FOUND));
 
         Map<String, MultipartFile> imageMap = images.stream()
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, file -> file));
@@ -81,14 +79,63 @@ public class RecipeService {
         }
 
         for (StepCreateRequest stepRequest : request.steps()) {
-            String stepImageUrl = imageStorageClient.uploadImage(imageMap.get(stepRequest.imageUrl()));
 
+            String stepImageUrl = imageStorageClient.uploadImage(imageMap.get(stepRequest.imageName()));
             Step step = stepRequest.toEntity(stepImageUrl, savedRecipe);
             Step savedStep = stepRepository.save(step);
             recipe.getSteps().add(savedStep);
         }
 
         return RecipeResponse.of(savedRecipe, false, false, true);
+    }
+
+    @Transactional
+    public RecipeResponse updateRecipe(
+            Long recipeId,
+            RecipeUpdateRequest request,
+                                       List<MultipartFile> images) {
+
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
+
+        Map<String, MultipartFile> imageMap = images.stream()
+                .collect(Collectors.toMap(MultipartFile::getOriginalFilename, file -> file));
+
+        MultipartFile thumbnailImageFile = imageMap.get(request.thumbnailImage());
+
+        // check thumbnail changed
+        if (thumbnailImageFile != null) {
+            log.info("썸네일 이미지 변경됨. 새로 저장");
+            String thumbnailUrl = imageStorageClient.uploadImage(thumbnailImageFile);
+            recipe.updateThumbnailImage(thumbnailUrl);
+        }
+
+        // clear previous steps
+        recipe.getSteps().clear();
+
+        // clear previous ingredients
+        recipe.getIngredients().clear();
+
+        for (IngredientUpdateRequest ingredientRequest : request.ingredients()) {
+            Ingredient ingredient = ingredientRequest.toEntity(recipe);
+            Ingredient savedIngredient = ingredientRepository.save(ingredient);
+            recipe.getIngredients().add(savedIngredient);
+        }
+
+        for (StepUpdateRequest stepRequest : request.steps()) {
+            // use previous image url
+            String stepImageUrl;
+            if (stepRequest.imageUrl() != null) {
+                stepImageUrl = stepRequest.imageUrl();
+            }
+            else {
+                stepImageUrl = imageStorageClient.uploadImage(imageMap.get(stepRequest.imageName()));
+            }
+            Step step = stepRequest.toEntity(stepImageUrl, recipe);
+            Step savedStep = stepRepository.save(step);
+            recipe.getSteps().add(savedStep);
+        }
+
+        return RecipeResponse.of(recipe, false, false, true);
     }
 
     public RecipeResponse getRecipeById(Long id) {
