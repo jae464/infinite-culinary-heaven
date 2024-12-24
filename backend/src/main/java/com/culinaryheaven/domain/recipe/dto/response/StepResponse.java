@@ -8,6 +8,9 @@ public record StepResponse(
         @Schema(description = "레시피 단계 ID")
         Long id,
 
+        @Schema(description = "레시피 단계 순서")
+        int step,
+
         @Schema(description = "레시피 단계 설명")
         String description,
 
@@ -17,6 +20,6 @@ public record StepResponse(
 ) {
 
         public static StepResponse of(Step step) {
-                return new StepResponse(step.getId(), step.getDescription(), step.getImage());
+                return new StepResponse(step.getId(), step.getStep(), step.getDescription(), step.getImage());
         }
 }
