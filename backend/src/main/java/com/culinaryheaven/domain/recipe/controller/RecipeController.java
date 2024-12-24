@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -35,9 +36,12 @@ public class RecipeController {
 
     @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, path = "/{recipeId}")
     public ResponseEntity<RecipeResponse> update(
-            @RequestPart List<MultipartFile> images,
+            @RequestPart(required = false) List<MultipartFile> images,
             @RequestPart RecipeUpdateRequest request,
             @PathVariable Long recipeId) {
+        if (images == null) {
+            images = Collections.emptyList();
+        }
         RecipeResponse recipeResponse = recipeService.updateRecipe(recipeId, request, images);
         return ResponseEntity.ok().body(recipeResponse);
     }
