@@ -44,7 +44,9 @@ public class CommentService {
         Comment comment = request.toEntity(user, recipe);
         Comment savedComment = commentRepository.save(comment);
 
-        publisher.publishEvent(new CommentEvent(recipe.getTitle(), savedComment.getContent(), recipe.getUser().getId(), recipe.getId()));
+        if (!recipe.getUser().getId().equals(user.getId())) {
+            publisher.publishEvent(new CommentEvent(recipe.getTitle(), savedComment.getContent(), recipe.getUser().getId(), recipe.getId()));
+        }
 
         return CommentResponse.of(savedComment);
 
