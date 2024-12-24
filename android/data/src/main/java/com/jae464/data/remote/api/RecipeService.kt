@@ -11,6 +11,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -29,6 +30,14 @@ interface RecipeService {
     @Multipart
     @POST("/recipes")
     suspend fun postRecipe(
+        @Part images: List<MultipartBody.Part>,
+        @Part("request") body: RequestBody
+    ): Response<Unit>
+
+    @Multipart
+    @PUT("/recipes/{recipeId}")
+    suspend fun putRecipe(
+        @Path("recipeId") recipeId: Long,
         @Part images: List<MultipartBody.Part>,
         @Part("request") body: RequestBody
     ): Response<Unit>

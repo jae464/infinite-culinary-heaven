@@ -6,6 +6,8 @@ import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.model.Step
+import com.jae464.domain.model.StepCreate
+import com.jae464.domain.model.StepUpdate
 import com.jae464.domain.repository.RecipeRepository
 import java.io.File
 import javax.inject.Inject
@@ -173,15 +175,28 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
 
     override suspend fun registerRecipe(
         images: List<File>,
-        thumbnailImage: String?,
+        thumbnailImageName: String,
         title: String,
         description: String,
         ingredients: List<Ingredient>,
-        steps: List<Step>,
+        steps: List<StepCreate>,
         contestId: Long
     ): Result<Unit> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun updateRecipe(
+        recipeId: Long,
+        images: List<File>,
+        thumbnailImage: String,
+        title: String,
+        description: String,
+        ingredients: List<Ingredient>,
+        steps: List<StepUpdate>
+    ): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
 
     override suspend fun deleteRecipeById(recipeId: Long): Result<Unit> {
         TODO("Not yet implemented")

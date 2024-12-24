@@ -3,6 +3,7 @@ package com.jae464.presentation.register
 import android.Manifest
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -285,6 +286,8 @@ fun RecipeThumbnailImage(
 
     val galleryLauncher = rememberGalleryLauncher {
         if (it != null) {
+            Log.d("RecipeRegisterScreen", "uri : $it")
+            Log.d("RecipeRegisterScreen", "uri.toString() : ${it.toString()}")
             onChangeThumbnailImage(it.toString())
         }
     }

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Card
@@ -75,7 +76,8 @@ fun RecipeDetailRoute(
     recipeId: Long,
     viewModel: RecipeDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToEditRecipe: (Long) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val event = viewModel.event
@@ -116,7 +118,8 @@ fun RecipeDetailRoute(
     RecipeDetailScreen(
         uiState = uiState,
         onIntent = viewModel::handleIntent,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onNavigateToEditRecipe = onNavigateToEditRecipe
     )
 
 }
@@ -126,7 +129,8 @@ fun RecipeDetailRoute(
 fun RecipeDetailScreen(
     uiState: RecipeDetailUiState,
     onIntent: (RecipeDetailIntent) -> Unit = {},
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onNavigateToEditRecipe: (Long) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -160,7 +164,7 @@ fun RecipeDetailScreen(
             onNavigationClick = onBackClick,
             actions = {
                 // todo 좋아요, 스크랩은 현재 테스트를 위해 다 보이게 했지만, 추후 본인이 아닐때만 표시되도록 수정
-                if (uiState.recipe != null) {
+                if (uiState.recipe?.isOwner == false) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         tint = if (uiState.recipe.isLiked) Red10 else Color.LightGray,
@@ -189,16 +193,6 @@ fun RecipeDetailScreen(
                     )
                     Spacer(modifier = Modifier.padding(end = 12.dp))
                 }
-                Icon(
-                    imageVector = Icons.Default.ChatBubbleOutline,
-                    tint = Green10,
-                    contentDescription = null,
-                    modifier = Modifier.clickable {
-                        showBottomSheet = true
-                    }
-                )
-                Spacer(modifier = Modifier.padding(end = 12.dp))
-
                 if (uiState.recipe?.isOwner == true) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -208,6 +202,13 @@ fun RecipeDetailScreen(
                         }
                     )
                     Spacer(modifier = Modifier.padding(end = 12.dp))
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            onNavigateToEditRecipe(uiState.recipe.id)
+                        }
+                    )
                 }
 
             }
@@ -217,10 +218,15 @@ fun RecipeDetailScreen(
             thickness = 0.5.dp
         )
         if (uiState.recipe != null) {
-            RecipeItem(recipe = uiState.recipe, onClickImage = {
-                showImageDialog = true
-                imageUrl = it
-            })
+            RecipeItem(recipe = uiState.recipe,
+                onClickImage = {
+                    showImageDialog = true
+                    imageUrl = it
+                },
+                onClickCommentIcon = {
+                    showBottomSheet = true
+                }
+            )
         }
 
         // 댓글
@@ -294,6 +300,7 @@ fun RecipeDetailScreen(
 fun RecipeItem(
     recipe: Recipe,
     onClickImage: (String) -> Unit,
+    onClickCommentIcon: () -> Unit
 ) {
     Column {
         Column(
@@ -330,7 +337,14 @@ fun RecipeItem(
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.SemiBold
                         )
-
+                        Icon(
+                            imageVector = Icons.Default.ChatBubbleOutline,
+                            tint = Green10,
+                            contentDescription = null,
+                            modifier = Modifier.clickable {
+                                onClickCommentIcon()
+                            }
+                        )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = recipe.description)

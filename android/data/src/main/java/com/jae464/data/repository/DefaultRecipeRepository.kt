@@ -8,8 +8,11 @@ import androidx.paging.PagingState
 import com.jae464.data.remote.api.RecipeService
 import com.jae464.data.remote.api.SearchService
 import com.jae464.data.remote.model.request.IngredientCreateRequest
+import com.jae464.data.remote.model.request.IngredientUpdateRequest
 import com.jae464.data.remote.model.request.RecipeCreateRequest
+import com.jae464.data.remote.model.request.RecipeUpdateRequest
 import com.jae464.data.remote.model.request.StepCreateRequest
+import com.jae464.data.remote.model.request.StepUpdateRequest
 import com.jae464.data.remote.model.response.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.data.util.makeErrorResponse
@@ -17,6 +20,8 @@ import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.model.Step
+import com.jae464.domain.model.StepCreate
+import com.jae464.domain.model.StepUpdate
 import com.jae464.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
@@ -72,21 +77,24 @@ class DefaultRecipeRepository @Inject constructor(
 
     override suspend fun registerRecipe(
         images: List<File>,
-        thumbnailImage: String?,
+        thumbnailImageName: String,
         title: String,
         description: String,
         ingredients: List<Ingredient>,
-        steps: List<Step>,
+        steps: List<StepCreate>,
         contestId: Long
     ): Result<Unit> {
 
         Log.d(
             "DefaultRecipeRepository",
-            "images: $images thumbnailImage: $thumbnailImage title: $title description: $description ingredients: $ingredients steps: $steps"
+            "images: $images thumbnailImage: $thumbnailImageName title: $title description: $description ingredients: $ingredients steps: $steps"
         )
 
+        Log.d("DefaultRecipeRepository", "url.toUri().lastPathSegment : ${thumbnailImageName?.toUri()?.lastPathSegment}")
+        Log.d("DefaultRecipeRepository", "url : ${thumbnailImageName}")
+
         val request = RecipeCreateRequest(
-            thumbnailImage = thumbnailImage?.toUri()?.lastPathSegment ?: "",
+            thumbnailImage = thumbnailImageName,
             title = title,
             description = description,
             ingredients = ingredients.map {
@@ -96,13 +104,14 @@ class DefaultRecipeRepository @Inject constructor(
                 )
             },
             steps = steps.map {
+                Log.d("DefaultRecipeRepository", "url.toUri().lastPathSegment : ${it.imageName?.toUri()?.lastPathSegment}")
+                Log.d("DefaultRecipeRepository", "url : ${it.imageName}")
                 StepCreateRequest(
                     step = it.step,
                     description = it.description,
-                    imageUrl = it.imageUrl?.toUri()?.lastPathSegment
+                    imageName = it.imageName
                 )
             },
-            imageUrl = thumbnailImage?.toUri()?.lastPathSegment ?: "",
             contestId = contestId
         )
 
@@ -116,6 +125,50 @@ class DefaultRecipeRepository @Inject constructor(
 
         return handleResponse {
             recipeService.postRecipe(images = files, body = body)
+        }.mapCatching {
+            Result.success(Unit)
+        }
+    }
+
+    override suspend fun updateRecipe(
+        recipeId: Long,
+        images: List<File>,
+        thumbnailImage: String,
+        title: String,
+        description: String,
+        ingredients: List<Ingredient>,
+        steps: List<StepUpdate>
+    ): Result<Unit> {
+        val request = RecipeUpdateRequest(
+            thumbnailImage = thumbnailImage,
+            title = title,
+            description = description,
+            ingredients = ingredients.map {
+                IngredientUpdateRequest(
+                    name = it.name,
+                    quantity = it.quantity
+                )
+            },
+            steps = steps.map {
+                StepUpdateRequest(
+                    step = it.step,
+                    description = it.description,
+                    imageName = it.imageName,
+                    imageUrl = it.imageUrl
+                )
+            },
+        )
+
+        val files = images.map {
+            val fileBody = it.asRequestBody("image/*".toMediaTypeOrNull())
+            MultipartBody.Part.createFormData("images", it.name, fileBody)
+        }
+
+        val body = Json.encodeToString(RecipeUpdateRequest.serializer(), request)
+            .toRequestBody("application/json".toMediaType())
+
+        return handleResponse {
+            recipeService.putRecipe(recipeId = recipeId, images = files, body = body)
         }.mapCatching {
             Result.success(Unit)
         }

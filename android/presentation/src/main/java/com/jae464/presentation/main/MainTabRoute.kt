@@ -16,6 +16,11 @@ sealed interface Route {
     }
 
     @Serializable
+    data class RecipeEdit(val recipeId: Long): Route {
+        override val name: String = "recipe_edit"
+    }
+
+    @Serializable
     data class RecipeSearch(val contestId: Long?): Route {
         override val name: String = "recipe_search"
     }

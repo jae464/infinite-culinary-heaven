@@ -15,7 +15,8 @@ fun NavController.navigateRecipeDetail(recipeId: Long) {
 
 fun NavGraphBuilder.recipeDetailNavGraph(
     onBackClick: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToEditRecipe: (Long) -> Unit
 ) {
     composable<Route.RecipeDetail>(
         enterTransition = {
@@ -38,6 +39,11 @@ fun NavGraphBuilder.recipeDetailNavGraph(
         }
     ) { navBackStackEntry ->
         val recipeId = navBackStackEntry.toRoute<Route.RecipeDetail>().recipeId
-        RecipeDetailRoute(recipeId = recipeId, onBackClick = onBackClick, onNavigateToHome = onNavigateToHome)
+        RecipeDetailRoute(
+            recipeId = recipeId,
+            onBackClick = onBackClick,
+            onNavigateToHome = onNavigateToHome,
+            onNavigateToEditRecipe = onNavigateToEditRecipe
+        )
     }
 }

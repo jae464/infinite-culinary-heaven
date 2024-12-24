@@ -26,6 +26,7 @@ data class RecipeResponse(
 @Serializable
 data class StepResponse(
     val id: Long,
+    val step: Int,
     val description: String,
     val imageUrl: String?
 )
@@ -59,7 +60,7 @@ fun IngredientResponse.toDomain() = Ingredient(
 )
 
 fun StepResponse.toDomain() = Step(
-    step = id.toInt(),
+    step = step,
     description = description,
     imageUrl = imageUrl
 )

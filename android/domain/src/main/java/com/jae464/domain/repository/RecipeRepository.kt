@@ -6,6 +6,8 @@ import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.model.Step
+import com.jae464.domain.model.StepCreate
+import com.jae464.domain.model.StepUpdate
 import kotlinx.coroutines.flow.Flow
 import java.io.File
 
@@ -17,12 +19,21 @@ interface RecipeRepository {
     suspend fun unlikeRecipe(recipeId: Long): Result<Unit>
     suspend fun registerRecipe(
         images: List<File>,
-        thumbnailImage: String?,
+        thumbnailImageName: String,
         title: String,
         description: String,
         ingredients: List<Ingredient>,
-        steps: List<Step>,
+        steps: List<StepCreate>,
         contestId: Long
+    ): Result<Unit>
+    suspend fun updateRecipe(
+        recipeId: Long,
+        images: List<File>,
+        thumbnailImage: String,
+        title: String,
+        description: String,
+        ingredients: List<Ingredient>,
+        steps: List<StepUpdate>,
     ): Result<Unit>
     suspend fun deleteRecipeById(
         recipeId: Long
