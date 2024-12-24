@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.BookMarkRepository
 import com.jae464.domain.repository.CommentRepository
 import com.jae464.domain.repository.RecipeRepository
+import com.jae464.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class RecipeDetailViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
     private val bookMarkRepository: BookMarkRepository,
-    private val commentRepository: CommentRepository
+    private val commentRepository: CommentRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
@@ -29,6 +31,10 @@ class RecipeDetailViewModel @Inject constructor(
 
     private val _event = MutableSharedFlow<RecipeDetailEvent>()
     val event: SharedFlow<RecipeDetailEvent> = _event.asSharedFlow()
+
+    init {
+        getMyInfo()
+    }
 
     fun handleIntent(intent: RecipeDetailIntent) {
         when (intent) {
@@ -42,6 +48,18 @@ class RecipeDetailViewModel @Inject constructor(
             is RecipeDetailIntent.DeleteComment -> TODO()
             is RecipeDetailIntent.UpdateCommentInput -> updateCommentInput(intent.content)
             is RecipeDetailIntent.FetchComments -> fetchComments(intent.recipeId)
+        }
+    }
+
+    private fun getMyInfo() {
+        viewModelScope.launch {
+            userRepository.getMyInfo()
+                .onSuccess {
+                    _uiState.update { state -> state.copy(myInfo = it) }
+                }
+                .onFailure {
+
+                }
         }
     }
 

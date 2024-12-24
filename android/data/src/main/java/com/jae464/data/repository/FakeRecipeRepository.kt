@@ -8,6 +8,7 @@ import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.model.Step
 import com.jae464.domain.model.StepCreate
 import com.jae464.domain.model.StepUpdate
+import com.jae464.domain.model.UserInfo
 import com.jae464.domain.repository.RecipeRepository
 import java.io.File
 import javax.inject.Inject
@@ -124,7 +125,9 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                 description = "감자와 베이컨으로 만들 수 있는 감자 베이컨 말이 입니다.\n" +
                         "누구나 쉽게 간편하게 만들 수 있어요.",
                 score = 5.0f,
-                author = "나폴리맛피아",
+                writeInfo = UserInfo(
+                    1L, "ㅎㅎ", null
+                ),
                 ingredients = listOf(
                     Ingredient("감자", "2개"),
                     Ingredient("베이컨", "6개"),

@@ -6,7 +6,7 @@ data class Recipe(
     val imageUrl: String,
     val description: String,
     val score: Float,
-    val author: String,
+    val writeInfo: UserInfo,
     val ingredients: List<Ingredient>,
     val steps: List<Step>,
     val bookMarkCounts: Int,

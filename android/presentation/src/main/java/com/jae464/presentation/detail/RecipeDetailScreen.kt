@@ -249,7 +249,10 @@ fun RecipeDetailScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(uiState.comments.size) {
-                            CommentItem(uiState.comments[it])
+                            CommentItem(
+                                comment = uiState.comments[it],
+                                isOwner = uiState.myInfo?.id == uiState.comments[it].userInfo.id
+                            )
                         }
                     }
                     Row(
