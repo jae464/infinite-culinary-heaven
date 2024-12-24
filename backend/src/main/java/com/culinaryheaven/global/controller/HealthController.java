@@ -1,5 +1,6 @@
 package com.culinaryheaven.global.controller;
 
+import com.culinaryheaven.domain.recipe.event.RecipeLikeEvent;
 import com.culinaryheaven.global.notification.FcmNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class HealthController {
 
     @PostMapping("/notification")
     public String notificationTest() {
-        fcmNotificationService.sendRecipeLikeNotification("haha", "haha", 1L, 1L);
+        fcmNotificationService.sendRecipeLikeNotification(new RecipeLikeEvent("haha", 1L, 1L));
         return "OK1";
     }
 }

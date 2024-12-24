@@ -44,7 +44,8 @@ public class RecipeLikeService {
                 .build();
 
         RecipeLike savedRecipeLike = recipeLikeRepository.save(recipeLike);
-        publisher.publishEvent(new RecipeLikeEvent(recipe.getTitle(), recipe.getUser().getId(), recipe.getId()));
+        
+//        publisher.publishEvent(new RecipeLikeEvent(recipe.getTitle(), recipe.getUser().getId(), recipe.getId()));
 
         return RecipeLikeResponse.of(savedRecipeLike);
     }

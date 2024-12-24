@@ -6,6 +6,7 @@ import com.culinaryheaven.domain.comment.dto.response.CommentResponse;
 import com.culinaryheaven.domain.comment.dto.response.CommentsResponse;
 import com.culinaryheaven.domain.comment.repository.CommentRepository;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
+import com.culinaryheaven.domain.comment.event.CommentEvent;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
@@ -13,6 +14,7 @@ import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,7 @@ public class CommentService {
     private final RecipeRepository recipeRepository;
     private final CommentRepository commentRepository;
     private final SecurityUtil securityUtil;
+    private final ApplicationEventPublisher publisher;
 
     @Transactional
     public CommentResponse createComment(CommentCreateRequest request) {
@@ -40,6 +43,8 @@ public class CommentService {
 
         Comment comment = request.toEntity(user, recipe);
         Comment savedComment = commentRepository.save(comment);
+
+        publisher.publishEvent(new CommentEvent(recipe.getTitle(), savedComment.getContent(), recipe.getUser().getId(), recipe.getId()));
 
         return CommentResponse.of(savedComment);
 
