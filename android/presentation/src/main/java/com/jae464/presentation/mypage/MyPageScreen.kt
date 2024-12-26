@@ -18,8 +18,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FoodBank
-import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Dining
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -42,7 +42,6 @@ import com.jae464.domain.model.UserInfo
 import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
-import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.util.ImageConstants
 
 @Composable
@@ -130,7 +129,7 @@ fun MyProfile(
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        tint = Color.DarkGray,
+                        tint = Color.Gray,
                         contentDescription = "edit_profile",
                         modifier = Modifier.clickable {
                             onClickEditProfile(
@@ -168,8 +167,8 @@ fun MyRecipe() {
                     title = "나의 레시피"
                 )
                 MenuItem(
-                    imageVector = Icons.Outlined.BookmarkBorder,
-                    title = "스크랩"
+                    imageVector = Icons.Outlined.Favorite,
+                    title = "좋아요 한 레시피"
                 )
             }
         }
