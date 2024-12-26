@@ -48,6 +48,9 @@ class ProfileEditViewModel @Inject constructor(
             is ProfileEditIntent.UpdateProfile -> {
                 if (uiState.value.isNicknameChanged || uiState.value.isProfileImageChanged) {
                     viewModelScope.launch {
+                        if (!validateNickname()) {
+                            return@launch
+                        }
                         val file: File? = if (uiState.value.profileImageUrl != null) convertToFile(Uri.parse(uiState.value.profileImageUrl)) else null
                         userRepository.updateProfile(uiState.value.nickname, file)
                             .onSuccess {
@@ -72,6 +75,18 @@ class ProfileEditViewModel @Inject constructor(
         Log.d("ProfileEditViewModel", "nickname: $nickname profileImageUrl: $profileImageUrl")
 
         _uiState.update { state -> state.copy(nickname = nickname, profileImageUrl = profileImageUrl) }
+    }
+
+    private suspend fun validateNickname(): Boolean {
+        if (uiState.value.nickname.isEmpty()) {
+            _event.emit(ProfileEditEvent.EmptyNickname)
+            return false
+        }
+        if (uiState.value.nickname.length > 10) {
+            _event.emit(ProfileEditEvent.TooLongNickname)
+            return false
+        }
+        return true
     }
 
     private fun convertToFile(uri: Uri): File? {

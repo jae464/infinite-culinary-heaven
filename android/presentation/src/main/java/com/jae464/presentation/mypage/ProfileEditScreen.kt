@@ -2,7 +2,6 @@ package com.jae464.presentation.mypage
 
 import android.Manifest
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -62,9 +61,14 @@ fun ProfileEditRoute(
                     Toast.makeText(context, "프로필이 수정되었습니다.", Toast.LENGTH_SHORT).show()
                     onProfileEditSuccess()
                 }
+                ProfileEditEvent.EmptyNickname -> {
+                    Toast.makeText(context, "닉네임이 비어있습니다.", Toast.LENGTH_SHORT).show()
+                }
+                ProfileEditEvent.TooLongNickname -> {
+                    Toast.makeText(context, "닉네임은 10자 이하만 가능합니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
-
     }
 
     ProfileEditScreen(
@@ -120,7 +124,8 @@ fun ProfileEditScreen(
             thickness = 0.5.dp
         )
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
