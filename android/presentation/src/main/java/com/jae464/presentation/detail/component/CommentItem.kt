@@ -1,5 +1,6 @@
 package com.jae464.presentation.detail.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,12 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jae464.domain.model.Comment
-import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.util.ImageConstants
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun CommentItem(comment: Comment, isOwner: Boolean) {
+fun CommentItem(
+    comment: Comment,
+    isOwner: Boolean,
+    onClickEdit: (Long) -> Unit = {},
+    onClickDelete: (Long) -> Unit = {}
+) {
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -60,13 +65,19 @@ fun CommentItem(comment: Comment, isOwner: Boolean) {
                         Text(
                             text = "수정",
                             color = Color.Gray,
-                            fontSize = 12.sp
+                            fontSize = 12.sp,
+                            modifier = Modifier.clickable {
+                                onClickEdit(comment.id)
+                            }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "삭제",
                             color = Color.Gray,
-                            fontSize = 12.sp
+                            fontSize = 12.sp,
+                            modifier = Modifier.clickable {
+                                onClickDelete(comment.id)
+                            }
                         )
                     }
                 }

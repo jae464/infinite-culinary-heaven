@@ -2,6 +2,7 @@ package com.jae464.data.repository
 
 import com.jae464.data.remote.api.CommentService
 import com.jae464.data.remote.model.request.CommentCreateRequest
+import com.jae464.data.remote.model.request.CommentUpdateRequest
 import com.jae464.data.remote.model.response.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.domain.model.Comment
@@ -25,6 +26,22 @@ class DefaultCommentRepository @Inject constructor(
             commentService.getCommentsByRecipeId(recipeId)
         }.mapCatching { response ->
             response.comments.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun updateComment(commentId: Long, content: String): Result<Comment> {
+        return handleResponse {
+            commentService.updateComment(commentId, CommentUpdateRequest(content))
+        }.mapCatching {
+            it.toDomain()
+        }
+    }
+
+    override suspend fun deleteComment(commentId: Long): Result<Unit> {
+        return handleResponse {
+            commentService.deleteComment(commentId)
+        }.mapCatching {
+            Result.success(Unit)
         }
     }
 }

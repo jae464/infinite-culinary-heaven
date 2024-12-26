@@ -1,6 +1,7 @@
 package com.jae464.presentation.detail
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.BookMarkRepository
@@ -23,7 +24,7 @@ class RecipeDetailViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
     private val bookMarkRepository: BookMarkRepository,
     private val commentRepository: CommentRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
@@ -31,6 +32,8 @@ class RecipeDetailViewModel @Inject constructor(
 
     private val _event = MutableSharedFlow<RecipeDetailEvent>()
     val event: SharedFlow<RecipeDetailEvent> = _event.asSharedFlow()
+
+    private var currentEditCommentId: Long? = null
 
     init {
         getMyInfo()
@@ -45,9 +48,13 @@ class RecipeDetailViewModel @Inject constructor(
             is RecipeDetailIntent.LikeRecipe -> likeRecipe(intent.recipeId)
             is RecipeDetailIntent.UnlikeRecipe -> unlikeRecipe(intent.recipeId)
             is RecipeDetailIntent.AddComment -> addComment(intent.recipeId, intent.content)
-            is RecipeDetailIntent.DeleteComment -> TODO()
+            is RecipeDetailIntent.DeleteComment -> deleteComment(intent.recipeId, intent.commentId)
             is RecipeDetailIntent.UpdateCommentInput -> updateCommentInput(intent.content)
             is RecipeDetailIntent.FetchComments -> fetchComments(intent.recipeId)
+            is RecipeDetailIntent.UpdateComment -> updateComment(intent.recipeId, intent.commentId, intent.content)
+            is RecipeDetailIntent.SetCommentEditMode -> {
+                currentEditCommentId = intent.commentId
+            }
         }
     }
 
@@ -139,6 +146,11 @@ class RecipeDetailViewModel @Inject constructor(
     }
 
     private fun addComment(recipeId: Long, content: String) {
+        currentEditCommentId?.let {
+            updateComment(recipeId, it, content)
+            return
+        }
+
         viewModelScope.launch {
             commentRepository.addComment(recipeId, content)
                 .onSuccess {
@@ -150,6 +162,26 @@ class RecipeDetailViewModel @Inject constructor(
 
     private fun updateCommentInput(content: String) {
         _uiState.update { state -> state.copy(commentInput = content) }
+    }
+
+    private fun updateComment(recipeId: Long, commentId: Long, content: String) {
+        viewModelScope.launch {
+            commentRepository.updateComment(commentId, content)
+                .onSuccess {
+                    currentEditCommentId = null
+                    _uiState.update { state -> state.copy(commentInput = "") }
+                    fetchComments(recipeId)
+                }
+        }
+    }
+
+    private fun deleteComment(recipeId: Long, commentId: Long) {
+        viewModelScope.launch {
+            commentRepository.deleteComment(commentId)
+                .onSuccess {
+                    fetchComments(recipeId)
+                }
+        }
     }
 
 

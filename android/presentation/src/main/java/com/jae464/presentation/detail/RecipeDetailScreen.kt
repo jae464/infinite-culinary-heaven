@@ -230,7 +230,7 @@ fun RecipeDetailScreen(
         }
 
         // 댓글
-        if (showBottomSheet) {
+        if (showBottomSheet && uiState.recipe != null) {
             ModalBottomSheet(
                 sheetState = bottomSheetState,
                 onDismissRequest = {
@@ -251,7 +251,14 @@ fun RecipeDetailScreen(
                         items(uiState.comments.size) {
                             CommentItem(
                                 comment = uiState.comments[it],
-                                isOwner = uiState.myInfo?.id == uiState.comments[it].userInfo.id
+                                isOwner = uiState.myInfo?.id == uiState.comments[it].userInfo.id,
+                                onClickEdit = { commentId ->
+                                    onIntent(RecipeDetailIntent.SetCommentEditMode(true, commentId))
+                                    onIntent(RecipeDetailIntent.UpdateCommentInput(uiState.comments[it].content))
+                                },
+                                onClickDelete = { commentId ->
+                                    onIntent(RecipeDetailIntent.DeleteComment(uiState.recipe.id, commentId))
+                                }
                             )
                         }
                     }
