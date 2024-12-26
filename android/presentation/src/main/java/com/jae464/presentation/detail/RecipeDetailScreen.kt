@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -50,11 +51,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -70,6 +76,7 @@ import com.jae464.presentation.detail.component.RecipeDetailContentBox
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.ui.theme.Red10
+import com.jae464.presentation.util.addFocusCleaner
 
 @Composable
 fun RecipeDetailRoute(
@@ -138,6 +145,7 @@ fun RecipeDetailScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     var showImageDialog by remember { mutableStateOf(false) }
     var imageUrl by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
 
     val scope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
@@ -145,7 +153,6 @@ fun RecipeDetailScreen(
 
     val minHeight = screenHeight * 0.5f
     val maxHeight = screenHeight * 0.8f
-
 
     Column(
         modifier = Modifier
@@ -163,7 +170,6 @@ fun RecipeDetailScreen(
             useNavigationIcon = true,
             onNavigationClick = onBackClick,
             actions = {
-
                 if (uiState.recipe?.isOwner == false) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
@@ -234,12 +240,13 @@ fun RecipeDetailScreen(
             ModalBottomSheet(
                 sheetState = bottomSheetState,
                 onDismissRequest = {
+                    onIntent(RecipeDetailIntent.ClearCommentEditMode)
                     showBottomSheet = false
                 },
                 modifier = Modifier.wrapContentHeight()
             ) {
                 Column(
-                    verticalArrangement = Arrangement.SpaceBetween
+                    verticalArrangement = Arrangement.SpaceBetween,
                 ) {
                     LazyColumn(
                         modifier = Modifier
@@ -253,11 +260,17 @@ fun RecipeDetailScreen(
                                 comment = uiState.comments[it],
                                 isOwner = uiState.myInfo?.id == uiState.comments[it].userInfo.id,
                                 onClickEdit = { commentId ->
-                                    onIntent(RecipeDetailIntent.SetCommentEditMode(true, commentId))
+                                    focusRequester.requestFocus()
+                                    onIntent(RecipeDetailIntent.SetCommentEditMode(commentId))
                                     onIntent(RecipeDetailIntent.UpdateCommentInput(uiState.comments[it].content))
                                 },
                                 onClickDelete = { commentId ->
-                                    onIntent(RecipeDetailIntent.DeleteComment(uiState.recipe.id, commentId))
+                                    onIntent(
+                                        RecipeDetailIntent.DeleteComment(
+                                            uiState.recipe.id,
+                                            commentId
+                                        )
+                                    )
                                 }
                             )
                         }
@@ -278,6 +291,7 @@ fun RecipeDetailScreen(
                             modifier = Modifier
                                 .weight(0.8f)
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
+                                .focusRequester(focusRequester)
 
                         )
                         Icon(
@@ -285,9 +299,12 @@ fun RecipeDetailScreen(
                             tint = Green10,
                             contentDescription = null,
                             modifier = Modifier.clickable {
-                                if (uiState.recipe != null) {
-                                    onIntent(RecipeDetailIntent.AddComment(uiState.recipe.id, uiState.commentInput))
-                                }
+                                onIntent(
+                                    RecipeDetailIntent.AddComment(
+                                        uiState.recipe.id,
+                                        uiState.commentInput
+                                    )
+                                )
                             }
                         )
                     }

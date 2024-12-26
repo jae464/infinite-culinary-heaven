@@ -54,6 +54,11 @@ class RecipeDetailViewModel @Inject constructor(
             is RecipeDetailIntent.UpdateComment -> updateComment(intent.recipeId, intent.commentId, intent.content)
             is RecipeDetailIntent.SetCommentEditMode -> {
                 currentEditCommentId = intent.commentId
+                _uiState.update { state -> state.copy(commentEditMode = true) }
+            }
+            is RecipeDetailIntent.ClearCommentEditMode -> {
+                currentEditCommentId = null
+                _uiState.update { state -> state.copy(commentEditMode = false, commentInput = "") }
             }
         }
     }
@@ -169,7 +174,7 @@ class RecipeDetailViewModel @Inject constructor(
             commentRepository.updateComment(commentId, content)
                 .onSuccess {
                     currentEditCommentId = null
-                    _uiState.update { state -> state.copy(commentInput = "") }
+                    _uiState.update { state -> state.copy(commentInput = "", commentEditMode = false) }
                     fetchComments(recipeId)
                 }
         }

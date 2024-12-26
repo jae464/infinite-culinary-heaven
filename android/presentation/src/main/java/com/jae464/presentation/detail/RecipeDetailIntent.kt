@@ -12,5 +12,6 @@ sealed interface RecipeDetailIntent {
     data class DeleteComment(val recipeId: Long, val commentId: Long) : RecipeDetailIntent
     data class UpdateCommentInput(val content: String) : RecipeDetailIntent
     data class UpdateComment(val recipeId: Long, val commentId: Long, val content: String) : RecipeDetailIntent
-    data class SetCommentEditMode(val isEditMode: Boolean, val commentId: Long) : RecipeDetailIntent
+    data class SetCommentEditMode(val commentId: Long) : RecipeDetailIntent
+    data object ClearCommentEditMode : RecipeDetailIntent
 }

@@ -8,5 +8,6 @@ data class RecipeDetailUiState(
     val recipe: Recipe? = null,
     val commentInput: String = "",
     val comments: List<Comment> = emptyList(),
-    val myInfo: UserInfo? = null
+    val myInfo: UserInfo? = null,
+    val commentEditMode: Boolean = false
 )
