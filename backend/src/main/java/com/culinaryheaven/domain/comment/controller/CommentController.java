@@ -1,6 +1,7 @@
 package com.culinaryheaven.domain.comment.controller;
 
 import com.culinaryheaven.domain.comment.dto.request.CommentCreateRequest;
+import com.culinaryheaven.domain.comment.dto.request.CommentUpdateRequest;
 import com.culinaryheaven.domain.comment.dto.response.CommentResponse;
 import com.culinaryheaven.domain.comment.dto.response.CommentsResponse;
 import com.culinaryheaven.domain.comment.service.CommentService;
@@ -31,6 +32,23 @@ public class CommentController {
     ) {
         CommentsResponse commentsResponse = commentService.getCommentsByRecipeId(recipeId);
         return ResponseEntity.ok().body(commentsResponse);
+    }
+
+    @PatchMapping("/{commentId}")
+    public ResponseEntity<CommentResponse> updateComment(
+            @PathVariable Long commentId,
+            @RequestBody CommentUpdateRequest request
+    ) {
+        CommentResponse commentResponse = commentService.updateCommentById(commentId, request);
+        return ResponseEntity.ok().body(commentResponse);
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<CommentResponse> deleteComment(
+            @PathVariable Long commentId
+    ) {
+        commentService.deleteCommentById(commentId);
+        return ResponseEntity.noContent().build();
     }
 
 }

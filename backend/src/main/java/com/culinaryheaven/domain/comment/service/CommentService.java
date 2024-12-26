@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.comment.service;
 
 import com.culinaryheaven.domain.comment.domain.Comment;
 import com.culinaryheaven.domain.comment.dto.request.CommentCreateRequest;
+import com.culinaryheaven.domain.comment.dto.request.CommentUpdateRequest;
 import com.culinaryheaven.domain.comment.dto.response.CommentResponse;
 import com.culinaryheaven.domain.comment.dto.response.CommentsResponse;
 import com.culinaryheaven.domain.comment.repository.CommentRepository;
@@ -60,6 +61,42 @@ public class CommentService {
 
         return CommentsResponse.of(comments);
 
+    }
+
+    @Transactional
+    public CommentResponse updateCommentById(Long commentId, CommentUpdateRequest request) {
+        User user = getCurrentUser();
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)
+        );
+
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+
+        comment.updateContent(request.content());
+        return CommentResponse.of(comment);
+    }
+
+    public void deleteCommentById(Long commentId) {
+        User user = getCurrentUser();
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)
+        );
+
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+
+        commentRepository.delete(comment);
+    }
+
+    private User getCurrentUser() {
+        return userRepository.findByOauthId(
+                securityUtil.getUserOAuth2Id()
+        ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
     }
 
 }
