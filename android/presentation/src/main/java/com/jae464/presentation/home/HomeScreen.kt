@@ -187,6 +187,17 @@ fun HomeScreen(
                     }
                 }
 
+                if (uiState.recipePreviews.isEmpty()) {
+                    item {
+                        Text(
+                            text = "아직 올라온 레시피가 없습니다.",
+                            modifier = Modifier.padding(vertical = 16.dp),
+                            color = Color.Black,
+                            fontSize = 18.sp,
+                        )
+                    }
+                }
+
                 items(uiState.recipePreviews.size) { index ->
                     RecipeItem(uiState.recipePreviews[index], onClickRecipe = onClickRecipe)
                     HorizontalDivider(

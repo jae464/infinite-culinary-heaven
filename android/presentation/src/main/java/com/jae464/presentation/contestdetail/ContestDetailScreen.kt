@@ -14,13 +14,17 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.component.HeavenTopAppBar
@@ -87,6 +91,16 @@ fun ContestDetailScreen(
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = onBackClick,
             )
+            if (uiState.recipePreviews.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = "해당 대회에 올라온 레시피가 없습니다.",
+                        modifier = Modifier.align(Alignment.Center),
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                    )
+                }
+            }
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
                 thickness = 0.5.dp

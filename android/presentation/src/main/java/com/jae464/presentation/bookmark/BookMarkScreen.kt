@@ -75,7 +75,14 @@ fun BookMarkScreen(
             .offset(y = offsetY.dp)
             .pullRefresh(pullRefreshState)
     ) {
-
+        if (uiState.bookMarkedRecipes.isEmpty()) {
+            Text(
+                text = "스크랩한 레시피가 없습니다.",
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.Black,
+                fontSize = 18.sp,
+            )
+        }
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
