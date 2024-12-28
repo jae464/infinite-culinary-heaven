@@ -61,6 +61,14 @@ public class RecipeController {
         return ResponseEntity.ok().body(recipesResponse);
     }
 
+    @GetMapping("/mine")
+    public ResponseEntity<RecipesResponse> getMyRecipes(
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        RecipesResponse recipesResponse = recipeService.getMyRecipes(pageable);
+        return ResponseEntity.ok().body(recipesResponse);
+    }
+
     @GetMapping("/{recipeId}")
     public ResponseEntity<RecipeResponse> getRecipe(
         @PathVariable Long recipeId

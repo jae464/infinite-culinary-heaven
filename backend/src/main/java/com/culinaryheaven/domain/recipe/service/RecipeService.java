@@ -160,6 +160,14 @@ public class RecipeService {
         return RecipesResponse.of(recipes);
     }
 
+    public RecipesResponse getMyRecipes(Pageable pageable) {
+        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+                .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
+
+        Page<Recipe> recipes = recipeRepository.findAllByUserId(pageable, user.getId());
+        return RecipesResponse.of(recipes);
+    }
+
     @Transactional
     public void deleteByRecipeId(Long id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
