@@ -49,6 +49,7 @@ fun MyPageRoute(
     padding: PaddingValues,
     viewModel: MyPageViewModel = hiltViewModel(),
     onClickEditProfile: (String, String?) -> Unit,
+    onClickMyRecipe: () -> Unit,
     isRefresh: Boolean
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -65,7 +66,8 @@ fun MyPageRoute(
     MyPageScreen(
         padding = padding,
         uiState = uiState,
-        onClickEditProfile = onClickEditProfile
+        onClickEditProfile = onClickEditProfile,
+        onClickMyRecipe = onClickMyRecipe
     )
 }
 
@@ -73,7 +75,8 @@ fun MyPageRoute(
 fun MyPageScreen(
     padding: PaddingValues,
     uiState: MyPageUiState,
-    onClickEditProfile: (String, String?) -> Unit
+    onClickEditProfile: (String, String?) -> Unit,
+    onClickMyRecipe: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -87,7 +90,9 @@ fun MyPageScreen(
             userInfo = uiState.userInfo,
             onClickEditProfile = onClickEditProfile
         )
-        MyRecipe()
+        MyRecipe(
+            onClickMyRecipe = onClickMyRecipe
+        )
         MyContest()
     }
 }
@@ -148,7 +153,9 @@ fun MyProfile(
 }
 
 @Composable
-fun MyRecipe() {
+fun MyRecipe(
+    onClickMyRecipe: () -> Unit
+) {
     RoundedContentBox {
         Column {
             Text(text = "레시피")
@@ -164,11 +171,15 @@ fun MyRecipe() {
             ) {
                 MenuItem(
                     imageVector = Icons.Outlined.Dining,
-                    title = "나의 레시피"
+                    title = "나의 레시피",
+                    onClick = onClickMyRecipe
                 )
                 MenuItem(
                     imageVector = Icons.Outlined.Favorite,
-                    title = "좋아요 한 레시피"
+                    title = "좋아요 한 레시피",
+                    onClick = {
+
+                    }
                 )
             }
         }
@@ -192,7 +203,10 @@ fun MyContest() {
             ) {
                 MenuItem(
                     imageVector = Icons.Default.FoodBank,
-                    title = "참여한 대회"
+                    title = "참여한 대회",
+                    onClick = {
+
+                    }
                 )
             }
         }
@@ -202,11 +216,13 @@ fun MyContest() {
 @Composable
 fun MenuItem(
     imageVector: ImageVector,
-    title: String
+    title: String,
+    onClick: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.clickable { onClick() }
     ) {
         Icon(
             modifier = Modifier.size(24.dp),

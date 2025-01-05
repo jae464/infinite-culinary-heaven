@@ -13,6 +13,7 @@ import com.jae464.presentation.detail.navigation.recipeDetailNavGraph
 import com.jae464.presentation.home.navigation.homeNavGraph
 import com.jae464.presentation.login.navigation.loginNavGraph
 import com.jae464.presentation.mypage.navigation.myPageNavGraph
+import com.jae464.presentation.mypage.navigation.myRecipeNavGraph
 import com.jae464.presentation.mypage.navigation.profileEditNavGraph
 import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
 import com.jae464.presentation.search.navigation.recipeSearchNavGraph
@@ -62,7 +63,8 @@ fun MainNavHost(
         )
         myPageNavGraph(
             padding = paddingValues,
-            onNavigateProfileEdit = { nickname, profileImageUrl -> appState.navigateToProfileEdit(nickname, profileImageUrl) }
+            onNavigateProfileEdit = { nickname, profileImageUrl -> appState.navigateToProfileEdit(nickname, profileImageUrl) },
+            onNavigateToMyRecipe = { appState.navigateToMyRecipe() }
         )
         recipeDetailNavGraph(
             onBackClick = { appState.popBackStack() },
@@ -94,6 +96,9 @@ fun MainNavHost(
                 appState.navController.previousBackStackEntry?.savedStateHandle?.set(StateHandleKey.IS_REFRESH_KEY, true)
                 appState.popBackStack()
             }
+        )
+        myRecipeNavGraph(
+            onBackClick = { appState.popBackStack() }
         )
     }
 }

@@ -45,6 +45,11 @@ sealed interface Route {
         override val name: String = "profile_edit"
     }
 
+    @Serializable
+    data object MyRecipe: Route {
+        override val name: String = "my_recipe"
+    }
+
 }
 
 sealed interface MainTabRoute : Route {
