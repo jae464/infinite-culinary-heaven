@@ -27,6 +27,12 @@ interface RecipeService {
     @GET("/recipes/{recipeId}")
     suspend fun getRecipeById(@Path("recipeId") recipeId: Long): Response<RecipeResponse>
 
+    @GET("/recipes/mine")
+    suspend fun getMyRecipePreviews(
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 20
+    ): Response<RecipePreviewsResponse>
+
     @Multipart
     @POST("/recipes")
     suspend fun postRecipe(

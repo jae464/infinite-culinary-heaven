@@ -98,7 +98,8 @@ fun MainNavHost(
             }
         )
         myRecipeNavGraph(
-            onBackClick = { appState.popBackStack() }
+            onBackClick = { appState.popBackStack() },
+            onClickRecipe = { appState.navigateToRecipeDetail(it) }
         )
     }
 }

@@ -12,11 +12,13 @@ fun NavController.navigateMyRecipe(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.myRecipeNavGraph(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onClickRecipe: (Long) -> Unit
 ) {
     composable<Route.MyRecipe> {
         MyRecipeRoute(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onClickRecipe = onClickRecipe
         )
     }
 }
