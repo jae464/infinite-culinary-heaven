@@ -81,7 +81,7 @@ fun MyRecipeScreen(
             useNavigationIcon = true,
             onNavigationClick = onBackClick,
         )
-        if (uiState.recipes.isEmpty()) {
+        if (uiState.recipes.isEmpty() && !uiState.isLoading) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     text = "아직 작성한 레시피가 없습니다.",

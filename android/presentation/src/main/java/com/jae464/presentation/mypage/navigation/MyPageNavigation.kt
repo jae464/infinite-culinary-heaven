@@ -1,5 +1,6 @@
 package com.jae464.presentation.mypage.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.LaunchedEffect
@@ -37,13 +38,22 @@ fun NavGraphBuilder.myPageNavGraph(
         exitTransition = {
             val direction = getMainTabDirection(initialState.destination, targetState.destination)
             if (direction == null) {
-                null
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(200)
+                )
             } else {
                 slideOutOfContainer(
                     towards = direction,
                     animationSpec = tween(200)
                 )
             }
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(200)
+            )
         },
     ) { navBackStackEntry ->
         val isRefresh = navBackStackEntry.savedStateHandle.getStateFlow(StateHandleKey.IS_REFRESH_KEY, false).collectAsState()
