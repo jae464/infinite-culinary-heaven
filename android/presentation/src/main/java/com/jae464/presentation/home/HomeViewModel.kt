@@ -54,7 +54,6 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-
                 _uiState.update { state -> state.copy(isLoading = true) }
                 val currentContest = contestRepository.getCurrentContest().getOrThrow()
                 _uiState.update { state -> state.copy(currentContest = currentContest) }
@@ -66,11 +65,8 @@ class HomeViewModel @Inject constructor(
                 } else {
                     currentPage++
                 }
-
                 isLoading.set(false)
-
                 _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + recipePreviews, isLoading = false) }
-                _uiState.update { state -> state.copy(isLoading = false) }
             }.onFailure {
                 Log.e("HomeViewModel", "fetchRecipePreviews Failed ${it.message}")
             }
