@@ -3,6 +3,7 @@ package com.culinaryheaven.domain.recipe.service;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.domain.RecipeLike;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeLikeResponse;
+import com.culinaryheaven.domain.recipe.dto.response.RecipeLikesResponse;
 import com.culinaryheaven.domain.recipe.event.RecipeLikeEvent;
 import com.culinaryheaven.domain.recipe.repository.RecipeLikeRepository;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
@@ -15,6 +16,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.core.ApplicationPushBuilder;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +51,14 @@ public class RecipeLikeService {
 //        publisher.publishEvent(new RecipeLikeEvent(recipe.getTitle(), recipe.getUser().getId(), recipe.getId()));
 
         return RecipeLikeResponse.of(savedRecipeLike);
+    }
+
+    public RecipeLikesResponse getMyRecipeLikes(Pageable pageable) {
+        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+                .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
+
+        Page<RecipeLike> recipeLikes = recipeLikeRepository.findByUserId(pageable, user.getId());
+        return RecipeLikesResponse.of(recipeLikes);
     }
 
     public void unlikeRecipe(Long recipeId) {
