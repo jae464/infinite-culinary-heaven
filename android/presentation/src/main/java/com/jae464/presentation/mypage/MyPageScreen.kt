@@ -50,6 +50,7 @@ fun MyPageRoute(
     viewModel: MyPageViewModel = hiltViewModel(),
     onClickEditProfile: (String, String?) -> Unit,
     onClickMyRecipe: () -> Unit,
+    onClickMyLikes: () -> Unit,
     isRefresh: Boolean
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -67,7 +68,8 @@ fun MyPageRoute(
         padding = padding,
         uiState = uiState,
         onClickEditProfile = onClickEditProfile,
-        onClickMyRecipe = onClickMyRecipe
+        onClickMyRecipe = onClickMyRecipe,
+        onClickMyLikes = onClickMyLikes
     )
 }
 
@@ -76,7 +78,8 @@ fun MyPageScreen(
     padding: PaddingValues,
     uiState: MyPageUiState,
     onClickEditProfile: (String, String?) -> Unit,
-    onClickMyRecipe: () -> Unit
+    onClickMyRecipe: () -> Unit,
+    onClickMyLikes: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -91,7 +94,8 @@ fun MyPageScreen(
             onClickEditProfile = onClickEditProfile
         )
         MyRecipe(
-            onClickMyRecipe = onClickMyRecipe
+            onClickMyRecipe = onClickMyRecipe,
+            onClickMyLikes = onClickMyLikes
         )
         MyContest()
     }
@@ -154,7 +158,8 @@ fun MyProfile(
 
 @Composable
 fun MyRecipe(
-    onClickMyRecipe: () -> Unit
+    onClickMyRecipe: () -> Unit,
+    onClickMyLikes: () -> Unit
 ) {
     RoundedContentBox {
         Column {
@@ -177,9 +182,7 @@ fun MyRecipe(
                 MenuItem(
                     imageVector = Icons.Outlined.Favorite,
                     title = "좋아요 한 레시피",
-                    onClick = {
-
-                    }
+                    onClick = onClickMyLikes
                 )
             }
         }

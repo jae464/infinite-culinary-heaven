@@ -120,6 +120,10 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getMyLikeRecipePreviews(page: Int): Result<List<RecipePreview>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getRecipeById(id: Long): Result<Recipe> {
         return Result.success(
             Recipe(

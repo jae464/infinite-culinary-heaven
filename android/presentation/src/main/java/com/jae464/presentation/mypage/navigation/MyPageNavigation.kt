@@ -21,7 +21,8 @@ fun NavController.navigateMyPage(navOptions: NavOptions) {
 fun NavGraphBuilder.myPageNavGraph(
     padding: PaddingValues,
     onNavigateProfileEdit: (String, String?) -> Unit,
-    onNavigateToMyRecipe: () -> Unit
+    onNavigateToMyRecipe: () -> Unit,
+    onNavigateToMyLikes: () -> Unit
 ) {
     composable<MainTabRoute.MyPage>(
         enterTransition = {
@@ -56,7 +57,9 @@ fun NavGraphBuilder.myPageNavGraph(
             )
         },
     ) { navBackStackEntry ->
-        val isRefresh = navBackStackEntry.savedStateHandle.getStateFlow(StateHandleKey.IS_REFRESH_KEY, false).collectAsState()
+        val isRefresh =
+            navBackStackEntry.savedStateHandle.getStateFlow(StateHandleKey.IS_REFRESH_KEY, false)
+                .collectAsState()
 
         LaunchedEffect(Unit) {
             if (isRefresh.value) {
@@ -64,6 +67,12 @@ fun NavGraphBuilder.myPageNavGraph(
             }
         }
 
-        MyPageRoute(padding = padding, onClickEditProfile = onNavigateProfileEdit, onClickMyRecipe = onNavigateToMyRecipe, isRefresh = isRefresh.value)
+        MyPageRoute(
+            padding = padding,
+            onClickEditProfile = onNavigateProfileEdit,
+            onClickMyRecipe = onNavigateToMyRecipe,
+            onClickMyLikes = onNavigateToMyLikes,
+            isRefresh = isRefresh.value
+        )
     }
 }

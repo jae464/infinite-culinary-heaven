@@ -1,6 +1,7 @@
 package com.jae464.data.remote.api
 
 import com.jae464.data.remote.model.response.RecipeLikeResponse
+import com.jae464.data.remote.model.response.RecipeLikesResponse
 import com.jae464.data.remote.model.response.RecipePreviewResponse
 import com.jae464.data.remote.model.response.RecipePreviewsResponse
 import com.jae464.data.remote.model.response.RecipeResponse
@@ -32,6 +33,12 @@ interface RecipeService {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 20
     ): Response<RecipePreviewsResponse>
+
+    @GET("/recipes/likes/mine")
+    suspend fun getMyLikesRecipePreviews(
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 20
+    ): Response<RecipeLikesResponse>
 
     @Multipart
     @POST("/recipes")

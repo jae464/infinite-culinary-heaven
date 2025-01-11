@@ -58,6 +58,14 @@ class DefaultRecipeRepository @Inject constructor(
         }
     }
 
+    override suspend fun getMyLikeRecipePreviews(page: Int): Result<List<RecipePreview>> {
+        return handleResponse {
+            recipeService.getMyLikesRecipePreviews(page = page)
+        }.mapCatching { response ->
+            response.recipeLikes.map { it.recipe.toDomain() }
+        }
+    }
+
 
     override suspend fun getRecipeById(id: Long): Result<Recipe> {
         return handleResponse {
