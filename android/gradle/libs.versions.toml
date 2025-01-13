@@ -28,6 +28,7 @@ paging = "3.3.4"
 zoomable = "1.5.2"
 google-services = "4.4.2"
 firebase-bom = "33.7.0"
+play-services-auth = "21.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -77,6 +78,9 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx"}
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx"}
 
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth"}
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "google-services"}
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-services-auth"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
