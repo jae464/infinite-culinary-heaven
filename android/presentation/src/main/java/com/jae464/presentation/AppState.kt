@@ -62,6 +62,18 @@ class AppState(
             popUpTo(navController.graph.findStartDestination().id) {
                 inclusive = true
             }
+            launchSingleTop = true
+        }
+
+        navController.navigateLogin(navOptions)
+    }
+
+    fun navigateToLoginAfterLogout() {
+        val navOptions = navOptions {
+            popUpTo(MainTab.HOME.route) {
+                inclusive = true
+            }
+            launchSingleTop = true
         }
 
         navController.navigateLogin(navOptions)

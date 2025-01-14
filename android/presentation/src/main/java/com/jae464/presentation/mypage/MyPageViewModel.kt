@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.AuthRepository
 import com.jae464.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,6 +22,9 @@ class MyPageViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MyPageUiState())
     val uiState: StateFlow<MyPageUiState> = _uiState.asStateFlow()
+
+    private val _event = MutableSharedFlow<MyPageEvent>()
+    val event = _event.asSharedFlow()
 
     init {
         fetchUserInfo()
@@ -35,5 +40,11 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+            _event.emit(MyPageEvent.LogoutFinished)
+        }
+    }
 
 }

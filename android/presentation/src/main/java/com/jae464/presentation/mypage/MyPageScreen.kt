@@ -15,11 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FoodBank
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Dining
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,9 +43,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.jae464.domain.model.UserInfo
+import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
+import com.jae464.presentation.ui.theme.Green5
 import com.jae464.presentation.util.ImageConstants
 
 @Composable
@@ -51,9 +57,11 @@ fun MyPageRoute(
     onClickEditProfile: (String, String?) -> Unit,
     onClickMyRecipe: () -> Unit,
     onClickMyLikes: () -> Unit,
+    onClickLogOut: () -> Unit,
     isRefresh: Boolean
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val event = viewModel.event
 
     MainTabBackHandler()
 
@@ -64,22 +72,35 @@ fun MyPageRoute(
         }
     }
 
+    LaunchedEffect(Unit) {
+        event.collect {
+            when (it) {
+                is MyPageEvent.LogoutFinished -> {
+                    onClickLogOut()
+                }
+            }
+        }
+    }
+
     MyPageScreen(
         padding = padding,
         uiState = uiState,
         onClickEditProfile = onClickEditProfile,
         onClickMyRecipe = onClickMyRecipe,
-        onClickMyLikes = onClickMyLikes
+        onClickMyLikes = onClickMyLikes,
+        onClickLogOut = viewModel::logout
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyPageScreen(
     padding: PaddingValues,
     uiState: MyPageUiState,
     onClickEditProfile: (String, String?) -> Unit,
     onClickMyRecipe: () -> Unit,
-    onClickMyLikes: () -> Unit
+    onClickMyLikes: () -> Unit,
+    onClickLogOut: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -88,7 +109,20 @@ fun MyPageScreen(
             .background(color = Gray20),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        HeavenTopAppBar(
+            paddingValues = padding,
+            title = "마이 페이지",
+            useNavigationIcon = false,
+            actions = {
+                IconButton(onClick = onClickLogOut) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        tint = Color.Gray,
+                        contentDescription = "settings"
+                    )
+                }
+            }
+        )
         MyProfile(
             userInfo = uiState.userInfo,
             onClickEditProfile = onClickEditProfile

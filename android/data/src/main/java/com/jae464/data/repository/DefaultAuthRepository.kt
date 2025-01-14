@@ -34,6 +34,13 @@ class DefaultAuthRepository @Inject constructor(
         }
     }
 
+    override suspend fun logout() {
+        dataStore.edit { preferences ->
+            preferences.remove(ACCESS_TOKEN_KEY)
+            preferences.remove(REFRESH_TOKEN_KEY)
+        }
+    }
+
     override suspend fun saveAccessToken(accessToken: String) {
         dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN_KEY] = accessToken

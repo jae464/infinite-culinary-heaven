@@ -66,7 +66,8 @@ fun MainNavHost(
             padding = paddingValues,
             onNavigateProfileEdit = { nickname, profileImageUrl -> appState.navigateToProfileEdit(nickname, profileImageUrl) },
             onNavigateToMyRecipe = { appState.navigateToMyRecipe() },
-            onNavigateToMyLikes = { appState.navigateToMyLikes() }
+            onNavigateToMyLikes = { appState.navigateToMyLikes() },
+            onNavigateToLogin = { appState.navigateToLoginAfterLogout() }
         )
         recipeDetailNavGraph(
             onBackClick = { appState.popBackStack() },

@@ -22,7 +22,8 @@ fun NavGraphBuilder.myPageNavGraph(
     padding: PaddingValues,
     onNavigateProfileEdit: (String, String?) -> Unit,
     onNavigateToMyRecipe: () -> Unit,
-    onNavigateToMyLikes: () -> Unit
+    onNavigateToMyLikes: () -> Unit,
+    onNavigateToLogin: () -> Unit
 ) {
     composable<MainTabRoute.MyPage>(
         enterTransition = {
@@ -72,6 +73,7 @@ fun NavGraphBuilder.myPageNavGraph(
             onClickEditProfile = onNavigateProfileEdit,
             onClickMyRecipe = onNavigateToMyRecipe,
             onClickMyLikes = onNavigateToMyLikes,
+            onClickLogOut = onNavigateToLogin,
             isRefresh = isRefresh.value
         )
     }

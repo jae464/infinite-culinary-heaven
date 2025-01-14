@@ -6,6 +6,7 @@ import com.jae464.domain.model.UserInfo
 interface AuthRepository {
 
     suspend fun login(accessToken: String, oauth2Type: String): Result<TokenInfo>
+    suspend fun logout()
     suspend fun saveAccessToken(accessToken: String)
     suspend fun saveRefreshToken(refreshToken: String)
     suspend fun getUserInfo(): Result<UserInfo>

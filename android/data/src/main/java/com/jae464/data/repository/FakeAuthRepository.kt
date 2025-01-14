@@ -10,6 +10,10 @@ class FakeAuthRepository @Inject constructor() : AuthRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun logout() {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun saveAccessToken(accessToken: String) {
         TODO("Not yet implemented")
     }
