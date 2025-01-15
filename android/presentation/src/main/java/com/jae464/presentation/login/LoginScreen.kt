@@ -5,9 +5,12 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -21,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.jae464.presentation.R
 import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.ui.theme.Green5
@@ -73,21 +77,37 @@ fun LoginScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.kakao_login_large_wide),
-            contentDescription = "kakao login",
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
                 .fillMaxWidth()
-                .clickable {
-                    kakaoLogin(
-                        context = context,
-                        onLoginSuccess = { onIntent(LoginIntent.KakaoLogin(it.accessToken)) }
-                    )
-                },
-            contentScale = ContentScale.Crop
-        )
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.kakao_login_large_wide),
+                contentDescription = "kakao login",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        kakaoLogin(
+                            context = context,
+                            onLoginSuccess = { onIntent(LoginIntent.KakaoLogin(it.accessToken)) }
+                        )
+                    },
+                contentScale = ContentScale.Crop
+            )
+            Image(
+                painter = painterResource(id = R.drawable.google_login),
+                contentDescription = "google login",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        googleLogin()
+                    },
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 
@@ -129,4 +149,8 @@ fun kakaoLogin(context: Context, onLoginSuccess: (OAuthToken) -> Unit) {
 
         }
     }
+}
+
+fun googleLogin() {
+
 }
