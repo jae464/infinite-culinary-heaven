@@ -29,6 +29,8 @@ zoomable = "1.5.2"
 google-services = "4.4.2"
 firebase-bom = "33.7.0"
 play-services-auth = "21.3.0"
+androidx-credentials = "1.2.2"
+googleid = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -81,6 +83,10 @@ firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth"}
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "google-services"}
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-services-auth"}
+
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "androidx-credentials"}
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "androidx-credentials" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

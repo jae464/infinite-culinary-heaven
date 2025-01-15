@@ -1,7 +1,10 @@
 package com.jae464.presentation.login
 
 import android.content.Context
+import android.credentials.GetCredentialException
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,8 +26,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.jae464.presentation.BuildConfig
 import com.jae464.presentation.R
 import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.ui.theme.Green5
@@ -32,6 +40,10 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginRoute(
@@ -103,7 +115,10 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        googleLogin()
+                        googleLogin(
+                            context = context,
+                            onLoginSuccess = {}
+                        )
                     },
                 contentScale = ContentScale.Crop
             )
@@ -151,6 +166,31 @@ fun kakaoLogin(context: Context, onLoginSuccess: (OAuthToken) -> Unit) {
     }
 }
 
-fun googleLogin() {
+fun googleLogin(context: Context, onLoginSuccess: (OAuthToken) -> Unit) {
+
+    val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(
+        BuildConfig.GOOGLE_CLIENT_ID
+    ).build()
+
+    Log.d("LoginScreen", signInWithGoogleOption.toString())
+    val request: GetCredentialRequest = GetCredentialRequest.Builder()
+        .addCredentialOption(signInWithGoogleOption)
+        .build()
+
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val result = CredentialManager.create(context)
+                .getCredential(context, request)
+            val googleIdToken = GoogleIdTokenCredential
+                .createFrom(result.credential.data)
+                .idToken
+
+            Log.d("LoginScreen", googleIdToken.toString())
+
+        } catch (e: Exception) {
+            Log.e("LoginScreen", "googleLogin: $e")
+        }
+    }
+
 
 }
