@@ -45,6 +45,20 @@ class LoginViewModel @Inject constructor(
                 }
             }
             is LoginIntent.Logout -> TODO()
+            is LoginIntent.GoogleLogin -> {
+                viewModelScope.launch {
+                    authRepository.login(intent.idToken, "google")
+                        .onSuccess {
+                            Log.d("LoginViewModel", "login success")
+                            val deviceToken = FirebaseMessaging.getInstance().token.await()
+                            userRepository.updateDeviceToken(deviceToken)
+                            _uiEvent.emit(LoginEvent.LoginSuccess)
+                        }
+                        .onFailure {
+                            _uiEvent.emit(LoginEvent.LoginFailed)
+                        }
+                }
+            }
         }
     }
 

@@ -166,7 +166,7 @@ fun kakaoLogin(context: Context, onLoginSuccess: (OAuthToken) -> Unit) {
     }
 }
 
-fun googleLogin(context: Context, onLoginSuccess: (OAuthToken) -> Unit) {
+fun googleLogin(context: Context, onLoginSuccess: (String) -> Unit) {
 
     val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(
         BuildConfig.GOOGLE_CLIENT_ID
