@@ -117,7 +117,7 @@ fun LoginScreen(
                     .clickable {
                         googleLogin(
                             context = context,
-                            onLoginSuccess = {}
+                            onLoginSuccess = { onIntent(LoginIntent.GoogleLogin(it))}
                         )
                     },
                 contentScale = ContentScale.Crop
@@ -186,6 +186,7 @@ fun googleLogin(context: Context, onLoginSuccess: (String) -> Unit) {
                 .idToken
 
             Log.d("LoginScreen", googleIdToken.toString())
+            onLoginSuccess(googleIdToken)
 
         } catch (e: Exception) {
             Log.e("LoginScreen", "googleLogin: $e")
