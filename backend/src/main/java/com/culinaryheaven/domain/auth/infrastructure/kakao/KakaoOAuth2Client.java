@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class KakaoOAuth2Client implements OAuth2Client {
     }
 
     @Override
-    public OAuth2UserInfoResponse getUserInfo(String accessToken) {
+    public String getOAuth2UserId(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + accessToken);
@@ -42,7 +44,10 @@ public class KakaoOAuth2Client implements OAuth2Client {
                     OAuth2UserInfoResponse.class
             );
             System.out.println(response);
-            return response.getBody();
+            if (response.getBody() == null) {
+                throw new CustomException(ErrorCode.KAKAO_INTERNAL_ERROR);
+            }
+            return response.getBody().id().toString();
 
         } catch (HttpStatusCodeException e) {
             throw new CustomException(ErrorCode.KAKAO_INTERNAL_ERROR);

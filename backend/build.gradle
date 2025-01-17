@@ -65,6 +65,9 @@ dependencies {
 	// firebase
 	implementation 'com.google.firebase:firebase-admin:9.3.0'
 
+	// google api
+	implementation 'com.google.api-client:google-api-client:1.32.1'
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

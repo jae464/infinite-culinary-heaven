@@ -21,3 +21,7 @@ management:
 
 firebase:
   private-key-path: classpath:culinary-heaven-firebase-adminsdk.json
+
+oauth:
+  google:
+    clientId: ${GOOGLE_CLIENT_ID}

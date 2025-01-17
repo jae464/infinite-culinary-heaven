@@ -20,6 +20,7 @@ jobs:
           echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env
           echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> .env
           echo "SLACK_WEBHOOK_URI"=${{ secrets.SLACK_WEBHOOK_URI }} >> .env
+          echo "GOOGLE_CLIENT_ID"=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
 
       - name: create-json
         id: create-json

@@ -57,14 +57,13 @@ class AuthServiceTest {
         // Given
         String oauth2Type = "KAKAO";
         String oauth2AccessToken = "validAccessToken";
-        OAuth2UserInfoResponse OAuth2UserInfoResponse = new OAuth2UserInfoResponse(12345L);
         String accessToken = "accessToken";
         String refreshToken = "refreshToken";
         User user = fixtureMonkey.giveMeOne(User.class);
 
-        when(oAuth2Client.getUserInfo(oauth2AccessToken)).thenReturn(OAuth2UserInfoResponse);
-        when(jwtTokenProvider.provideToken(12345L, TokenType.ACCESS, "ROLE_USER")).thenReturn(accessToken);
-        when(jwtTokenProvider.provideToken(12345L, TokenType.REFRESH, "ROLE_USER")).thenReturn(refreshToken);
+        when(oAuth2Client.getOAuth2UserId(oauth2AccessToken)).thenReturn("12345");
+        when(jwtTokenProvider.provideToken("12345", TokenType.ACCESS, "ROLE_USER")).thenReturn(accessToken);
+        when(jwtTokenProvider.provideToken("12345", TokenType.REFRESH, "ROLE_USER")).thenReturn(refreshToken);
         when(userRepository.findByOauthId("12345")).thenReturn(Optional.of(user));
 
         // When
@@ -83,8 +82,8 @@ class AuthServiceTest {
         String accessToken = "adminAccessToken";
         String refreshToken = "adminRefreshToken";
 
-        when(jwtTokenProvider.provideToken(1L, TokenType.ACCESS, "ROLE_ADMIN")).thenReturn(accessToken);
-        when(jwtTokenProvider.provideToken(1L, TokenType.REFRESH, "ROLE_ADMIN")).thenReturn(refreshToken);
+        when(jwtTokenProvider.provideToken("12345", TokenType.ACCESS, "ROLE_ADMIN")).thenReturn(accessToken);
+        when(jwtTokenProvider.provideToken("12345", TokenType.REFRESH, "ROLE_ADMIN")).thenReturn(refreshToken);
 
         // When
         LoginResponse response = authService.loginAsAdmin(adminLoginRequest);
@@ -120,8 +119,8 @@ class AuthServiceTest {
         when(claims.getSubject()).thenReturn("12345");
         when(claims.get("memberRole", String.class)).thenReturn("ROLE_USER");
         when(userRepository.findByOauthId("12345")).thenReturn(Optional.of(user));
-        when(jwtTokenProvider.provideToken(12345L, TokenType.ACCESS, "ROLE_USER")).thenReturn(newAccessToken);
-        when(jwtTokenProvider.provideToken(12345L, TokenType.REFRESH, "ROLE_USER")).thenReturn(newRefreshToken);
+        when(jwtTokenProvider.provideToken("12345", TokenType.ACCESS, "ROLE_USER")).thenReturn(newAccessToken);
+        when(jwtTokenProvider.provideToken("12345", TokenType.REFRESH, "ROLE_USER")).thenReturn(newRefreshToken);
 
         // When
         ReissueResponse response = authService.reissue(request);

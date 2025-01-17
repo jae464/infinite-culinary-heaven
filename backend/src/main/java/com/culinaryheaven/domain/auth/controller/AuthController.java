@@ -23,7 +23,7 @@ public class AuthController {
     public ResponseEntity<LoginResponse> oauth2Login(
             @RequestBody OAuth2LoginRequest request
     ) {
-        LoginResponse loginResponse = authService.login("kakao", request.accessToken());
+        LoginResponse loginResponse = authService.login(request.oauth2Type(), request.accessToken());
         return ResponseEntity.ok().body(loginResponse);
     }
 

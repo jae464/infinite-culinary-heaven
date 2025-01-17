@@ -12,6 +12,7 @@ services:
       MYSQL_USER: culinary
       MYSQL_PASSWORD: culinary
       SLACK_WEBHOOK_URI: ${SLACK_WEBHOOK_URI}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       TZ: Asia/Seoul
     depends_on:
       - mysql

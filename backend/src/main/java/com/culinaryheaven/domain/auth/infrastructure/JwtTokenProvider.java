@@ -38,7 +38,7 @@ public class JwtTokenProvider {
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInSeconds * 1000;
     }
 
-    public String provideToken(Long id, TokenType tokenType, String role) {
+    public String provideToken(String id, TokenType tokenType, String role) {
         long now = (new Date()).getTime();
 
         Date validity;
@@ -55,7 +55,7 @@ public class JwtTokenProvider {
         }
 
         return Jwts.builder()
-                .setSubject(id.toString())
+                .setSubject(id)
                 .claim(MEMBER_ROLE_CLAIM_KEY, role)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(validity)

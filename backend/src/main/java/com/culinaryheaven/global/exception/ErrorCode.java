@@ -46,6 +46,9 @@ public enum ErrorCode {
     //kakao
     KAKAO_INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "카카오 API 통신에 실패했습니다."),
 
+    // google
+    GOOGLE_INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "구글 API 통신에 실패했습니다."),
+
     // image
     IMAGE_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 저장에 실패했습니다."),
     INVALID_IMAGE_URL(HttpStatus.BAD_REQUEST, "파일 경로가 올바르지 않습니다."),

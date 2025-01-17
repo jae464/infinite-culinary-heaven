@@ -8,12 +8,15 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum OAuth2Type {
-    KAKAO("kakao");
+    KAKAO("kakao"),
+    GOOGLE("google");
+
     private final String value;
 
     public static OAuth2Type from(String value) {
         return switch (value.toLowerCase()) {
             case "kakao" -> KAKAO;
+            case "google" -> GOOGLE;
             default -> throw new CustomException(ErrorCode.INVALID_OAUTH2_TYPE);
         };
     }

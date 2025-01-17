@@ -6,6 +6,6 @@ import com.culinaryheaven.domain.auth.infrastructure.dto.response.OAuth2UserInfo
 public interface OAuth2Client {
 
     OAuth2Type getOauthType();
-    OAuth2UserInfoResponse getUserInfo(String accessToken);
+    String getOAuth2UserId(String accessToken);
 
 }
