@@ -7,8 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.jae464.presentation.main.Route
-import com.jae464.presentation.mypage.MyLikesRoute
-import com.jae464.presentation.mypage.MyRecipeRoute
+import com.jae464.presentation.mypage.mylikes.MyLikesRoute
 
 fun NavController.navigateMyLikes(navOptions: NavOptions? = null) {
     navigate(Route.MyLikes, navOptions)

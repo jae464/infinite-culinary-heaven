@@ -1,4 +1,4 @@
-package com.jae464.presentation.mypage
+package com.jae464.presentation.mypage.mylikes
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -29,17 +29,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.RecipeItem
-import com.jae464.presentation.contestdetail.ContestDetailIntent
 
 @Composable
-fun MyRecipeRoute(
+fun MyLikesRoute(
     onBackClick: () -> Unit,
     onClickRecipe: (Long) -> Unit,
-    viewModel: MyRecipeViewModel = hiltViewModel()
+    viewModel: MyLikesViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    MyRecipeScreen(
+    MyLikesScreen(
         uiState = uiState,
         onBackClick = onBackClick,
         onClickRecipe = onClickRecipe,
@@ -50,11 +49,11 @@ fun MyRecipeRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyRecipeScreen(
-    uiState: MyRecipeUiState,
+fun MyLikesScreen(
+    uiState: MyLikesUiState,
     onClickRecipe: (Long) -> Unit = {},
     onBackClick: () -> Unit,
-    onIntent: (MyRecipeIntent) -> Unit = {}
+    onIntent: (MyLikesIntent) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
     val isScrollingToEnd by remember(uiState.recipes) {
@@ -66,7 +65,7 @@ fun MyRecipeScreen(
     LaunchedEffect(isScrollingToEnd) {
         if (isScrollingToEnd && !uiState.isLoading && uiState.recipes.size >= 20) {
             Log.d("HomeScreen", "isScrollingToEnd Fetching")
-            onIntent(MyRecipeIntent.FetchMyRecipePreviews)
+            onIntent(MyLikesIntent.FetchMyLikesRecipePreviews)
         }
     }
     Column(
@@ -76,7 +75,7 @@ fun MyRecipeScreen(
             .navigationBarsPadding()
     ) {
         HeavenTopAppBar(
-            title = "나의 레시피",
+            title = "좋아요 한 레시피",
             navigationIcon = Icons.Default.ArrowBack,
             useNavigationIcon = true,
             onNavigationClick = onBackClick,
@@ -84,7 +83,7 @@ fun MyRecipeScreen(
         if (uiState.recipes.isEmpty() && !uiState.isLoading) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
-                    text = "아직 작성한 레시피가 없습니다.",
+                    text = "아직 좋아요 한 레시피가 없습니다.",
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.Black,
                     fontSize = 18.sp,

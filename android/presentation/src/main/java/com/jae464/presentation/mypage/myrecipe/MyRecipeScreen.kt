@@ -1,4 +1,4 @@
-package com.jae464.presentation.mypage
+package com.jae464.presentation.mypage.myrecipe
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -31,14 +31,14 @@ import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.RecipeItem
 
 @Composable
-fun MyLikesRoute(
+fun MyRecipeRoute(
     onBackClick: () -> Unit,
     onClickRecipe: (Long) -> Unit,
-    viewModel: MyLikesViewModel = hiltViewModel()
+    viewModel: MyRecipeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    MyLikesScreen(
+    MyRecipeScreen(
         uiState = uiState,
         onBackClick = onBackClick,
         onClickRecipe = onClickRecipe,
@@ -49,11 +49,11 @@ fun MyLikesRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyLikesScreen(
-    uiState: MyLikesUiState,
+fun MyRecipeScreen(
+    uiState: MyRecipeUiState,
     onClickRecipe: (Long) -> Unit = {},
     onBackClick: () -> Unit,
-    onIntent: (MyLikesIntent) -> Unit = {}
+    onIntent: (MyRecipeIntent) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
     val isScrollingToEnd by remember(uiState.recipes) {
@@ -65,7 +65,7 @@ fun MyLikesScreen(
     LaunchedEffect(isScrollingToEnd) {
         if (isScrollingToEnd && !uiState.isLoading && uiState.recipes.size >= 20) {
             Log.d("HomeScreen", "isScrollingToEnd Fetching")
-            onIntent(MyLikesIntent.FetchMyLikesRecipePreviews)
+            onIntent(MyRecipeIntent.FetchMyRecipePreviews)
         }
     }
     Column(
@@ -75,7 +75,7 @@ fun MyLikesScreen(
             .navigationBarsPadding()
     ) {
         HeavenTopAppBar(
-            title = "좋아요 한 레시피",
+            title = "나의 레시피",
             navigationIcon = Icons.Default.ArrowBack,
             useNavigationIcon = true,
             onNavigationClick = onBackClick,
@@ -83,7 +83,7 @@ fun MyLikesScreen(
         if (uiState.recipes.isEmpty() && !uiState.isLoading) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
-                    text = "아직 좋아요 한 레시피가 없습니다.",
+                    text = "아직 작성한 레시피가 없습니다.",
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.Black,
                     fontSize = 18.sp,

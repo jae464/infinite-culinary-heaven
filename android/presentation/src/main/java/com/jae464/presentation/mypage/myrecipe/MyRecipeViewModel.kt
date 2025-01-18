@@ -1,4 +1,4 @@
-package com.jae464.presentation.mypage
+package com.jae464.presentation.mypage.myrecipe
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @HiltViewModel

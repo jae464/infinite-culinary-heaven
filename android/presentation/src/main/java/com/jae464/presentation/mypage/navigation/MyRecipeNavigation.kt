@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.jae464.presentation.main.Route
-import com.jae464.presentation.mypage.MyRecipeRoute
+import com.jae464.presentation.mypage.myrecipe.MyRecipeRoute
 
 fun NavController.navigateMyRecipe(navOptions: NavOptions? = null) {
     navigate(Route.MyRecipe, navOptions)

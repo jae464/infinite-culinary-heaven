@@ -1,4 +1,4 @@
-package com.jae464.presentation.mypage
+package com.jae464.presentation.mypage.mylikes
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

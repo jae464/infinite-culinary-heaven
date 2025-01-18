@@ -1,4 +1,4 @@
-package com.jae464.presentation.mypage
+package com.jae464.presentation.mypage.editprofile
 
 sealed interface ProfileEditEvent {
     data object UpdateProfileSuccess : ProfileEditEvent

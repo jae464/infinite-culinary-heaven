@@ -1,4 +1,4 @@
-package com.jae464.presentation.mypage
+package com.jae464.presentation.mypage.editprofile
 
 data class ProfileEditUiState(
     val nickname: String = "",
