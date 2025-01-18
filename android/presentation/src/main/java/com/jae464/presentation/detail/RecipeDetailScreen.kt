@@ -4,8 +4,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -150,6 +152,7 @@ fun RecipeDetailScreen(
     val scope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
+    val scrollState = rememberScrollState()
 
     val minHeight = screenHeight * 0.5f
     val maxHeight = screenHeight * 0.8f
@@ -162,7 +165,6 @@ fun RecipeDetailScreen(
             )
             .statusBarsPadding()
             .navigationBarsPadding()
-            .verticalScroll(rememberScrollState())
     ) {
         HeavenTopAppBar(
             title = uiState.recipe?.title ?: "",
@@ -223,16 +225,20 @@ fun RecipeDetailScreen(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
             thickness = 0.5.dp
         )
-        if (uiState.recipe != null) {
-            RecipeItem(recipe = uiState.recipe,
-                onClickImage = {
-                    showImageDialog = true
-                    imageUrl = it
-                },
-                onClickCommentIcon = {
-                    showBottomSheet = true
-                }
-            )
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            if (uiState.recipe != null) {
+                RecipeItem(recipe = uiState.recipe,
+                    onClickImage = {
+                        showImageDialog = true
+                        imageUrl = it
+                    },
+                    onClickCommentIcon = {
+                        showBottomSheet = true
+                    }
+                )
+            }
         }
 
         // 댓글

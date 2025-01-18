@@ -112,15 +112,15 @@ fun RecipeRegisterScreen(
     onBackClick: () -> Unit
 ) {
 
-    val scrollState = rememberScrollState()
+//    val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
 
 
-    LaunchedEffect(uiState.steps) {
-        if (uiState.steps.isNotEmpty()) {
-            scrollState.animateScrollTo(scrollState.maxValue)
-        }
-    }
+//    LaunchedEffect(uiState.steps) {
+//        if (uiState.steps.isNotEmpty()) {
+//            scrollState.animateScrollTo(scrollState.maxValue)
+//        }
+//    }
 
     Box(
         modifier = Modifier
@@ -131,7 +131,6 @@ fun RecipeRegisterScreen(
             modifier = Modifier
                 .statusBarsPadding()
                 .padding(bottom = 84.dp)
-                .verticalScroll(scrollState)
         ) {
 
             HeavenTopAppBar(
@@ -194,8 +193,17 @@ fun RegisterForm(
     onAddStep: (Step) -> Unit,
     onRemoveStep: (Step) -> Unit,
 ) {
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(uiState.steps) {
+        if (uiState.steps.isNotEmpty()) {
+            scrollState.animateScrollTo(scrollState.maxValue)
+        }
+    }
+
     Column(
         modifier = Modifier.padding(16.dp)
+            .verticalScroll(scrollState)
     ) {
         RecipeThumbnailImage(
             thumbnailImage = uiState.thumbnailImage,
