@@ -54,18 +54,18 @@ VALUES ('제8회 새우 요리 대회', '이번 주 주재료는 새우입니다
 
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
 VALUES ('제9회 닭고기 요리 대회', '이번 주 주재료는 닭고기입니다.',
-        '2024-12-30T00:00:00', '2025-01-04T23:59:59', 9);
+        '2024-12-30T00:00:00', '2025-01-05T23:59:59', 9);
 
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
 VALUES ('제10회 돼지고기 요리 대회', '이번 주 주재료는 돼지고기입니다.',
-        '2025-01-05T00:00:00', '2025-01-11T23:59:59', 10);
+        '2025-01-06T00:00:00', '2025-01-12T23:59:59', 10);
 
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
 VALUES ('제11회 참치 요리 대회', '이번 주 주재료는 참치입니다.',
-        '2025-01-12T00:00:00', '2025-01-18T23:59:59', 11);
+        '2025-01-13T00:00:00', '2025-01-19T23:59:59', 11);
 
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
-VALUES ('제12회 대회', '이번 주 주재료는 두부입니다.', '2025-01-19T00:00:00', '2024-01-25T23:59:59', 1);
+VALUES ('제12회 대회', '이번 주 주재료는 두부입니다.', '2025-01-20T00:00:00', '2025-01-25T23:59:59', 1);
 
 
 -- 감자 대회 레시피
