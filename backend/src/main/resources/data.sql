@@ -64,6 +64,9 @@ INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_i
 VALUES ('제11회 참치 요리 대회', '이번 주 주재료는 참치입니다.',
         '2025-01-12T00:00:00', '2025-01-18T23:59:59', 11);
 
+INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
+VALUES ('제12회 대회', '이번 주 주재료는 두부입니다.', '2025-01-19T00:00:00', '2024-01-25T23:59:59', 1);
+
 
 -- 감자 대회 레시피
 INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, user_id, contest_id)
@@ -168,3 +171,37 @@ VALUES (5, '법랑 접시를 3단에 넣은 후 광파오븐 수동 요리 <구�
 INSERT INTO step (step, description, image, recipe_id)
 VALUES (6, '완성된 대하 치즈구이를 접시에 담아 레몬, 파슬리 등을 올려 맛있게 즐겨주세요.',
         'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_shrimp_6.jpg', 5);
+
+-- 두부 요리 대회 레시피
+INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, user_id, contest_id)
+VALUES ('2025-01-20T00:00:01', '2025-01-20T00:00:01', '간장두부조림', '근본 두부요리',
+        'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/recipe_tofu_sample.jpg', 1, 12);
+
+INSERT INTO ingredient (name, quantity, recipe_id)
+VALUES ('두부', '1모', 6);
+INSERT INTO ingredient (name, quantity, recipe_id)
+VALUES ('식용유', '2 큰술', 6);
+INSERT INTO ingredient (name, quantity, recipe_id)
+VALUES ('대파', '약간', 6);
+INSERT INTO ingredient (name, quantity, recipe_id)
+VALUES ('통깨', '약간', 6);
+INSERT INTO ingredient (name, quantity, recipe_id)
+VALUES ('간장', '2큰술', 6);
+INSERT INTO ingredient (name, quantity, recipe_id)
+VALUES ('물', '4큰술', 6);
+INSERT INTO ingredient (name, quantity, recipe_id)
+VALUES ('설탕', '1/2큰술', 6);
+
+INSERT INTO step (step, description, image, recipe_id)
+VALUES (1, '두부는 도톰한 두께로 썰고 키친타월로 물기를 제거해 주세요. 양념재료를 섞어 준비해 주세요.',
+        'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_tofu_1.jpg', 6);
+INSERT INTO step (step, description, image, recipe_id)
+VALUES (2, '달군 팬에 기름을 두르고 두부를 앞뒤로 노릇하게 구워주세요. ',
+        'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_tofu_2.jpg', 6);
+INSERT INTO step (step, description, image, recipe_id)
+VALUES (3, '구운 두부에 양념재료를 넣고 약불에서 5분 정도 졸여주세요. ',
+        'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_tofu_3.jpg', 6);
+INSERT INTO step (step, description, image, recipe_id)
+VALUES (4, '완성된 간장두부조림을 접시에 담고 송송 썬 대파와 통깨를 뿌려 밥과 함께 즐겨주세요.',
+        'https://culinary-heaven.s3.ap-northeast-2.amazonaws.com/image/step_tofu_4.jpg', 6);
+
