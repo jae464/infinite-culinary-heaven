@@ -83,4 +83,12 @@ public class Recipe extends BaseTimeEntity {
         this.thumbnailImage = thumbnailImage;
     }
 
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
 }

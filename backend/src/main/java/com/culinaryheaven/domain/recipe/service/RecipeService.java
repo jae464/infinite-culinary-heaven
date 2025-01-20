@@ -97,6 +97,9 @@ public class RecipeService {
 
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
 
+        recipe.updateTitle(request.title());
+        recipe.updateDescription(request.description());
+
         Map<String, MultipartFile> imageMap = images.stream()
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, file -> file));
 
