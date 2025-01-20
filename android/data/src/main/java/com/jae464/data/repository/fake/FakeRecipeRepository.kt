@@ -1,7 +1,5 @@
-package com.jae464.data.repository
+package com.jae464.data.repository.fake
 
-import androidx.paging.PagingSource
-import com.jae464.domain.model.Contest
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.RecipePreview

@@ -1,4 +1,4 @@
-package com.jae464.data.repository
+package com.jae464.data.repository.fake
 
 import com.jae464.domain.model.TokenInfo
 import com.jae464.domain.model.UserInfo

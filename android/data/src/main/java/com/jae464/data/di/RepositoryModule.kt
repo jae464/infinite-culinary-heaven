@@ -1,6 +1,5 @@
 package com.jae464.data.di
 
-import com.jae464.data.remote.model.response.CommentResponse
 import com.jae464.data.repository.DefaultAuthRepository
 import com.jae464.data.repository.DefaultBookMarkRepository
 import com.jae464.data.repository.DefaultCommentRepository
@@ -8,8 +7,6 @@ import com.jae464.data.repository.DefaultContestRepository
 import com.jae464.data.repository.DefaultDeviceTokenRepository
 import com.jae464.data.repository.DefaultRecipeRepository
 import com.jae464.data.repository.DefaultUserRepository
-import com.jae464.data.repository.FakeBookMarkRepository
-import com.jae464.data.repository.FakeAuthRepository
 import com.jae464.domain.repository.BookMarkRepository
 import com.jae464.domain.repository.ContestRepository
 import com.jae464.domain.repository.RecipeRepository

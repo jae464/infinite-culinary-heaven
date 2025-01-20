@@ -1,8 +1,7 @@
-package com.jae464.data.repository
+package com.jae464.data.repository.fake
 
 import com.jae464.domain.model.Contest
 import com.jae464.domain.repository.ContestRepository
-import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 

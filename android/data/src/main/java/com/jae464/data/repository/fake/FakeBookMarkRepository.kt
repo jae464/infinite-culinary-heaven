@@ -1,7 +1,6 @@
-package com.jae464.data.repository
+package com.jae464.data.repository.fake
 
 import com.jae464.domain.model.BookMark
-import com.jae464.domain.model.RecipePreview
 import com.jae464.domain.repository.BookMarkRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
