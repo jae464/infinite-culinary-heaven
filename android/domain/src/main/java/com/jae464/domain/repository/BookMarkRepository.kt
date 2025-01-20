@@ -4,7 +4,7 @@ import com.jae464.domain.model.BookMark
 import kotlinx.coroutines.flow.Flow
 
 interface BookMarkRepository {
-    suspend fun getBookMarkedRecipes(): Result<List<BookMark>>
+    suspend fun getBookMarkedRecipes(page: Int): Result<List<BookMark>>
     suspend fun addBookMark(recipeId: Long): Result<Unit>
     suspend fun deleteBookMark(recipeId: Long): Result<Unit>
     fun getBookMarkedRecipeIds(): Flow<Set<String>>

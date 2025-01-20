@@ -20,20 +20,38 @@ class ContestHistoryViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ContestHistoryUiState())
     val uiState: StateFlow<ContestHistoryUiState> = _uiState.asStateFlow()
 
+    private var currentPage = 0
+    private var isLastPage = false
+
     init {
         fetchContests()
     }
 
+    fun handleIntent(intent: ContestHistoryIntent) {
+        when (intent) {
+            ContestHistoryIntent.LoadContestHistory -> fetchContests()
+        }
+    }
+
     private fun fetchContests() {
+        if (isLastPage || uiState.value.isLoading) return
+
+        _uiState.update { state -> state.copy(isLoading = true) }
+
         viewModelScope.launch {
-
-            runCatching {
-                val contests = contestRepository.getAllContests().getOrThrow()
-                _uiState.update { state -> state.copy(contests = contests, isLoading = false) }
-            }.onFailure {
-                Log.e("ContestHistoryViewModel", "fetchContests Failed")
-            }
-
+            contestRepository.getAllContests(currentPage)
+                .onSuccess {
+                    if (it.isEmpty()) {
+                        isLastPage = true
+                    } else {
+                        currentPage++
+                    }
+                    _uiState.update { state -> state.copy(contests = state.contests + it, isLoading = false) }
+                }
+                .onFailure {
+                    Log.e("ContestHistoryViewModel", "fetchContests Failed")
+                    _uiState.update { state -> state.copy(isLoading = false) }
+                }
         }
     }
 

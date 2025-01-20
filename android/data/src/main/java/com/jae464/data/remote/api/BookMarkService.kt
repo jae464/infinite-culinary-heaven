@@ -17,7 +17,7 @@ interface BookMarkService {
     @GET("/bookmarks")
     suspend fun getAllBookMarks(
         @Query("page") page: Int = 0,
-        @Query("size") size: Int = 100, // todo page 로직 구현후 추후 수정
+        @Query("size") size: Int = 20, // todo page 로직 구현후 추후 수정
     ): Response<BookMarksResponse>
 
     @DELETE("/bookmarks/{bookMarkId}")

@@ -19,9 +19,9 @@ class DefaultContestRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAllContests(): Result<List<Contest>> {
+    override suspend fun getAllContests(page: Int): Result<List<Contest>> {
         return handleResponse {
-            contestService.getAllContests()
+            contestService.getAllContests(page)
         }.mapCatching { response ->
             response.toDomain()
         }

@@ -19,7 +19,7 @@ class FakeContestRepository @Inject constructor() : ContestRepository {
         )
     }
 
-    override suspend fun getAllContests(): Result<List<Contest>> {
+    override suspend fun getAllContests(page: Int): Result<List<Contest>> {
         return Result.success(
             listOf(
                 Contest(

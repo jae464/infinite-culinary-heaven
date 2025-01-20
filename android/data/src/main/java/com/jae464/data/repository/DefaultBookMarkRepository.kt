@@ -22,9 +22,9 @@ class DefaultBookMarkRepository @Inject constructor(
 
     private val BOOKMARK_KEY = stringSetPreferencesKey("bookmark")
 
-    override suspend fun getBookMarkedRecipes(): Result<List<BookMark>> {
+    override suspend fun getBookMarkedRecipes(page: Int): Result<List<BookMark>> {
         return handleResponse {
-            bookMarkService.getAllBookMarks()
+            bookMarkService.getAllBookMarks(page = page)
         }.mapCatching { bookMarksResponse ->
             dataStore.edit { preferences ->
                 preferences[BOOKMARK_KEY] = bookMarksResponse.bookMarks.map { it.recipe.id.toString() }.toSet()

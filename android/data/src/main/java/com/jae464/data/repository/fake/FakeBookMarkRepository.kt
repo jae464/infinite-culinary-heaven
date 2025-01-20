@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FakeBookMarkRepository @Inject constructor() : BookMarkRepository {
-    override suspend fun getBookMarkedRecipes(): Result<List<BookMark>> {
+    override suspend fun getBookMarkedRecipes(page: Int): Result<List<BookMark>> {
         return Result.success(
             listOf(
 
