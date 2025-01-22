@@ -82,8 +82,8 @@ class AuthServiceTest {
         String accessToken = "adminAccessToken";
         String refreshToken = "adminRefreshToken";
 
-        when(jwtTokenProvider.provideToken("12345", TokenType.ACCESS, "ROLE_ADMIN")).thenReturn(accessToken);
-        when(jwtTokenProvider.provideToken("12345", TokenType.REFRESH, "ROLE_ADMIN")).thenReturn(refreshToken);
+        when(jwtTokenProvider.provideToken("admin", TokenType.ACCESS, "ROLE_ADMIN")).thenReturn(accessToken);
+        when(jwtTokenProvider.provideToken("admin", TokenType.REFRESH, "ROLE_ADMIN")).thenReturn(refreshToken);
 
         // When
         LoginResponse response = authService.loginAsAdmin(adminLoginRequest);

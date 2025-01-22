@@ -72,8 +72,8 @@ public class AuthService {
         // todo 추후 Admin 관련 테이블 생기면 수정하기
         if (adminLoginRequest.id().equals("admin") && adminLoginRequest.password().equals("admin")) {
 
-            String accessToken = jwtTokenProvider.provideToken("1", TokenType.ACCESS, "ROLE_ADMIN");
-            String refreshToken = jwtTokenProvider.provideToken("1", TokenType.REFRESH, "ROLE_ADMIN");
+            String accessToken = jwtTokenProvider.provideToken("admin", TokenType.ACCESS, "ROLE_ADMIN");
+            String refreshToken = jwtTokenProvider.provideToken("admin", TokenType.REFRESH, "ROLE_ADMIN");
 
             return new LoginResponse(accessToken, refreshToken);
         }
