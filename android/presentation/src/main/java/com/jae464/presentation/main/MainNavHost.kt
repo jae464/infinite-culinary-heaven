@@ -16,6 +16,7 @@ import com.jae464.presentation.mypage.navigation.myLikesNavGraph
 import com.jae464.presentation.mypage.navigation.myPageNavGraph
 import com.jae464.presentation.mypage.navigation.myRecipeNavGraph
 import com.jae464.presentation.mypage.navigation.profileEditNavGraph
+import com.jae464.presentation.mypage.navigation.settingNavGraph
 import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
 import com.jae464.presentation.search.navigation.recipeSearchNavGraph
 import com.jae464.presentation.splash.navigation.splashNavGraph
@@ -67,7 +68,8 @@ fun MainNavHost(
             onNavigateProfileEdit = { nickname, profileImageUrl -> appState.navigateToProfileEdit(nickname, profileImageUrl) },
             onNavigateToMyRecipe = { appState.navigateToMyRecipe() },
             onNavigateToMyLikes = { appState.navigateToMyLikes() },
-            onNavigateToLogin = { appState.navigateToLoginAfterLogout() }
+            onNavigateToLogin = { appState.navigateToLoginAfterLogout() },
+            onNavigateToSetting = { appState.navigateToSetting() }
         )
         recipeDetailNavGraph(
             onBackClick = { appState.popBackStack() },
@@ -107,6 +109,9 @@ fun MainNavHost(
         myLikesNavGraph(
             onBackClick = { appState.popBackStack() },
             onClickRecipe = { appState.navigateToRecipeDetail(it) }
+        )
+        settingNavGraph(
+            onBackClick = { appState.popBackStack() }
         )
     }
 }

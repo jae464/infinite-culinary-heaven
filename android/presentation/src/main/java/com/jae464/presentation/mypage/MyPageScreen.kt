@@ -58,6 +58,7 @@ fun MyPageRoute(
     onClickMyRecipe: () -> Unit,
     onClickMyLikes: () -> Unit,
     onClickLogOut: () -> Unit,
+    onClickSetting: () -> Unit,
     isRefresh: Boolean
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -88,7 +89,7 @@ fun MyPageRoute(
         onClickEditProfile = onClickEditProfile,
         onClickMyRecipe = onClickMyRecipe,
         onClickMyLikes = onClickMyLikes,
-        onClickLogOut = viewModel::logout
+        onClickSetting = onClickSetting
     )
 }
 
@@ -100,7 +101,7 @@ fun MyPageScreen(
     onClickEditProfile: (String, String?) -> Unit,
     onClickMyRecipe: () -> Unit,
     onClickMyLikes: () -> Unit,
-    onClickLogOut: () -> Unit,
+    onClickSetting: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -114,7 +115,7 @@ fun MyPageScreen(
             title = "마이 페이지",
             useNavigationIcon = false,
             actions = {
-                IconButton(onClick = onClickLogOut) {
+                IconButton(onClick = onClickSetting) {
                     Icon(
                         imageVector = Icons.Default.Settings,
                         tint = Color.Gray,

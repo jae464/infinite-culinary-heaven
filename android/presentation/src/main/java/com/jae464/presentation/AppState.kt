@@ -23,6 +23,7 @@ import com.jae464.presentation.main.Route
 import com.jae464.presentation.mypage.navigation.navigateMyLikes
 import com.jae464.presentation.mypage.navigation.navigateMyRecipe
 import com.jae464.presentation.mypage.navigation.navigateProfileEdit
+import com.jae464.presentation.mypage.navigation.navigateSetting
 import com.jae464.presentation.search.navigation.navigateRecipeSearch
 
 @Stable
@@ -127,6 +128,10 @@ class AppState(
 
     fun navigateToMyLikes() {
         navController.navigateMyLikes()
+    }
+
+    fun navigateToSetting() {
+        navController.navigateSetting()
     }
 
     fun popBackStack() {

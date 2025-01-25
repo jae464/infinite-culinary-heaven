@@ -55,6 +55,11 @@ sealed interface Route {
         override val name: String = "my_likes"
     }
 
+    @Serializable
+    data object Setting: Route {
+        override val name: String = "setting"
+    }
+
 }
 
 sealed interface MainTabRoute : Route {
