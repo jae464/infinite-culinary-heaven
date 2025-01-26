@@ -22,10 +22,6 @@ class FakeBookMarkRepository @Inject constructor() : BookMarkRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getBookMarkedRecipeIds(): Flow<Set<String>> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun isBookMarked(recipeId: Long): Boolean {
         TODO("Not yet implemented")
     }

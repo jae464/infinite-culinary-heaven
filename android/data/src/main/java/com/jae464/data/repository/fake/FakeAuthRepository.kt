@@ -22,17 +22,6 @@ class FakeAuthRepository @Inject constructor() : AuthRepository {
         TODO("Not yet implemented")
     }
 
-
-    override suspend fun getUserInfo(): Result<UserInfo> {
-        return Result.success(
-            UserInfo(
-                id = 1L,
-                name = "이민재",
-                profileImageUrl = "https://www.studiopeople.kr/common/img/default_profile.png"
-            )
-        )
-    }
-
     override suspend fun getAccessToken(): String {
         TODO("Not yet implemented")
     }

@@ -10,22 +10,44 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
 
-    private const val USER_PREFERENCES = "user_preferences"
+    private const val AUTH_PREFERENCES = "auth_preferences"
+    private const val BOOK_MARK_PREFERENCES = "book_mark_preferences"
 
     @Provides
     @Singleton
-    fun providePreferenceDataStore(
+    @AuthDataStore
+    fun provideAuthDataStore(
         @ApplicationContext context: Context
     ): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
-            produceFile = { context.preferencesDataStoreFile(USER_PREFERENCES) }
+            produceFile = { context.preferencesDataStoreFile(AUTH_PREFERENCES) }
+        )
+    }
+
+    @Provides
+    @Singleton
+    @BookMarkDataStore
+    fun provideBookMarkDataStore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create(
+            produceFile = { context.preferencesDataStoreFile(BOOK_MARK_PREFERENCES) }
         )
     }
 
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class AuthDataStore
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BookMarkDataStore
