@@ -20,13 +20,12 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
@@ -34,8 +33,14 @@ import com.jae464.presentation.ui.theme.Gray20
 @Composable
 fun SettingRoute(
     onBackClick: () -> Unit,
+    viewModel: SettingViewModel = hiltViewModel()
 ) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     SettingScreen(
+        uiState = uiState,
+        handleIntent = viewModel::handleIntent,
         onBackClick = onBackClick
     )
 }
@@ -43,6 +48,8 @@ fun SettingRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
+    uiState: SettingUiState,
+    handleIntent: (SettingIntent) -> Unit = {},
     onBackClick: () -> Unit,
 ) {
     Column(
@@ -63,16 +70,22 @@ fun SettingScreen(
             thickness = 0.5.dp
         )
         Spacer(modifier = Modifier.height(16.dp))
-        NotificationSetting()
+        NotificationSetting(
+            notificationEnabled = uiState.notificationEnabled,
+            onNotificationEnabledChange = {
+                handleIntent(SettingIntent.SetNotificationEnabled(it))
+            }
+        )
         Spacer(modifier = Modifier.height(16.dp))
         EtcSetting()
     }
 }
 
 @Composable
-fun NotificationSetting() {
-    var isNotificationEnabled by remember { mutableStateOf(true) } // todo 알림 상태 DataStore에 저장한거 가져오도록 변경하기
-
+fun NotificationSetting(
+    notificationEnabled: Boolean,
+    onNotificationEnabledChange: (Boolean) -> Unit
+) {
     RoundedContentBox {
         Column {
             Text(text = "알림")
@@ -93,8 +106,8 @@ fun NotificationSetting() {
                 ) {
                     Text(text = "알림 설정", fontSize = 18.sp)
                     Switch(
-                        checked = isNotificationEnabled,
-                        onCheckedChange = { isNotificationEnabled = it }
+                        checked = notificationEnabled,
+                        onCheckedChange = onNotificationEnabledChange
                     )
                 }
             }

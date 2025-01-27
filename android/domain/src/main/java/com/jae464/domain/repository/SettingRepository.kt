@@ -1,5 +1,8 @@
 package com.jae464.domain.repository
 
+import kotlinx.coroutines.flow.Flow
+
 interface SettingRepository {
-    suspend fun getNotificationSetting(): Boolean
+    fun getNotificationSetting(): Flow<Boolean>
+    suspend fun setNotificationSetting(enabled: Boolean)
 }

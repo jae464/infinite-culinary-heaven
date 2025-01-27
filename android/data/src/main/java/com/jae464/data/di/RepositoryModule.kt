@@ -6,6 +6,7 @@ import com.jae464.data.repository.DefaultCommentRepository
 import com.jae464.data.repository.DefaultContestRepository
 import com.jae464.data.repository.DefaultDeviceTokenRepository
 import com.jae464.data.repository.DefaultRecipeRepository
+import com.jae464.data.repository.DefaultSettingRepository
 import com.jae464.data.repository.DefaultUserRepository
 import com.jae464.domain.repository.BookMarkRepository
 import com.jae464.domain.repository.ContestRepository
@@ -13,6 +14,7 @@ import com.jae464.domain.repository.RecipeRepository
 import com.jae464.domain.repository.AuthRepository
 import com.jae464.domain.repository.CommentRepository
 import com.jae464.domain.repository.DeviceTokenRepository
+import com.jae464.domain.repository.SettingRepository
 import com.jae464.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -65,5 +67,11 @@ abstract class RepositoryModule {
     abstract fun bindCommentRepository(
         commentRepositoryImpl: DefaultCommentRepository
     ): CommentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSettingRepository(
+        settingRepositoryImpl: DefaultSettingRepository
+    ): SettingRepository
 
 }

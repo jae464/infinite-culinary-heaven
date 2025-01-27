@@ -19,6 +19,7 @@ object DataStoreModule {
 
     private const val AUTH_PREFERENCES = "auth_preferences"
     private const val BOOK_MARK_PREFERENCES = "book_mark_preferences"
+    private const val SETTING_PREFERENCES = "setting_preferences"
 
     @Provides
     @Singleton
@@ -42,6 +43,18 @@ object DataStoreModule {
         )
     }
 
+    @Provides
+    @Singleton
+    @SettingDataStore
+    fun provideSettingDataStore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create(
+            produceFile = { context.preferencesDataStoreFile(SETTING_PREFERENCES) }
+        )
+    }
+
+
 }
 
 @Qualifier
@@ -51,3 +64,7 @@ annotation class AuthDataStore
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class BookMarkDataStore
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class SettingDataStore
