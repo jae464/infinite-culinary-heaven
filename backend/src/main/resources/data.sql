@@ -67,6 +67,8 @@ VALUES ('제11회 참치 요리 대회', '이번 주 주재료는 참치입니�
 INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
 VALUES ('제12회 대회', '이번 주 주재료는 두부입니다.', '2025-01-20T00:00:00', '2025-01-26T23:59:59', 1);
 
+INSERT INTO contest (name, description, start_date, end_date, topic_ingredient_id)
+VALUES ('제13회 대회', '이번 주 주재료는 토마토입니다.', '2025-01-27T00:00:00', '2025-02-02T23:59:59', 2);
 
 -- 감자 대회 레시피
 INSERT INTO recipe (created_at, modified_at, title, description, thumbnail_image, user_id, contest_id)
