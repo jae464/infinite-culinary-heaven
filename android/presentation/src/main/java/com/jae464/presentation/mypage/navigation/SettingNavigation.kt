@@ -15,6 +15,7 @@ fun NavController.navigateSetting(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.settingNavGraph(
     onBackClick: () -> Unit,
+    onClickLogout: () -> Unit
 ) {
     composable<Route.Setting>(
         enterTransition = {
@@ -37,7 +38,8 @@ fun NavGraphBuilder.settingNavGraph(
         }
     ) {
         SettingRoute(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onClickLogout = onClickLogout
         )
     }
 }

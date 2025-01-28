@@ -68,7 +68,6 @@ fun MainNavHost(
             onNavigateProfileEdit = { nickname, profileImageUrl -> appState.navigateToProfileEdit(nickname, profileImageUrl) },
             onNavigateToMyRecipe = { appState.navigateToMyRecipe() },
             onNavigateToMyLikes = { appState.navigateToMyLikes() },
-            onNavigateToLogin = { appState.navigateToLoginAfterLogout() },
             onNavigateToSetting = { appState.navigateToSetting() }
         )
         recipeDetailNavGraph(
@@ -111,7 +110,8 @@ fun MainNavHost(
             onClickRecipe = { appState.navigateToRecipeDetail(it) }
         )
         settingNavGraph(
-            onBackClick = { appState.popBackStack() }
+            onBackClick = { appState.popBackStack() },
+            onClickLogout = { appState.navigateToLoginAfterLogout() }
         )
     }
 }

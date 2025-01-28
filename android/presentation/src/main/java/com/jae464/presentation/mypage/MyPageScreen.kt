@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,7 +18,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FoodBank
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Dining
 import androidx.compose.material.icons.outlined.Favorite
@@ -47,7 +45,6 @@ import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.MainTabBackHandler
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
-import com.jae464.presentation.ui.theme.Green5
 import com.jae464.presentation.util.ImageConstants
 
 @Composable
@@ -57,7 +54,6 @@ fun MyPageRoute(
     onClickEditProfile: (String, String?) -> Unit,
     onClickMyRecipe: () -> Unit,
     onClickMyLikes: () -> Unit,
-    onClickLogOut: () -> Unit,
     onClickSetting: () -> Unit,
     isRefresh: Boolean
 ) {
@@ -70,16 +66,6 @@ fun MyPageRoute(
         if (isRefresh) {
             viewModel.fetchUserInfo()
             Log.d("HomeScreen", "isRefresh Fetching")
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        event.collect {
-            when (it) {
-                is MyPageEvent.LogoutFinished -> {
-                    onClickLogOut()
-                }
-            }
         }
     }
 

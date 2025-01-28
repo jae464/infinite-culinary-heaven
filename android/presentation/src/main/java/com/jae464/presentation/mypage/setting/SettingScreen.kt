@@ -1,6 +1,7 @@
 package com.jae464.presentation.mypage.setting
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,10 +35,22 @@ import com.jae464.presentation.ui.theme.Gray20
 @Composable
 fun SettingRoute(
     onBackClick: () -> Unit,
+    onClickLogout: () -> Unit,
     viewModel: SettingViewModel = hiltViewModel()
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val event = viewModel.event
+
+    LaunchedEffect(Unit) {
+        event.collect {
+            when(it) {
+                is SettingEvent.LogoutSuccess -> {
+                    onClickLogout()
+                }
+            }
+        }
+    }
 
     SettingScreen(
         uiState = uiState,
@@ -77,7 +91,9 @@ fun SettingScreen(
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        EtcSetting()
+        EtcSetting(
+            onClickLogout = { handleIntent(SettingIntent.LogoutButtonClicked) }
+        )
     }
 }
 
@@ -116,7 +132,9 @@ fun NotificationSetting(
 }
 
 @Composable
-fun EtcSetting() {
+fun EtcSetting(
+    onClickLogout: () -> Unit
+) {
     RoundedContentBox {
         Column {
             Text(text = "기타")
@@ -130,7 +148,9 @@ fun EtcSetting() {
                     .padding(horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                Text(text = "로그아웃", fontSize = 18.sp)
+                Text(text = "로그아웃", fontSize = 18.sp, modifier = Modifier.clickable {
+                    onClickLogout()
+                })
                 Text(text= "회원탈퇴", fontSize = 18.sp)
             }
         }

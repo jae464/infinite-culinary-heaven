@@ -23,7 +23,6 @@ fun NavGraphBuilder.myPageNavGraph(
     onNavigateProfileEdit: (String, String?) -> Unit,
     onNavigateToMyRecipe: () -> Unit,
     onNavigateToMyLikes: () -> Unit,
-    onNavigateToLogin: () -> Unit,
     onNavigateToSetting: () -> Unit
 ) {
     composable<MainTabRoute.MyPage>(
@@ -74,7 +73,6 @@ fun NavGraphBuilder.myPageNavGraph(
             onClickEditProfile = onNavigateProfileEdit,
             onClickMyRecipe = onNavigateToMyRecipe,
             onClickMyLikes = onNavigateToMyLikes,
-            onClickLogOut = onNavigateToLogin,
             onClickSetting = onNavigateToSetting,
             isRefresh = isRefresh.value
         )

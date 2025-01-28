@@ -2,6 +2,7 @@ package com.jae464.presentation.mypage.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jae464.domain.repository.AuthRepository
 import com.jae464.domain.repository.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val settingRepository: SettingRepository
+    private val settingRepository: SettingRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel()  {
 
     private val _uiState = MutableStateFlow(SettingUiState())
@@ -26,11 +28,8 @@ class SettingViewModel @Inject constructor(
 
     fun handleIntent(intent: SettingIntent) {
         when (intent) {
-            is SettingIntent.SetNotificationEnabled -> {
-                viewModelScope.launch {
-                    settingRepository.setNotificationSetting(intent.enabled)
-                }
-            }
+            is SettingIntent.SetNotificationEnabled -> setNotificationEnabled(intent.enabled)
+            is SettingIntent.LogoutButtonClicked -> logout()
         }
     }
 
@@ -39,6 +38,19 @@ class SettingViewModel @Inject constructor(
             settingRepository.getNotificationSetting().collectLatest { enabled ->
                 _uiState.update { state -> state.copy(notificationEnabled = enabled) }
             }
+        }
+    }
+
+    private fun setNotificationEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingRepository.setNotificationSetting(enabled)
+        }
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+            _event.emit(SettingEvent.LogoutSuccess)
         }
     }
 
