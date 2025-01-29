@@ -157,6 +157,11 @@ class RecipeDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
+            if (content.isBlank()) {
+                _event.emit(RecipeDetailEvent.EmptyComment)
+                return@launch
+            }
+
             commentRepository.addComment(recipeId, content)
                 .onSuccess {
                     _uiState.update { state -> state.copy(commentInput = "") }
@@ -171,6 +176,10 @@ class RecipeDetailViewModel @Inject constructor(
 
     private fun updateComment(recipeId: Long, commentId: Long, content: String) {
         viewModelScope.launch {
+            if (content.isBlank()) {
+                _event.emit(RecipeDetailEvent.EmptyComment)
+                return@launch
+            }
             commentRepository.updateComment(commentId, content)
                 .onSuccess {
                     currentEditCommentId = null

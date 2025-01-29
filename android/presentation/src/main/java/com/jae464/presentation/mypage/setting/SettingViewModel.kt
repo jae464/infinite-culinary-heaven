@@ -29,7 +29,7 @@ class SettingViewModel @Inject constructor(
     fun handleIntent(intent: SettingIntent) {
         when (intent) {
             is SettingIntent.SetNotificationEnabled -> setNotificationEnabled(intent.enabled)
-            is SettingIntent.LogoutButtonClicked -> logout()
+            SettingIntent.LogoutButtonClicked -> logout()
         }
     }
 

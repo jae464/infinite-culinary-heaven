@@ -103,25 +103,29 @@ fun RecipeDetailRoute(
     LaunchedEffect(Unit) {
         event.collect {
             when (it) {
-                RecipeDetailEvent.DeleteSuccess -> {
+                is RecipeDetailEvent.DeleteSuccess -> {
                     Toast.makeText(context, "삭제에 성공했습니다.", Toast.LENGTH_SHORT).show()
                     onNavigateToHome()
                 }
 
-                RecipeDetailEvent.AddBookMarkSuccess -> {
+                is RecipeDetailEvent.AddBookMarkSuccess -> {
                     Toast.makeText(context, "북마크에 추가했습니다.", Toast.LENGTH_SHORT).show()
                 }
 
-                RecipeDetailEvent.DeleteBookMarkSuccess -> {
+                is RecipeDetailEvent.DeleteBookMarkSuccess -> {
                     Toast.makeText(context, "북마크에서 제거했습니다.", Toast.LENGTH_SHORT).show()
                 }
 
-                RecipeDetailEvent.LikeSuccess -> {
+                is RecipeDetailEvent.LikeSuccess -> {
                     Toast.makeText(context, "좋아요를 눌렀습니다.", Toast.LENGTH_SHORT).show()
                 }
 
-                RecipeDetailEvent.UnlikeSuccess -> {
+                is RecipeDetailEvent.UnlikeSuccess -> {
                     Toast.makeText(context, "좋아요를 해제했습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+                is RecipeDetailEvent.EmptyComment -> {
+                    Toast.makeText(context, "댓글이 비어있습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
