@@ -4,6 +4,7 @@ import com.culinaryheaven.global.interceptor.CustomInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,6 +17,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     private final OctetStreamReadMsgConverter octetStreamReadMsgConverter;
     private final CustomInterceptor customInterceptor;
+    private final PrincipalUserInfoArgumentResolver principalUserInfoArgumentResolver;
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -32,5 +34,10 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:" + System.getProperty("user.dir") + "/images/");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(principalUserInfoArgumentResolver);
     }
 }

@@ -5,7 +5,10 @@ import com.culinaryheaven.domain.recipe.dto.request.RecipeUpdateRequest;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipesResponse;
 import com.culinaryheaven.domain.recipe.service.RecipeService;
+import com.culinaryheaven.global.annotation.Authenticated;
+import com.culinaryheaven.global.security.PrincipalUserInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
@@ -27,22 +31,24 @@ public class RecipeController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<RecipeResponse> create(
+            @Authenticated PrincipalUserInfo userInfo,
             @RequestPart List<MultipartFile> images,
             @RequestPart RecipeCreateRequest request
     ) {
-        RecipeResponse recipeResponse = recipeService.create(request, images);
+        RecipeResponse recipeResponse = recipeService.create(request, images, userInfo.oauth2Id());
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeResponse);
     }
 
     @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, path = "/{recipeId}")
     public ResponseEntity<RecipeResponse> update(
+            @Authenticated PrincipalUserInfo userInfo,
             @RequestPart(required = false) List<MultipartFile> images,
             @RequestPart RecipeUpdateRequest request,
             @PathVariable Long recipeId) {
         if (images == null) {
             images = Collections.emptyList();
         }
-        RecipeResponse recipeResponse = recipeService.updateRecipe(recipeId, request, images);
+        RecipeResponse recipeResponse = recipeService.updateRecipe(recipeId, request, images, userInfo.oauth2Id());
         return ResponseEntity.ok().body(recipeResponse);
     }
 
@@ -63,9 +69,10 @@ public class RecipeController {
 
     @GetMapping("/mine")
     public ResponseEntity<RecipesResponse> getMyRecipes(
+            @Authenticated PrincipalUserInfo userInfo,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        RecipesResponse recipesResponse = recipeService.getMyRecipes(pageable);
+        RecipesResponse recipesResponse = recipeService.getMyRecipes(pageable, userInfo.oauth2Id());
         return ResponseEntity.ok().body(recipesResponse);
     }
 
