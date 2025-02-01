@@ -180,9 +180,9 @@ public class RecipeService {
     }
 
     @Transactional
-    public void deleteByRecipeId(Long id) {
+    public void deleteByRecipeId(Long id, String oauth2Id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+        User user = userRepository.findByOauthId(oauth2Id)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         if (!recipe.getUser().getId().equals(user.getId())) {

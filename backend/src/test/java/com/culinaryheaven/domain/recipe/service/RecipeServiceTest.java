@@ -58,10 +58,6 @@ class RecipeServiceTest {
     @Mock
     private IngredientRepository ingredientRepository;
 
-    @Mock private SecurityContext securityContext;
-
-    @Mock private Authentication authentication;
-
     @InjectMocks
     private RecipeService recipeService;
 
@@ -111,9 +107,9 @@ class RecipeServiceTest {
         Recipe recipe = fixtureMonkey.giveMeOne(Recipe.class);
         String thumbnailUrl = "http://example.com/thumbnail.jpg";
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn("user-oauth-id");
-        SecurityContextHolder.setContext(securityContext);
+//        when(securityContext.getAuthentication()).thenReturn(authentication);
+//        when(authentication.getName()).thenReturn("user-oauth-id");
+//        SecurityContextHolder.setContext(securityContext);
 
         when(contestRepository.findById(request.contestId())).thenReturn(Optional.of(contest));
         when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
@@ -121,7 +117,7 @@ class RecipeServiceTest {
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
 
         // When
-        RecipeResponse response = recipeService.create(request, List.of());
+        RecipeResponse response = recipeService.create(request, List.of(), "user-oauth-id");
 
         // Then
         assertNotNull(response);
@@ -171,14 +167,15 @@ class RecipeServiceTest {
                 .set("user", user)
                 .sample();
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn("user-oauth-id");
-        SecurityContextHolder.setContext(securityContext);
+//        when(securityContext.getAuthentication()).thenReturn(authentication);
+//        when(authentication.getName()).thenReturn("user-oauth-id");
+//        SecurityContextHolder.setContext(securityContext);
+
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
         when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
 
         // When
-        recipeService.deleteByRecipeId(recipeId);
+        recipeService.deleteByRecipeId(recipeId, "user-oauth-id");
 
         // Then
         verify(recipeRepository).delete(recipe);
@@ -194,14 +191,14 @@ class RecipeServiceTest {
                 .sample();
         User currentUser = fixtureMonkey.giveMeOne(User.class);
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn("user-oauth-id");
-        SecurityContextHolder.setContext(securityContext);
+//        when(securityContext.getAuthentication()).thenReturn(authentication);
+//        when(authentication.getName()).thenReturn("user-oauth-id");
+//        SecurityContextHolder.setContext(securityContext);
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
         when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(currentUser));
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> recipeService.deleteByRecipeId(recipeId));
+        CustomException exception = assertThrows(CustomException.class, () -> recipeService.deleteByRecipeId(recipeId, "user-oauth-id"));
         assertEquals(ErrorCode.AUTHORIZATION_FAILED, exception.getErrorCode());
     }
 }

@@ -86,9 +86,10 @@ public class RecipeController {
 
     @DeleteMapping("/{recipeId}")
     public ResponseEntity<Void> deleteByRecipeId(
+            @Authenticated PrincipalUserInfo userInfo,
             @PathVariable Long recipeId
     ) {
-        recipeService.deleteByRecipeId(recipeId);
+        recipeService.deleteByRecipeId(recipeId, userInfo.oauth2Id());
         return ResponseEntity.noContent().build();
     }
 
