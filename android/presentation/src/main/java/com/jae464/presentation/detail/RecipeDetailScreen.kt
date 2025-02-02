@@ -4,10 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +30,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,14 +40,12 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,10 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -74,6 +65,7 @@ import coil.compose.AsyncImage
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.Step
+import com.jae464.presentation.component.ConfirmDialog
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.ImageDetailDialog
 import com.jae464.presentation.detail.component.CommentItem
@@ -81,7 +73,6 @@ import com.jae464.presentation.detail.component.RecipeDetailContentBox
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.ui.theme.Red10
-import com.jae464.presentation.util.addFocusCleaner
 
 @Composable
 fun RecipeDetailRoute(
@@ -151,17 +142,14 @@ fun RecipeDetailScreen(
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
-
+    var showConfirmDialog by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
     var showImageDialog by remember { mutableStateOf(false) }
     var imageUrl by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
 
-    val scope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val scrollState = rememberScrollState()
 
     val minHeight = screenHeight * 0.4f
     val maxHeight = screenHeight * 0.5f
@@ -175,6 +163,7 @@ fun RecipeDetailScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
+
         HeavenTopAppBar(
             title = uiState.recipe?.title ?: "",
             navigationIcon = Icons.Default.ArrowBack,
@@ -223,7 +212,8 @@ fun RecipeDetailScreen(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))
+//                            onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))
+                            showConfirmDialog = true
                         }
                     )
                 }
@@ -330,6 +320,19 @@ fun RecipeDetailScreen(
         }
 
     }
+
+    if (showConfirmDialog && uiState.recipe != null) {
+        ConfirmDialog(
+            title = "정말 삭제할까요?",
+            content = "삭제하면 되돌릴 수 없어요",
+            confirmText = "확인",
+            cancelText = "취소",
+            onDismissRequest = { showConfirmDialog = false },
+            onConfirm = { onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))},
+            onCancel = { showConfirmDialog = false }
+        )
+    }
+
     if (showImageDialog && imageUrl.isNotBlank()) {
         Log.d("RecipeDetailScreen", "Image Detail Dialog imageUrl: $imageUrl")
         ImageDetailDialog(
