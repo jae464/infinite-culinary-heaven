@@ -44,6 +44,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -143,6 +144,9 @@ fun RecipeDetailScreen(
         skipPartiallyExpanded = true
     )
     var showConfirmDialog by remember { mutableStateOf(false) }
+    var showCommentDialog by remember { mutableStateOf(false) }
+    var deleteCommentId by remember { mutableLongStateOf(-1L) }
+
     var showBottomSheet by remember { mutableStateOf(false) }
     var showImageDialog by remember { mutableStateOf(false) }
     var imageUrl by remember { mutableStateOf("") }
@@ -271,12 +275,8 @@ fun RecipeDetailScreen(
                                     onIntent(RecipeDetailIntent.UpdateCommentInput(uiState.comments[it].content))
                                 },
                                 onClickDelete = { commentId ->
-                                    onIntent(
-                                        RecipeDetailIntent.DeleteComment(
-                                            uiState.recipe.id,
-                                            commentId
-                                        )
-                                    )
+                                    deleteCommentId = commentId
+                                    showCommentDialog = true
                                 }
                             )
                         }
@@ -323,13 +323,27 @@ fun RecipeDetailScreen(
 
     if (showConfirmDialog && uiState.recipe != null) {
         ConfirmDialog(
-            title = "정말 삭제할까요?",
+            title = "정말 레시피를 삭제할까요?",
             content = "삭제하면 되돌릴 수 없어요",
-            confirmText = "확인",
+            confirmText = "삭제",
             cancelText = "취소",
             onDismissRequest = { showConfirmDialog = false },
             onConfirm = { onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))},
             onCancel = { showConfirmDialog = false }
+        )
+    }
+
+    if (showCommentDialog && deleteCommentId != -1L && uiState.recipe != null) {
+        ConfirmDialog(
+            title = "정말 댓글을 삭제할까요?",
+            confirmText = "삭제",
+            cancelText = "취소",
+            onDismissRequest = { showCommentDialog = false },
+            onConfirm = {
+                onIntent(RecipeDetailIntent.DeleteComment(uiState.recipe.id, deleteCommentId))
+                deleteCommentId = -1L
+            },
+            onCancel = { showCommentDialog = false }
         )
     }
 

@@ -26,7 +26,7 @@ import com.jae464.presentation.ui.theme.Green10
 @Composable
 fun ConfirmDialog(
     title: String,
-    content: String,
+    content: String? = null,
     modifier: Modifier = Modifier,
     cancelText: String,
     confirmText: String,
@@ -48,8 +48,10 @@ fun ConfirmDialog(
                     text = title
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = content)
-                Spacer(modifier = Modifier.height(16.dp))
+                if (content != null) {
+                    Text(text = content)
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Button(
                         onClick = onCancel,
