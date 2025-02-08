@@ -23,7 +23,7 @@ class ContestDetailViewModel @Inject constructor(
     val uiState: StateFlow<ContestDetailUiState> = _uiState.asStateFlow()
 
     private var contestId: Long = -1L
-    private var currenpage = 0
+    private var currentPage = 0
     private var isLastPage = false
 
     init {
@@ -39,15 +39,15 @@ class ContestDetailViewModel @Inject constructor(
 
     private fun fetchRecipePreviews(contestId: Long) {
         if (isLastPage) return
-
+        if (uiState.value.isLoading) return
+        _uiState.update { state -> state.copy(isLoading = true) }
         viewModelScope.launch {
-            _uiState.update { state -> state.copy(isLoading = true) }
             runCatching {
-                val recipePreviews = recipeRepository.getRecipePreviewsByContestId(currenpage, contestId).getOrThrow()
+                val recipePreviews = recipeRepository.getRecipePreviewsByContestId(currentPage, contestId).getOrThrow()
                 if (recipePreviews.isEmpty()) {
                     isLastPage = true
                 } else {
-                    currenpage++
+                    currentPage++
                 }
                 _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + recipePreviews, isLoading = false) }
             }.onFailure {
