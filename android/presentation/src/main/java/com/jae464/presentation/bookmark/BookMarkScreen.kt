@@ -108,6 +108,16 @@ fun BookMarkScreen(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
             thickness = 0.5.dp
         )
+        if (uiState.bookMarkedRecipes.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = "스크랩한 레시피가 없습니다.",
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                )
+            }
+        }
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -137,16 +147,6 @@ fun BookMarkScreen(
                 )
             }
 
-        }
-        if (uiState.bookMarkedRecipes.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    text = "스크랩한 레시피가 없습니다.",
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                )
-            }
         }
     }
 }
