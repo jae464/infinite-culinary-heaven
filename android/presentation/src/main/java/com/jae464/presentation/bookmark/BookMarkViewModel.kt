@@ -41,17 +41,19 @@ class BookMarkViewModel @Inject constructor(
     }
 
     private fun fetchBookMarkedRecipes() {
+        if (isLastPage) return
+        if (uiState.value.isLoading) return
         _uiState.update { state -> state.copy(isLoading = true) }
         viewModelScope.launch {
             bookMarkRepository.getBookMarkedRecipes(currentPage)
-                .onSuccess { recipes ->
-                    if (recipes.isEmpty()) {
+                .onSuccess { bookmarks ->
+                    if (bookmarks.isEmpty()) {
                         isLastPage = true
                     }
                     else {
                         currentPage++
                     }
-                    _uiState.update { state -> state.copy(bookMarkedRecipes = recipes.map { it.recipe }, isLoading = false) }
+                    _uiState.update { state -> state.copy(bookMarkedRecipes = state.bookMarkedRecipes + bookmarks.map { it.recipe }, isLoading = false) }
                 }
                 .onFailure {
                     // Handle error

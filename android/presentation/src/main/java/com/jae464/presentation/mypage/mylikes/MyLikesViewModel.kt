@@ -48,9 +48,8 @@ class MyLikesViewModel @Inject constructor(
                     } else {
                         currentPage++
                     }
-                    // todo delete log
-                    Log.d("MyRecipeViewModel", "fetchMyRecipes: $it")
-                    _uiState.update { state -> state.copy(recipes = it, isLoading = false) }
+//                    _uiState.update { state -> state.copy(recipes = it, isLoading = false) }
+                    _uiState.update { state -> state.copy(recipes = state.recipes + it, isLoading = false) }
                 }
                 .onFailure {
 
