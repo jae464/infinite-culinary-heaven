@@ -2,6 +2,7 @@ package com.culinaryheaven.domain.recipe.service;
 
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.domain.RecipeReport;
+import com.culinaryheaven.domain.recipe.dto.request.RecipeReportCreateRequest;
 import com.culinaryheaven.domain.recipe.repository.RecipeReportRepository;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
 import com.culinaryheaven.domain.user.domain.User;
@@ -19,8 +20,8 @@ public class RecipeReportService {
     private final RecipeRepository recipeRepository;
     private final RecipeReportRepository recipeReportRepository;
 
-    public void report(Long recipeId, String oauth2Id ) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(
+    public void report(RecipeReportCreateRequest request, String oauth2Id ) {
+        Recipe recipe = recipeRepository.findById(request.recipeId()).orElseThrow(
                 () -> new CustomException(ErrorCode.RECIPE_NOT_FOUND)
         );
         User user = userRepository.findByOauthId(oauth2Id)
@@ -29,6 +30,7 @@ public class RecipeReportService {
         RecipeReport recipeReport = RecipeReport.builder()
                 .recipe(recipe)
                 .user(user)
+                .reason(request.reason())
                 .build();
 
         recipeReportRepository.save(recipeReport);

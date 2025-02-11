@@ -25,10 +25,14 @@ public class RecipeReport extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_report_user"))
     private User user;
 
+    @Column
+    private String reason;
+
     @Builder
-    public RecipeReport(Recipe recipe, User user) {
+    public RecipeReport(Recipe recipe, User user, String reason) {
         this.recipe = recipe;
         this.user = user;
+        this.reason = reason;
     }
 
 }
