@@ -31,6 +31,7 @@ firebase-bom = "33.7.0"
 play-services-auth = "21.3.0"
 androidx-credentials = "1.2.2"
 googleid = "1.1.1"
+firebaseCrashlytics = "3.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -79,7 +80,7 @@ engawapg-lib-zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "z
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx"}
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx"}
-
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics"}
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth"}
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "google-services"}
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-services-auth"}
@@ -97,4 +98,5 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = {id = "com.google.gms.google-services", version.ref = "google-services"}
+firebase-crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics"}
 
