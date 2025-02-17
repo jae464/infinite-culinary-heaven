@@ -78,6 +78,7 @@ public class RecipeController {
 
     @GetMapping("/{recipeId}")
     public ResponseEntity<RecipeResponse> getRecipe(
+        @Authenticated(required = false) PrincipalUserInfo userInfo,
         @PathVariable Long recipeId
     ) {
         RecipeResponse recipeResponse = recipeService.getRecipeById(recipeId);
