@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recipes")
+@RequestMapping("/recipes/likes")
 @RequiredArgsConstructor
 public class RecipeLikeController {
 
     private final RecipeLikeService recipeLikeService;
 
-    @PostMapping("/like/{recipeId}")
+    @PostMapping("/{recipeId}")
     public ResponseEntity<RecipeLikeResponse> create(
             @PathVariable Long recipeId
     ) {
@@ -27,7 +27,7 @@ public class RecipeLikeController {
         return ResponseEntity.ok().body(recipeLikeResponse);
     }
 
-    @GetMapping("/likes/mine")
+    @GetMapping("/mine")
     public ResponseEntity<RecipeLikesResponse> getMyLikes(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
@@ -35,7 +35,7 @@ public class RecipeLikeController {
         return ResponseEntity.ok().body(recipeLikesResponse);
     }
 
-    @DeleteMapping("/like/{recipeId}")
+    @DeleteMapping("/{recipeId}")
     public ResponseEntity<Void> delete(
             @PathVariable Long recipeId
     ) {
