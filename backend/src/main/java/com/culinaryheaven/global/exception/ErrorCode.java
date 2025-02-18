@@ -32,6 +32,9 @@ public enum ErrorCode {
     // comment
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
 
+    // follow
+    FOLLOW_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 팔로우입니다."),
+
     // security
     INVALID_OAUTH2_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 입니다."),
     INVALID_TOKEN_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 토큰 타입입니다."),

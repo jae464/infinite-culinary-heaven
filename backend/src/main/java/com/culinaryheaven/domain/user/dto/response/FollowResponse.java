@@ -1,5 +1,6 @@
 package com.culinaryheaven.domain.user.dto.response;
 
+import com.culinaryheaven.domain.user.domain.Follow;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record FollowResponse(
@@ -11,7 +12,7 @@ public record FollowResponse(
         String nickname
 
 ) {
-        public static FollowResponse of(Long userId, String nickname) {
-                return new FollowResponse(userId, nickname);
+        public static FollowResponse of(Follow follow) {
+                return new FollowResponse(follow.getTarget().getId(), follow.getTarget().getUsername());
         }
 }
