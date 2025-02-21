@@ -136,7 +136,7 @@ class RecipeServiceTest {
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> recipeService.getRecipeById(recipeId));
+        CustomException exception = assertThrows(CustomException.class, () -> recipeService.getRecipeById(recipeId,"user-oauth-id"));
         assertEquals(ErrorCode.RECIPE_NOT_FOUND, exception.getErrorCode());
     }
 

@@ -41,7 +41,6 @@ public class RecipeService {
     private final ImageStorageClient imageStorageClient;
     private final StepRepository stepRepository;
     private final IngredientRepository ingredientRepository;
-    private final SecurityUtil securityUtil;
 
     @Transactional
     public RecipeResponse create(
@@ -149,9 +148,9 @@ public class RecipeService {
         return RecipeResponse.of(recipe, false, false, true);
     }
 
-    public RecipeResponse getRecipeById(Long id) {
+    public RecipeResponse getRecipeById(Long id, String oauth2Id) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        User currentUser = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+        User currentUser = userRepository.findByOauthId(oauth2Id)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
         Boolean isOwner = recipe.getUser().getId().equals(currentUser.getId());
         Boolean isBookMarked = recipe.getBookmarks().stream()

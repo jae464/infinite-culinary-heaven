@@ -81,7 +81,7 @@ public class RecipeController {
         @Authenticated(required = false) PrincipalUserInfo userInfo,
         @PathVariable Long recipeId
     ) {
-        RecipeResponse recipeResponse = recipeService.getRecipeById(recipeId);
+        RecipeResponse recipeResponse = recipeService.getRecipeById(recipeId, userInfo.oauth2Id());
         return ResponseEntity.ok().body(recipeResponse);
     }
 
