@@ -49,10 +49,10 @@ public class BookMarkService {
 
     }
 
-    public BookMarksResponse getAllBookMarks(Pageable pageable) {
+    public BookMarksResponse getAllBookMarks(Pageable pageable, String oauth2Id) {
 
         User user = userRepository.findByOauthId(
-                securityUtil.getUserOAuth2Id()).orElseThrow(
+                oauth2Id).orElseThrow(
                 () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
         );
 
@@ -62,8 +62,8 @@ public class BookMarkService {
 
     }
 
-    public void deleteBookMarkByRecipeId(Long recipeId) {
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id()).orElseThrow(
+    public void deleteBookMarkByRecipeId(Long recipeId, String oauth2Id) {
+        User user = userRepository.findByOauthId(oauth2Id).orElseThrow(
                 () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
         );
 

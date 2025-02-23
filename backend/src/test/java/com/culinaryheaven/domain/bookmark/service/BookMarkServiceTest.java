@@ -92,12 +92,11 @@ class BookMarkServiceTest {
                 .set("userId", user.getId())
                 .sample();
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn("user-oauth-id");
         when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
         when(bookMarkRepository.findByRecipeIdAndUserId(recipeId, user.getId())).thenReturn(Optional.of(bookMark));
 
         // When
-        bookMarkService.deleteBookMarkByRecipeId(recipeId);
+        bookMarkService.deleteBookMarkByRecipeId(recipeId, "user-oauth-id");
 
         // Then
         verify(bookMarkRepository).delete(bookMark);
@@ -109,29 +108,27 @@ class BookMarkServiceTest {
         Long recipeId = 1L;
         User user = fixtureMonkey.giveMeOne(User.class);
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn("user-oauth-id");
         when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
         when(bookMarkRepository.findByRecipeIdAndUserId(recipeId, user.getId())).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> bookMarkService.deleteBookMarkByRecipeId(recipeId));
+        CustomException exception = assertThrows(CustomException.class, () -> bookMarkService.deleteBookMarkByRecipeId(recipeId, "user-oauth-id"));
         assertEquals(ErrorCode.BOOKMARK_NOT_FOUND, exception.getErrorCode());
     }
 
     @Test
-    void 북마크_목록을_조회한다() {
+    void 나의_북마크_목록을_조회한다() {
         // Given
         Pageable pageable = Pageable.unpaged();
         User user = fixtureMonkey.giveMeOne(User.class);
         List<BookMark> bookMarks = fixtureMonkey.giveMe(BookMark.class, 3);
         Page<BookMark> bookMarkPage = new PageImpl<>(bookMarks);
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn("user-oauth-id");
         when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
         when(bookMarkRepository.findAllByUserId(pageable, user.getId())).thenReturn(bookMarkPage);
 
         // When
-        var response = bookMarkService.getAllBookMarks(pageable);
+        var response = bookMarkService.getAllBookMarks(pageable, "user-oauth-id");
 
         // Then
         assertNotNull(response);
