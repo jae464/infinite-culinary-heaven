@@ -33,10 +33,10 @@ public class CommentService {
     private final ApplicationEventPublisher publisher;
 
     @Transactional
-    public CommentResponse createComment(CommentCreateRequest request) {
+    public CommentResponse createComment(CommentCreateRequest request, String oauth2Id) {
 
         User user = userRepository.findByOauthId(
-                securityUtil.getUserOAuth2Id()
+                oauth2Id
         ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Recipe recipe = recipeRepository.findById(request.recipeId()).orElseThrow(
@@ -64,8 +64,10 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponse updateCommentById(Long commentId, CommentUpdateRequest request) {
-        User user = getCurrentUser();
+    public CommentResponse updateCommentById(Long commentId, CommentUpdateRequest request, String oauth2Id) {
+        User user = userRepository.findByOauthId(
+                oauth2Id
+        ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)
@@ -79,8 +81,10 @@ public class CommentService {
         return CommentResponse.of(comment);
     }
 
-    public void deleteCommentById(Long commentId) {
-        User user = getCurrentUser();
+    public void deleteCommentById(Long commentId, String oauth2Id) {
+        User user = userRepository.findByOauthId(
+                oauth2Id
+        ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)
@@ -93,10 +97,5 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private User getCurrentUser() {
-        return userRepository.findByOauthId(
-                securityUtil.getUserOAuth2Id()
-        ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
-    }
 
 }
