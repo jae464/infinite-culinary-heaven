@@ -4,6 +4,7 @@ import android.content.Context
 import android.credentials.GetCredentialException
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -51,13 +52,14 @@ fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val event = viewModel.uiEvent
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         event.collect {
             when (it) {
                 is LoginEvent.LoginSuccess -> onNavigateToHome()
                 is LoginEvent.LoginFailed -> {
-                    Log.d("LoginRoute", "LoginFailed")
+                    Toast.makeText(context, "현재 서버가 점검중이에요.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
