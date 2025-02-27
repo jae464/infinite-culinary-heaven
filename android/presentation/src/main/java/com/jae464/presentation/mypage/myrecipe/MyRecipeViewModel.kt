@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jae464.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -19,6 +22,9 @@ class MyRecipeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(MyRecipeUiState())
     val uiState: StateFlow<MyRecipeUiState> = _uiState.asStateFlow()
+
+    private val _event = MutableSharedFlow<MyRecipeEvent>()
+    val event: SharedFlow<MyRecipeEvent> = _event.asSharedFlow()
 
     private var currentPage = 0
     private var isLastPage = false
@@ -54,7 +60,8 @@ class MyRecipeViewModel @Inject constructor(
                     _uiState.update { state -> state.copy(recipes = state.recipes + it, isLoading = false) }
                 }
                 .onFailure {
-
+                    _uiState.update { state -> state.copy(isLoading = false) }
+                    _event.emit(MyRecipeEvent.FetchRecipeFailed)
                 }
         }
 

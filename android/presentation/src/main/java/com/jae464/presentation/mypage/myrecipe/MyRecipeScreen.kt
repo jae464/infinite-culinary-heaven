@@ -1,6 +1,7 @@
 package com.jae464.presentation.mypage.myrecipe
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +39,18 @@ fun MyRecipeRoute(
     viewModel: MyRecipeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val event = viewModel.event
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        event.collect {
+            when (it) {
+                MyRecipeEvent.FetchRecipeFailed -> {
+                    Toast.makeText(context, "레시피를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     MyRecipeScreen(
         uiState = uiState,
