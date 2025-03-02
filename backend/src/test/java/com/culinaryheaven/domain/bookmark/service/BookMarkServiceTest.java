@@ -67,14 +67,13 @@ class BookMarkServiceTest {
                 .set("userId", user.getId())
                 .sample();
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn("user-oauth-id");
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
         when(bookMarkRepository.existsByRecipeIdAndUserId(recipeId, user.getId())).thenReturn(false);
         when(bookMarkRepository.save(any(BookMark.class))).thenReturn(bookMark);
 
         // When
-        BookMarkResponse response = bookMarkService.addBookMark(recipeId);
+        BookMarkResponse response = bookMarkService.addBookMark(recipeId, 1L);
 
         // Then
         assertNotNull(response);
@@ -92,11 +91,11 @@ class BookMarkServiceTest {
                 .set("userId", user.getId())
                 .sample();
 
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(bookMarkRepository.findByRecipeIdAndUserId(recipeId, user.getId())).thenReturn(Optional.of(bookMark));
 
         // When
-        bookMarkService.deleteBookMarkByRecipeId(recipeId, "user-oauth-id");
+        bookMarkService.deleteBookMarkByRecipeId(recipeId, 1L);
 
         // Then
         verify(bookMarkRepository).delete(bookMark);
@@ -108,11 +107,11 @@ class BookMarkServiceTest {
         Long recipeId = 1L;
         User user = fixtureMonkey.giveMeOne(User.class);
 
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(bookMarkRepository.findByRecipeIdAndUserId(recipeId, user.getId())).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> bookMarkService.deleteBookMarkByRecipeId(recipeId, "user-oauth-id"));
+        CustomException exception = assertThrows(CustomException.class, () -> bookMarkService.deleteBookMarkByRecipeId(recipeId, 1L));
         assertEquals(ErrorCode.BOOKMARK_NOT_FOUND, exception.getErrorCode());
     }
 
@@ -124,11 +123,11 @@ class BookMarkServiceTest {
         List<BookMark> bookMarks = fixtureMonkey.giveMe(BookMark.class, 3);
         Page<BookMark> bookMarkPage = new PageImpl<>(bookMarks);
 
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(bookMarkRepository.findAllByUserId(pageable, user.getId())).thenReturn(bookMarkPage);
 
         // When
-        var response = bookMarkService.getAllBookMarks(pageable, "user-oauth-id");
+        var response = bookMarkService.getAllBookMarks(pageable, 1L);
 
         // Then
         assertNotNull(response);

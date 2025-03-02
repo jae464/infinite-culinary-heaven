@@ -22,8 +22,8 @@ public class DeviceTokenService {
     private final SecurityUtil securityUtil;
 
     @Transactional
-    public DeviceTokenResponse persist(DeviceTokenPersistRequest request) {
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id()).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
+    public DeviceTokenResponse persist(DeviceTokenPersistRequest request, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
         DeviceToken savedDeviceToken = deviceTokenRepository.findByUserId(user.getId()).orElseGet(
                 () -> {
                     DeviceToken deviceToken = DeviceToken.builder()
@@ -40,6 +40,4 @@ public class DeviceTokenService {
 
         return DeviceTokenResponse.of(savedDeviceToken);
     }
-
-
 }

@@ -22,12 +22,12 @@ public class FollowService {
     private final UserRepository userRepository;
 
     @Transactional
-    public FollowResponse followUser(Long userId, String oauth2Id) {
+    public FollowResponse followUser(Long targetUserId, Long userId) {
         User currentUser = userRepository
-                .findByOauthId(oauth2Id)
+                .findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
 
-        User targetUser = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
+        User targetUser = userRepository.findById(targetUserId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
 
         Follow follow = Follow.builder()
                 .source(currentUser)
@@ -39,9 +39,9 @@ public class FollowService {
         return FollowResponse.of(savedFollow);
     }
 
-    public void unfollowUser(Long userId, String oauth2Id) {
-        User sourceUser = userRepository.findByOauthId(oauth2Id).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
-        User targetUser = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
+    public void unfollowUser(Long targetUserId, Long userId) {
+        User sourceUser = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
+        User targetUser = userRepository.findById(targetUserId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
         Follow follow = followRepository.findBySourceAndTarget(sourceUser, targetUser).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
         followRepository.delete(follow);
     }

@@ -51,10 +51,10 @@ public class AuthService {
             throw new CustomException(ErrorCode.INVALID_OAUTH2_TYPE);
         }
 
-        String accessToken = jwtTokenProvider.provideToken(oAuth2Id, TokenType.ACCESS, "ROLE_USER");
-        String refreshToken = jwtTokenProvider.provideToken(oAuth2Id, TokenType.REFRESH, "ROLE_USER");
+//        String accessToken = jwtTokenProvider.provideToken(oAuth2Id, TokenType.ACCESS, "ROLE_USER");
+//        String refreshToken = jwtTokenProvider.provideToken(oAuth2Id, TokenType.REFRESH, "ROLE_USER");
 
-        userRepository.findByOauthId(oAuth2Id)
+        User savedUser = userRepository.findByOauthId(oAuth2Id)
                 .orElseGet(() -> {
                     User user = User.builder()
                             .username(NickNameGenerator.generateNickName())
@@ -63,6 +63,9 @@ public class AuthService {
                             .build();
                     return userRepository.save(user);
                 });
+
+        String accessToken = jwtTokenProvider.provideToken(savedUser.getId().toString(), TokenType.ACCESS, "ROLE_USER");
+        String refreshToken = jwtTokenProvider.provideToken(savedUser.getId().toString(), TokenType.REFRESH, "ROLE_USER");
 
         return new LoginResponse(accessToken, refreshToken);
     }
@@ -88,7 +91,8 @@ public class AuthService {
             if (jwtTokenProvider.validateRefreshToken(request.refreshToken())) {
                 Claims claims = jwtTokenProvider.getClaimsFromToken(request.refreshToken(), TokenType.REFRESH);
                 String userId = claims.getSubject();
-                userRepository.findByOauthId(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
+                Long paredUserId = Long.parseLong(userId);
+                userRepository.findById(paredUserId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
                 String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
                 String newAccessToken = jwtTokenProvider.provideToken(userId, TokenType.ACCESS, role);
                 String newRefreshToken = jwtTokenProvider.provideToken(userId, TokenType.REFRESH, role);

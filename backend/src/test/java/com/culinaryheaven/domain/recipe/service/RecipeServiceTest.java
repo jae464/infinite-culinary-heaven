@@ -112,18 +112,18 @@ class RecipeServiceTest {
 //        SecurityContextHolder.setContext(securityContext);
 
         when(contestRepository.findById(request.contestId())).thenReturn(Optional.of(contest));
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(imageStorageClient.uploadImage(any())).thenReturn(thumbnailUrl);
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
 
         // When
-        RecipeResponse response = recipeService.create(request, List.of(), "user-oauth-id");
+        RecipeResponse response = recipeService.create(request, List.of(), user.getId());
 
         // Then
         assertNotNull(response);
         assertEquals(recipe.getId(), response.id());
         verify(contestRepository).findById(request.contestId());
-        verify(userRepository).findByOauthId("user-oauth-id");
+        verify(userRepository).findById(user.getId());
         verify(recipeRepository).save(any(Recipe.class));
     }
 
@@ -136,7 +136,7 @@ class RecipeServiceTest {
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> recipeService.getRecipeById(recipeId,"user-oauth-id"));
+        CustomException exception = assertThrows(CustomException.class, () -> recipeService.getRecipeById(recipeId,1L));
         assertEquals(ErrorCode.RECIPE_NOT_FOUND, exception.getErrorCode());
     }
 
@@ -172,10 +172,10 @@ class RecipeServiceTest {
 //        SecurityContextHolder.setContext(securityContext);
 
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         // When
-        recipeService.deleteByRecipeId(recipeId, "user-oauth-id");
+        recipeService.deleteByRecipeId(recipeId, user.getId());
 
         // Then
         verify(recipeRepository).delete(recipe);
@@ -195,10 +195,10 @@ class RecipeServiceTest {
 //        when(authentication.getName()).thenReturn("user-oauth-id");
 //        SecurityContextHolder.setContext(securityContext);
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(currentUser));
+        when(userRepository.findById(currentUser.getId())).thenReturn(Optional.of(currentUser));
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> recipeService.deleteByRecipeId(recipeId, "user-oauth-id"));
+        CustomException exception = assertThrows(CustomException.class, () -> recipeService.deleteByRecipeId(recipeId, currentUser.getId()));
         assertEquals(ErrorCode.AUTHORIZATION_FAILED, exception.getErrorCode());
     }
 }

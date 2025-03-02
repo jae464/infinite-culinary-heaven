@@ -56,13 +56,12 @@ class DeviceTokenServiceTest {
         DeviceTokenPersistRequest request = new DeviceTokenPersistRequest(token);
         DeviceToken newDeviceToken = new DeviceToken(token, user);
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn(user.getOauthId());
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(deviceTokenRepository.findByUserId(user.getId())).thenReturn(Optional.empty());
         when(deviceTokenRepository.save(any(DeviceToken.class))).thenReturn(newDeviceToken);
 
         // When
-        DeviceTokenResponse response = deviceTokenService.persist(request);
+        DeviceTokenResponse response = deviceTokenService.persist(request, user.getId());
 
         // Then
         assertNotNull(response);
@@ -79,12 +78,11 @@ class DeviceTokenServiceTest {
         DeviceTokenPersistRequest request = new DeviceTokenPersistRequest(newToken);
         DeviceToken existingDeviceToken = new DeviceToken(oldToken, user);
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn(user.getOauthId());
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(deviceTokenRepository.findByUserId(user.getId())).thenReturn(Optional.of(existingDeviceToken));
 
         // When
-        DeviceTokenResponse response = deviceTokenService.persist(request);
+        DeviceTokenResponse response = deviceTokenService.persist(request, user.getId());
 
         // Then
         assertNotNull(response);
@@ -96,13 +94,13 @@ class DeviceTokenServiceTest {
     void 인증되지_않은_사용자가_디바이스_토큰_저장_요청하면_예외를_발생시킨다() {
         // Given
         String token = "device-token";
+        Long invalidUserId = 1L;
         DeviceTokenPersistRequest request = new DeviceTokenPersistRequest(token);
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn("invalid-oauth-id");
-        when(userRepository.findByOauthId("invalid-oauth-id")).thenReturn(Optional.empty());
+        when(userRepository.findById(invalidUserId)).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> deviceTokenService.persist(request));
+        CustomException exception = assertThrows(CustomException.class, () -> deviceTokenService.persist(request, invalidUserId));
         assertEquals(ErrorCode.AUTHORIZATION_FAILED, exception.getErrorCode());
     }
 }

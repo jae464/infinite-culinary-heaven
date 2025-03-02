@@ -33,10 +33,10 @@ public class CommentService {
     private final ApplicationEventPublisher publisher;
 
     @Transactional
-    public CommentResponse createComment(CommentCreateRequest request, String oauth2Id) {
+    public CommentResponse createComment(CommentCreateRequest request, Long userId) {
 
-        User user = userRepository.findByOauthId(
-                oauth2Id
+        User user = userRepository.findById(
+                userId
         ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Recipe recipe = recipeRepository.findById(request.recipeId()).orElseThrow(
@@ -64,9 +64,9 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponse updateCommentById(Long commentId, CommentUpdateRequest request, String oauth2Id) {
-        User user = userRepository.findByOauthId(
-                oauth2Id
+    public CommentResponse updateCommentById(Long commentId, CommentUpdateRequest request, Long userId) {
+        User user = userRepository.findById(
+                userId
         ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
@@ -81,9 +81,9 @@ public class CommentService {
         return CommentResponse.of(comment);
     }
 
-    public void deleteCommentById(Long commentId, String oauth2Id) {
-        User user = userRepository.findByOauthId(
-                oauth2Id
+    public void deleteCommentById(Long commentId, Long userId) {
+        User user = userRepository.findById(
+                userId
         ).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(

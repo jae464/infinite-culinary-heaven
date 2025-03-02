@@ -20,11 +20,11 @@ public class RecipeReportService {
     private final RecipeRepository recipeRepository;
     private final RecipeReportRepository recipeReportRepository;
 
-    public void report(RecipeReportCreateRequest request, String oauth2Id ) {
+    public void report(RecipeReportCreateRequest request, Long userId) {
         Recipe recipe = recipeRepository.findById(request.recipeId()).orElseThrow(
                 () -> new CustomException(ErrorCode.RECIPE_NOT_FOUND)
         );
-        User user = userRepository.findByOauthId(oauth2Id)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
 
         RecipeReport recipeReport = RecipeReport.builder()

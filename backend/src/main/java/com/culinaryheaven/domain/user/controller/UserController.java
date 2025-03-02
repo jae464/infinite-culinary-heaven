@@ -3,6 +3,8 @@ package com.culinaryheaven.domain.user.controller;
 import com.culinaryheaven.domain.user.dto.request.UserUpdateRequest;
 import com.culinaryheaven.domain.user.dto.response.UserInfoResponse;
 import com.culinaryheaven.domain.user.service.UserService;
+import com.culinaryheaven.global.annotation.Authenticated;
+import com.culinaryheaven.global.security.PrincipalUserInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,8 +22,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserInfoResponse> getMyInfo() {
-        UserInfoResponse userInfoResponse = userService.getMyInfo();
+    public ResponseEntity<UserInfoResponse> getMyInfo(
+            @Authenticated PrincipalUserInfo userInfo
+    ) {
+        UserInfoResponse userInfoResponse = userService.getMyInfo(userInfo.userId());
         return ResponseEntity.ok().body(userInfoResponse);
     }
 
@@ -35,10 +39,11 @@ public class UserController {
 
     @PatchMapping("/me")
     public ResponseEntity<UserInfoResponse> updateMyInfo(
+            @Authenticated PrincipalUserInfo userInfo,
             @RequestPart(required = false) @Valid UserUpdateRequest request,
             @RequestPart(required = false) MultipartFile profileImage
     ) {
-        UserInfoResponse userInfoResponse = userService.updateMyInfo(request, profileImage);
+        UserInfoResponse userInfoResponse = userService.updateMyInfo(request, profileImage, userInfo.userId());
         return ResponseEntity.ok().body(userInfoResponse);
     }
 

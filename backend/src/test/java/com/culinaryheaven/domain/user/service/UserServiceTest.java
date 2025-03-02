@@ -52,16 +52,16 @@ class UserServiceTest {
     void 내_정보를_조회한다() {
         // Given
         User user = fixtureMonkey.giveMeOne(User.class);
-        when(securityUtil.getUserOAuth2Id()).thenReturn("user-oauth-id");
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         // When
-        UserInfoResponse response = userService.getMyInfo();
+        UserInfoResponse response = userService.getMyInfo(user.getId());
 
         // Then
         assertNotNull(response);
         assertEquals(user.getId(), response.id());
-        verify(userRepository).findByOauthId("user-oauth-id");
+        verify(userRepository).findById(user.getId());
     }
 
     @Test
@@ -99,17 +99,16 @@ class UserServiceTest {
         MultipartFile profileImage = mock(MultipartFile.class);
         String imageUrl = "http://example.com/image.jpg";
 
-        when(securityUtil.getUserOAuth2Id()).thenReturn("user-oauth-id");
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(imageStorageClient.uploadImage(profileImage)).thenReturn(imageUrl);
 
         // When
-        UserInfoResponse response = userService.updateMyInfo(request, profileImage);
+        UserInfoResponse response = userService.updateMyInfo(request, profileImage, user.getId());
 
         // Then
         assertNotNull(response);
         assertEquals(request.userNickname(), response.nickname());
-        verify(userRepository).findByOauthId("user-oauth-id");
+        verify(userRepository).findById(user.getId());
         verify(imageStorageClient).uploadImage(profileImage);
     }
 
@@ -117,11 +116,11 @@ class UserServiceTest {
     void 존재하지_않는_사용자_정보_수정시_예외를_발생시킨다() {
         // Given
         UserUpdateRequest request = new UserUpdateRequest("new-nickname");
-        when(securityUtil.getUserOAuth2Id()).thenReturn("user-oauth-id");
-        when(userRepository.findByOauthId("user-oauth-id")).thenReturn(Optional.empty());
+
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> userService.updateMyInfo(request, null));
+        CustomException exception = assertThrows(CustomException.class, () -> userService.updateMyInfo(request, null, 1L));
         assertEquals(ErrorCode.AUTHORIZATION_FAILED, exception.getErrorCode());
     }
 }

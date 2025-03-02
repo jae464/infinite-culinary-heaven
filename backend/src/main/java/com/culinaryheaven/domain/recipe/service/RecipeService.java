@@ -46,7 +46,7 @@ public class RecipeService {
     public RecipeResponse create(
             RecipeCreateRequest request,
             List<MultipartFile> images,
-            String oauth2Id
+            Long userId
     ) {
         Contest contest = contestRepository.findById(request.contestId()).orElseThrow(() -> new CustomException(ErrorCode.CONTEST_NOT_FOUND));
 
@@ -68,7 +68,7 @@ public class RecipeService {
         String thumbnailUrl = imageStorageClient.uploadImage(imageMap.get(request.thumbnailImage()));
 
 //        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id()).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
-        User user = userRepository.findByOauthId(oauth2Id).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
         Recipe recipe = request.toEntity(user, thumbnailUrl, contest);
 
         Recipe savedRecipe = recipeRepository.save(recipe);
@@ -95,12 +95,12 @@ public class RecipeService {
             Long recipeId,
             RecipeUpdateRequest request,
             List<MultipartFile> images,
-            String oauth2Id
+            Long userId
     ) {
 
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
 
-        if (!recipe.getUser().getOauthId().equals(oauth2Id)) {
+        if (!recipe.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
@@ -148,9 +148,9 @@ public class RecipeService {
         return RecipeResponse.of(recipe, false, false, true);
     }
 
-    public RecipeResponse getRecipeById(Long id, String oauth2Id) {
+    public RecipeResponse getRecipeById(Long id, Long userId) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        User currentUser = userRepository.findByOauthId(oauth2Id)
+        User currentUser = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
         Boolean isOwner = recipe.getUser().getId().equals(currentUser.getId());
         Boolean isBookMarked = recipe.getBookmarks().stream()
@@ -170,8 +170,8 @@ public class RecipeService {
         return RecipesResponse.of(recipes);
     }
 
-    public RecipesResponse getMyRecipes(Pageable pageable, String oauth2Id) {
-        User user = userRepository.findByOauthId(oauth2Id)
+    public RecipesResponse getMyRecipes(Pageable pageable, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Page<Recipe> recipes = recipeRepository.findAllByUserId(pageable, user.getId());
@@ -179,9 +179,9 @@ public class RecipeService {
     }
 
     @Transactional
-    public void deleteByRecipeId(Long id, String oauth2Id) {
+    public void deleteByRecipeId(Long id, Long userId) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
-        User user = userRepository.findByOauthId(oauth2Id)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         if (!recipe.getUser().getId().equals(user.getId())) {

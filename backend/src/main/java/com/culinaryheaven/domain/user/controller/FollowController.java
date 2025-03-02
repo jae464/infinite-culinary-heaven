@@ -21,7 +21,7 @@ public class FollowController {
             @Authenticated PrincipalUserInfo userInfo,
             @PathVariable Long userId
     ) {
-        FollowResponse followResponse = followService.followUser(userId, userInfo.oauth2Id());
+        FollowResponse followResponse = followService.followUser(userId, userInfo.userId());
         return ResponseEntity.ok().body(followResponse);
     }
 
@@ -38,7 +38,7 @@ public class FollowController {
             @Authenticated PrincipalUserInfo userInfo,
             @PathVariable Long userId
     ) {
-        followService.unfollowUser(userId, userInfo.oauth2Id());
+        followService.unfollowUser(userId, userInfo.userId());
         return ResponseEntity.noContent().build();
     }
 

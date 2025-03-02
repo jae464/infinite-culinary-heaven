@@ -28,13 +28,12 @@ public class RecipeLikeService {
 
     private final RecipeLikeRepository recipeLikeRepository;
     private final UserRepository userRepository;
-    private final SecurityUtil securityUtil;
     private final RecipeRepository recipeRepository;
     private final ApplicationEventPublisher publisher;
 
     @Transactional
-    public RecipeLikeResponse likeRecipe(Long recipeId) {
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+    public RecipeLikeResponse likeRecipe(Long recipeId, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         validateRecipeLike(recipeId, user.getId());
@@ -53,16 +52,16 @@ public class RecipeLikeService {
         return RecipeLikeResponse.of(savedRecipeLike);
     }
 
-    public RecipeLikesResponse getMyRecipeLikes(Pageable pageable) {
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+    public RecipeLikesResponse getMyRecipeLikes(Pageable pageable, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         Page<RecipeLike> recipeLikes = recipeLikeRepository.findByUserId(pageable, user.getId());
         return RecipeLikesResponse.of(recipeLikes);
     }
 
-    public void unlikeRecipe(Long recipeId) {
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+    public void unlikeRecipe(Long recipeId, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         RecipeLike recipeLike = recipeLikeRepository.findByRecipeIdAndUserId(recipeId, user.getId())

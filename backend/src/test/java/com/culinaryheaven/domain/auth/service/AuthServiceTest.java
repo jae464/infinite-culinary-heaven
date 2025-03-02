@@ -62,8 +62,8 @@ class AuthServiceTest {
         User user = fixtureMonkey.giveMeOne(User.class);
 
         when(oAuth2Client.getOAuth2UserId(oauth2AccessToken)).thenReturn("12345");
-        when(jwtTokenProvider.provideToken("12345", TokenType.ACCESS, "ROLE_USER")).thenReturn(accessToken);
-        when(jwtTokenProvider.provideToken("12345", TokenType.REFRESH, "ROLE_USER")).thenReturn(refreshToken);
+        when(jwtTokenProvider.provideToken(user.getId().toString(), TokenType.ACCESS, "ROLE_USER")).thenReturn(accessToken);
+        when(jwtTokenProvider.provideToken(user.getId().toString(), TokenType.REFRESH, "ROLE_USER")).thenReturn(refreshToken);
         when(userRepository.findByOauthId("12345")).thenReturn(Optional.of(user));
 
         // When
@@ -116,11 +116,12 @@ class AuthServiceTest {
 
         when(jwtTokenProvider.validateRefreshToken(refreshToken)).thenReturn(true);
         when(jwtTokenProvider.getClaimsFromToken(refreshToken, TokenType.REFRESH)).thenReturn(claims);
-        when(claims.getSubject()).thenReturn("12345");
+        when(claims.getSubject()).thenReturn(user.getId().toString());
         when(claims.get("memberRole", String.class)).thenReturn("ROLE_USER");
-        when(userRepository.findByOauthId("12345")).thenReturn(Optional.of(user));
-        when(jwtTokenProvider.provideToken("12345", TokenType.ACCESS, "ROLE_USER")).thenReturn(newAccessToken);
-        when(jwtTokenProvider.provideToken("12345", TokenType.REFRESH, "ROLE_USER")).thenReturn(newRefreshToken);
+//        when(userRepository.findByOauthId("12345")).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(jwtTokenProvider.provideToken(user.getId().toString(), TokenType.ACCESS, "ROLE_USER")).thenReturn(newAccessToken);
+        when(jwtTokenProvider.provideToken(user.getId().toString(), TokenType.REFRESH, "ROLE_USER")).thenReturn(newRefreshToken);
 
         // When
         ReissueResponse response = authService.reissue(request);

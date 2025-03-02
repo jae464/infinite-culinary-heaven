@@ -68,12 +68,12 @@ class CommentServiceTest {
         CommentCreateRequest request = new CommentCreateRequest(recipe.getId(), "Test Comment");
         Comment comment = request.toEntity(user, recipe);
 
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(recipeRepository.findById(recipe.getId())).thenReturn(Optional.of(recipe));
         when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
         // When
-        CommentResponse response = commentService.createComment(request, user.getOauthId());
+        CommentResponse response = commentService.createComment(request, user.getId());
 
         // Then
         assertNotNull(response);
@@ -88,11 +88,11 @@ class CommentServiceTest {
         User user = fixtureMonkey.giveMeOne(User.class);
         CommentCreateRequest request = new CommentCreateRequest(recipeId, "Test Comment");
 
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(recipeRepository.findById(recipeId)).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> commentService.createComment(request, user.getOauthId()));
+        CustomException exception = assertThrows(CustomException.class, () -> commentService.createComment(request, 1L));
         assertEquals(ErrorCode.RECIPE_NOT_FOUND, exception.getErrorCode());
     }
 
@@ -107,11 +107,11 @@ class CommentServiceTest {
                 .sample();
         CommentUpdateRequest request = new CommentUpdateRequest("Updated Comment");
 
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
 
         // When
-        CommentResponse response = commentService.updateCommentById(commentId, request, user.getOauthId());
+        CommentResponse response = commentService.updateCommentById(commentId, request, 1L);
 
         // Then
         assertNotNull(response);
@@ -126,11 +126,11 @@ class CommentServiceTest {
         User user = fixtureMonkey.giveMeOne(User.class);
         CommentUpdateRequest request = new CommentUpdateRequest("Updated Comment");
 
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(commentRepository.findById(commentId)).thenReturn(Optional.empty());
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> commentService.updateCommentById(commentId, request, user.getOauthId()));
+        CustomException exception = assertThrows(CustomException.class, () -> commentService.updateCommentById(commentId, request, user.getId()));
         assertEquals(ErrorCode.COMMENT_NOT_FOUND, exception.getErrorCode());
     }
 
@@ -144,11 +144,11 @@ class CommentServiceTest {
                 .set("user", user)
                 .sample();
 
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
 
         // When
-        commentService.deleteCommentById(commentId, user.getOauthId());
+        commentService.deleteCommentById(commentId, user.getId());
 
         // Then
         verify(commentRepository).delete(comment);
@@ -166,11 +166,11 @@ class CommentServiceTest {
                 .set("user", anotherUser)
                 .sample();
 
-        when(userRepository.findByOauthId(user.getOauthId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
 
         // When & Then
-        CustomException exception = assertThrows(CustomException.class, () -> commentService.deleteCommentById(commentId, user.getOauthId()));
+        CustomException exception = assertThrows(CustomException.class, () -> commentService.deleteCommentById(commentId, user.getId()));
         assertEquals(ErrorCode.FORBIDDEN, exception.getErrorCode());
     }
 }

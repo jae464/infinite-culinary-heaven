@@ -24,6 +24,6 @@ public class PrincipalUserInfoArgumentResolver implements HandlerMethodArgumentR
 
     @Override
     public PrincipalUserInfo resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        return new PrincipalUserInfo(securityUtil.getUserOAuth2Id());
+        return new PrincipalUserInfo(securityUtil.getUserId());
     }
 }

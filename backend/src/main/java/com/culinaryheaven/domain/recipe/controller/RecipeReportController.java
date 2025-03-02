@@ -22,7 +22,7 @@ public class RecipeReportController {
             @Authenticated PrincipalUserInfo userInfo,
             @RequestBody RecipeReportCreateRequest request
     ) {
-        recipeReportService.report(request, userInfo.oauth2Id());
+        recipeReportService.report(request, userInfo.userId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

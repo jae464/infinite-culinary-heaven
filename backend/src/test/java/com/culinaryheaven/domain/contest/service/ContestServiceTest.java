@@ -57,9 +57,9 @@ class ContestServiceTest {
                 .set("topicIngredient", topicIngredient)
                 .sample();
 
-        ContestCreateRequest request = new ContestCreateRequest(contest.getName(), contest.getDescription(), contest.getStartDate(), contest.getEndDate(), topicIngredient.getId());
+        ContestCreateRequest request = new ContestCreateRequest(contest.getName(), contest.getDescription(), contest.getStartDate(), contest.getEndDate(), 1L);
 
-        when(topicIngredientRepository.findById(request.topicIngredientId())).thenReturn(Optional.of(topicIngredient));
+        when(topicIngredientRepository.findById(1L)).thenReturn(Optional.of(topicIngredient));
         when(contestRepository.save(any(Contest.class))).thenReturn(contest);
 
         // When

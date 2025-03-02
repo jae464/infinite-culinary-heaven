@@ -25,7 +25,7 @@ public class CommentController {
         @Authenticated PrincipalUserInfo principalUserInfo,
         @RequestBody CommentCreateRequest request
     ) {
-        CommentResponse commentResponse = commentService.createComment(request, principalUserInfo.oauth2Id());
+        CommentResponse commentResponse = commentService.createComment(request, principalUserInfo.userId());
         return ResponseEntity.ok().body(commentResponse);
     }
 
@@ -43,7 +43,7 @@ public class CommentController {
             @PathVariable Long commentId,
             @RequestBody CommentUpdateRequest request
     ) {
-        CommentResponse commentResponse = commentService.updateCommentById(commentId, request, principalUserInfo.oauth2Id());
+        CommentResponse commentResponse = commentService.updateCommentById(commentId, request, principalUserInfo.userId());
         return ResponseEntity.ok().body(commentResponse);
     }
 
@@ -52,7 +52,7 @@ public class CommentController {
             @Authenticated PrincipalUserInfo principalUserInfo,
             @PathVariable Long commentId
     ) {
-        commentService.deleteCommentById(commentId, principalUserInfo.oauth2Id());
+        commentService.deleteCommentById(commentId, principalUserInfo.userId());
         return ResponseEntity.noContent().build();
     }
 

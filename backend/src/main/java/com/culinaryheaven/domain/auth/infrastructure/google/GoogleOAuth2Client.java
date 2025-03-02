@@ -2,7 +2,6 @@ package com.culinaryheaven.domain.auth.infrastructure.google;
 
 import com.culinaryheaven.domain.auth.domain.OAuth2Type;
 import com.culinaryheaven.domain.auth.infrastructure.OAuth2Client;
-import com.culinaryheaven.domain.auth.infrastructure.dto.response.OAuth2UserInfoResponse;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Collections;
 
 @Slf4j

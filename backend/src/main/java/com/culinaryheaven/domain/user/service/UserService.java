@@ -20,10 +20,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ImageStorageClient imageStorageClient;
-    private final SecurityUtil securityUtil;
 
-    public UserInfoResponse getMyInfo() {
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+    public UserInfoResponse getMyInfo(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         return UserInfoResponse.of(user);
@@ -40,9 +39,10 @@ public class UserService {
     @Transactional
     public UserInfoResponse updateMyInfo(
             UserUpdateRequest request,
-            MultipartFile profileImage
+            MultipartFile profileImage,
+            Long userId
     ) {
-        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 
         if (request.userNickname() != null) {

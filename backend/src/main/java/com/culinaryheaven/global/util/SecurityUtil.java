@@ -10,12 +10,13 @@ import java.util.Optional;
 @Component
 public class SecurityUtil {
 
-    public String getUserOAuth2Id() {
-        String oauth2Id = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (oauth2Id == null) {
+    public Long getUserId() {
+        String userId  = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (userId == null) {
             throw new CustomException(ErrorCode.AUTHORIZATION_NOT_FOUND);
         }
-        return oauth2Id;
+        Long parsedUserId = Long.parseLong(userId);
+        return parsedUserId;
     }
 
 }

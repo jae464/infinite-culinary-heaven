@@ -35,7 +35,7 @@ public class RecipeController {
             @RequestPart List<MultipartFile> images,
             @RequestPart RecipeCreateRequest request
     ) {
-        RecipeResponse recipeResponse = recipeService.create(request, images, userInfo.oauth2Id());
+        RecipeResponse recipeResponse = recipeService.create(request, images, userInfo.userId());
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeResponse);
     }
 
@@ -48,7 +48,7 @@ public class RecipeController {
         if (images == null) {
             images = Collections.emptyList();
         }
-        RecipeResponse recipeResponse = recipeService.updateRecipe(recipeId, request, images, userInfo.oauth2Id());
+        RecipeResponse recipeResponse = recipeService.updateRecipe(recipeId, request, images, userInfo.userId());
         return ResponseEntity.ok().body(recipeResponse);
     }
 
@@ -72,7 +72,7 @@ public class RecipeController {
             @Authenticated PrincipalUserInfo userInfo,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        RecipesResponse recipesResponse = recipeService.getMyRecipes(pageable, userInfo.oauth2Id());
+        RecipesResponse recipesResponse = recipeService.getMyRecipes(pageable, userInfo.userId());
         return ResponseEntity.ok().body(recipesResponse);
     }
 
@@ -81,7 +81,7 @@ public class RecipeController {
         @Authenticated(required = false) PrincipalUserInfo userInfo,
         @PathVariable Long recipeId
     ) {
-        RecipeResponse recipeResponse = recipeService.getRecipeById(recipeId, userInfo.oauth2Id());
+        RecipeResponse recipeResponse = recipeService.getRecipeById(recipeId, userInfo.userId());
         return ResponseEntity.ok().body(recipeResponse);
     }
 
@@ -90,7 +90,7 @@ public class RecipeController {
             @Authenticated PrincipalUserInfo userInfo,
             @PathVariable Long recipeId
     ) {
-        recipeService.deleteByRecipeId(recipeId, userInfo.oauth2Id());
+        recipeService.deleteByRecipeId(recipeId, userInfo.userId());
         return ResponseEntity.noContent().build();
     }
 

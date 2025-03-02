@@ -21,9 +21,10 @@ public class BookMarkController {
 
     @PostMapping("/{recipeId}")
     public ResponseEntity<BookMarkResponse> create(
+            @Authenticated PrincipalUserInfo principalUserInfo,
             @PathVariable Long recipeId
     ) {
-        BookMarkResponse bookMarkResponse = bookMarkService.addBookMark(recipeId);
+        BookMarkResponse bookMarkResponse = bookMarkService.addBookMark(recipeId, principalUserInfo.userId());
         return ResponseEntity.ok().body(bookMarkResponse);
     }
 
@@ -32,7 +33,7 @@ public class BookMarkController {
             @Authenticated PrincipalUserInfo principalUserInfo,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        BookMarksResponse bookMarksResponse = bookMarkService.getAllBookMarks(pageable, principalUserInfo.oauth2Id());
+        BookMarksResponse bookMarksResponse = bookMarkService.getAllBookMarks(pageable, principalUserInfo.userId());
         return ResponseEntity.ok().body(bookMarksResponse);
     }
 
@@ -41,7 +42,7 @@ public class BookMarkController {
             @Authenticated PrincipalUserInfo principalUserInfo,
             @PathVariable Long recipeId
     ) {
-        bookMarkService.deleteBookMarkByRecipeId(recipeId, principalUserInfo.oauth2Id());
+        bookMarkService.deleteBookMarkByRecipeId(recipeId, principalUserInfo.userId());
         return ResponseEntity.noContent().build();
     }
 }

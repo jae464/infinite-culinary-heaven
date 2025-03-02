@@ -39,11 +39,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             if (token != null && jwtTokenProvider.validateAccessToken(token)) {
                 Claims claims = jwtTokenProvider.getClaimsFromToken(token, TokenType.ACCESS);
-                String username = claims.getSubject();
+                String userId = claims.getSubject();
                 String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
 
                 GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, token, List.of(grantedAuthority));
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userId, token, List.of(grantedAuthority));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (CustomException ex) {
