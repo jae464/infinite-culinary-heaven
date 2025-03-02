@@ -55,12 +55,12 @@ interface RecipeService {
         @Part("request") body: RequestBody
     ): Response<Unit>
 
-    @POST("/recipes/like/{recipeId}")
+    @POST("/recipes/likes/{recipeId}")
     suspend fun likeRecipe(
         @Path("recipeId") recipeId: Long
     ): Response<RecipeLikeResponse>
 
-    @DELETE("/recipes/like/{recipeId}")
+    @DELETE("/recipes/likes/{recipeId}")
     suspend fun unlikeRecipe(
         @Path("recipeId") recipeId: Long
     ): Response<Unit>

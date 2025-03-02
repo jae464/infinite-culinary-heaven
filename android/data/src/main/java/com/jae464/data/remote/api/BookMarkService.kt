@@ -14,7 +14,7 @@ interface BookMarkService {
     @POST("/bookmarks/{recipeId}")
     suspend fun addBookMark(@Path("recipeId") recipeId: Long): Response<BookMarkResponse>
 
-    @GET("/bookmarks")
+    @GET("/bookmarks/me")
     suspend fun getAllBookMarks(
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 20, // todo page 로직 구현후 추후 수정
