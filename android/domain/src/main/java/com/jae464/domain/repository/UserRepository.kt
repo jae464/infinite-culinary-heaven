@@ -6,6 +6,7 @@ import java.io.File
 
 interface UserRepository {
     suspend fun getMyInfo(): Result<UserInfo>
+    suspend fun getUserInfo(userId: Long): Result<UserInfo>
     suspend fun updateProfile(nickname: String, image: File?): Result<UserInfo>
     suspend fun updateDeviceToken(token: String): Result<DeviceToken>
 }

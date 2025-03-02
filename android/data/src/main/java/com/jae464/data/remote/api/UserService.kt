@@ -11,11 +11,17 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface UserService {
 
     @GET("/users/me")
     suspend fun getMyInfo(): Response<UserInfoResponse>
+
+    @GET("/users/{userId}")
+    suspend fun getUserInfo(
+        @Path("userId") userId: Long
+    ): Response<UserInfoResponse>
 
     @Multipart
     @PATCH("/users/me")

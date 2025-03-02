@@ -60,6 +60,11 @@ sealed interface Route {
         override val name: String = "setting"
     }
 
+    @Serializable
+    data class UserProfile(val userId: Long): Route {
+        override val name: String = "user_profile"
+    }
+
 }
 
 sealed interface MainTabRoute : Route {

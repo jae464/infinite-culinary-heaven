@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -66,6 +68,7 @@ import coil.compose.AsyncImage
 import com.jae464.domain.model.Ingredient
 import com.jae464.domain.model.Recipe
 import com.jae464.domain.model.Step
+import com.jae464.domain.model.UserInfo
 import com.jae464.presentation.component.ConfirmDialog
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.ImageDetailDialog
@@ -74,6 +77,7 @@ import com.jae464.presentation.detail.component.RecipeDetailContentBox
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.ui.theme.Red10
+import com.jae464.presentation.util.ImageConstants
 
 @Composable
 fun RecipeDetailRoute(
@@ -81,7 +85,8 @@ fun RecipeDetailRoute(
     viewModel: RecipeDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onNavigateToHome: () -> Unit,
-    onNavigateToEditRecipe: (Long) -> Unit = {}
+    onNavigateToEditRecipe: (Long) -> Unit = {},
+    onNavigateToProfile: (Long) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val event = viewModel.event
@@ -127,7 +132,8 @@ fun RecipeDetailRoute(
         uiState = uiState,
         onIntent = viewModel::handleIntent,
         onBackClick = onBackClick,
-        onNavigateToEditRecipe = onNavigateToEditRecipe
+        onNavigateToEditRecipe = onNavigateToEditRecipe,
+        onNavigateToProfile = onNavigateToProfile
     )
 
 }
@@ -138,7 +144,8 @@ fun RecipeDetailScreen(
     uiState: RecipeDetailUiState,
     onIntent: (RecipeDetailIntent) -> Unit = {},
     onBackClick: () -> Unit,
-    onNavigateToEditRecipe: (Long) -> Unit
+    onNavigateToEditRecipe: (Long) -> Unit,
+    onNavigateToProfile: (Long) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -167,7 +174,6 @@ fun RecipeDetailScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-
         HeavenTopAppBar(
             title = uiState.recipe?.title ?: "",
             navigationIcon = Icons.Default.ArrowBack,
@@ -216,7 +222,6 @@ fun RecipeDetailScreen(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-//                            onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))
                             showConfirmDialog = true
                         }
                     )
@@ -239,6 +244,9 @@ fun RecipeDetailScreen(
                     },
                     onClickCommentIcon = {
                         showBottomSheet = true
+                    },
+                    onClickUserProfile = {
+                        onNavigateToProfile(it)
                     }
                 )
             }
@@ -315,10 +323,8 @@ fun RecipeDetailScreen(
                         )
                     }
                 }
-
             }
         }
-
     }
 
     if (showConfirmDialog && uiState.recipe != null) {
@@ -360,7 +366,8 @@ fun RecipeDetailScreen(
 fun RecipeItem(
     recipe: Recipe,
     onClickImage: (String) -> Unit,
-    onClickCommentIcon: () -> Unit
+    onClickCommentIcon: () -> Unit,
+    onClickUserProfile: (Long) -> Unit
 ) {
     Column {
         Column(
@@ -409,6 +416,15 @@ fun RecipeItem(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = recipe.description)
                 }
+            }
+
+            RecipeDetailContentBox {
+                WriterProfile(
+                    modifier = Modifier.clickable {
+                        onClickUserProfile(recipe.writeInfo.id)
+                    },
+                    userInfo = recipe.writeInfo
+                )
             }
 
             RecipeDetailContentBox {
@@ -497,6 +513,29 @@ fun StepItem(step: Step, index: Int, onClickImage: (String) -> Unit) {
                 contentScale = ContentScale.Crop
             )
         }
+    }
+}
+
+@Composable
+fun WriterProfile(modifier: Modifier = Modifier, userInfo: UserInfo) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top
+    ) {
+        AsyncImage(
+            model = userInfo.profileImageUrl ?: ImageConstants.DEFAULT_PROFILE_IMAGE_URL,
+            contentDescription = "user_image",
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(64.dp),
+            contentScale = ContentScale.Fit
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = userInfo.name,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 20.sp
+        )
     }
 }
 

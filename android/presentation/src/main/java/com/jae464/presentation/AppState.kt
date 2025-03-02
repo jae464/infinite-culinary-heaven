@@ -25,6 +25,7 @@ import com.jae464.presentation.mypage.navigation.navigateMyRecipe
 import com.jae464.presentation.mypage.navigation.navigateProfileEdit
 import com.jae464.presentation.mypage.navigation.navigateSetting
 import com.jae464.presentation.search.navigation.navigateRecipeSearch
+import com.jae464.presentation.userprofile.navigation.navigateUserProfile
 
 @Stable
 class AppState(
@@ -132,6 +133,10 @@ class AppState(
 
     fun navigateToSetting() {
         navController.navigateSetting()
+    }
+
+    fun navigateToUserProfile(userId: Long) {
+        navController.navigateUserProfile(userId)
     }
 
     fun popBackStack() {

@@ -1,4 +1,4 @@
-package com.jae464.presentation.detail.navigation
+package com.jae464.presentation.userprofile.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
@@ -6,20 +6,17 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.jae464.presentation.detail.RecipeDetailRoute
 import com.jae464.presentation.main.Route
+import com.jae464.presentation.userprofile.UserProfileRoute
 
-fun NavController.navigateRecipeDetail(recipeId: Long) {
-    navigate(Route.RecipeDetail(recipeId))
+fun NavController.navigateUserProfile(userId: Long) {
+    navigate(Route.UserProfile(userId))
 }
 
-fun NavGraphBuilder.recipeDetailNavGraph(
-    onBackClick: () -> Unit,
-    onNavigateToHome: () -> Unit,
-    onNavigateToEditRecipe: (Long) -> Unit,
-    onNavigateToProfile: (Long) -> Unit
+fun NavGraphBuilder.userProfileNavGraph(
+    onBackClick: () -> Unit
 ) {
-    composable<Route.RecipeDetail>(
+    composable<Route.UserProfile>(
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
@@ -39,13 +36,13 @@ fun NavGraphBuilder.recipeDetailNavGraph(
             )
         }
     ) { navBackStackEntry ->
-        val recipeId = navBackStackEntry.toRoute<Route.RecipeDetail>().recipeId
-        RecipeDetailRoute(
-            recipeId = recipeId,
-            onBackClick = onBackClick,
-            onNavigateToHome = onNavigateToHome,
-            onNavigateToEditRecipe = onNavigateToEditRecipe,
-            onNavigateToProfile = onNavigateToProfile
+
+        val userId = navBackStackEntry.toRoute<Route.UserProfile>().userId
+
+        UserProfileRoute(
+            userId = userId,
+            onBackClick = onBackClick
         )
+
     }
 }

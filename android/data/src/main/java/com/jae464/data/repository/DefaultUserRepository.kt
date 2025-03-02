@@ -30,6 +30,14 @@ class DefaultUserRepository @Inject constructor(
         }
     }
 
+    override suspend fun getUserInfo(userId: Long): Result<UserInfo> {
+        return handleResponse {
+            userService.getUserInfo(userId)
+        }.mapCatching { response ->
+            response.toDomain()
+        }
+    }
+
     override suspend fun updateProfile(
         nickname: String,
         image: File?,

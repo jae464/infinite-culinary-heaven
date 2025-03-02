@@ -20,6 +20,7 @@ import com.jae464.presentation.mypage.navigation.settingNavGraph
 import com.jae464.presentation.register.navigation.recipeRegisterNavGraph
 import com.jae464.presentation.search.navigation.recipeSearchNavGraph
 import com.jae464.presentation.splash.navigation.splashNavGraph
+import com.jae464.presentation.userprofile.navigation.userProfileNavGraph
 import com.jae464.presentation.util.StateHandleKey
 
 @Composable
@@ -76,7 +77,8 @@ fun MainNavHost(
                 appState.navController.previousBackStackEntry?.savedStateHandle?.set(StateHandleKey.IS_REFRESH_KEY, true)
                 appState.popBackStack()
             },
-            onNavigateToEditRecipe = { appState.navigateToRecipeRegister(it) }
+            onNavigateToEditRecipe = { appState.navigateToRecipeRegister(it) },
+            onNavigateToProfile = { appState.navigateToUserProfile(it) }
         )
         recipeRegisterNavGraph(
             onBackClick = { appState.popBackStack() },
@@ -112,6 +114,9 @@ fun MainNavHost(
         settingNavGraph(
             onBackClick = { appState.popBackStack() },
             onClickLogout = { appState.navigateToLoginAfterLogout() }
+        )
+        userProfileNavGraph(
+            onBackClick = { appState.popBackStack() }
         )
     }
 }
