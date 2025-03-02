@@ -35,6 +35,7 @@ class BookMarkViewModel @Inject constructor(
             BookMarkIntent.InitBookMarkedRecipes -> {
                 currentPage = 0
                 isLastPage = false
+                _uiState.update { state -> state.copy(bookMarkedRecipes = emptyList()) }
                 fetchBookMarkedRecipes()
             }
         }
