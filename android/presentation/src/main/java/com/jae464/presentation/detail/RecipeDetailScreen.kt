@@ -520,7 +520,7 @@ fun StepItem(step: Step, index: Int, onClickImage: (String) -> Unit) {
 fun WriterProfile(modifier: Modifier = Modifier, userInfo: UserInfo) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             model = userInfo.profileImageUrl ?: ImageConstants.DEFAULT_PROFILE_IMAGE_URL,
