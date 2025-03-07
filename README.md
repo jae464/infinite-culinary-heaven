@@ -2,7 +2,7 @@
 
 2024.10.20 ~ 진행중
 
-매주 바뀌는 요리 재료를 가지고 자신만의 요리 레시피를 올려 경쟁하는 앱입니다.
+매주 바뀌는 요리 재료를 가지고 자신만의 요리 레시피를 올려 경쟁하는 앱 입니다.
 
 <img width="200" height="450" alt="스크린샷 2024-12-12 오전 2 42 06" src="https://github.com/user-attachments/assets/32104a15-95ef-4f7d-be17-fcc344d034dc" />
 <img width="200" height="450" alt="스크린샷 2024-12-12 오전 2 42 24" src="https://github.com/user-attachments/assets/08a4b3d9-b858-4eb7-895b-bde9c2bb9e42" />
