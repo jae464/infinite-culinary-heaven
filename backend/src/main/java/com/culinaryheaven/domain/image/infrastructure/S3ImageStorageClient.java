@@ -1,9 +1,10 @@
-package com.culinaryheaven.domain.image.domain;
+package com.culinaryheaven.domain.image.infrastructure;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.culinaryheaven.domain.image.ImageStorageClient;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,6 @@
 package com.culinaryheaven.domain.image.controller;
 
-import com.culinaryheaven.domain.image.domain.ImageStorageClient;
-import com.culinaryheaven.domain.image.service.ImageService;
+import com.culinaryheaven.domain.image.ImageStorageClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

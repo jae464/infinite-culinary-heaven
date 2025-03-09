@@ -1,7 +1,6 @@
-package com.culinaryheaven.domain.auth.infrastructure;
+package com.culinaryheaven.domain.auth;
 
 import com.culinaryheaven.domain.auth.domain.OAuth2Type;
-import com.culinaryheaven.domain.auth.infrastructure.dto.response.OAuth2UserInfoResponse;
 
 public interface OAuth2Client {
 

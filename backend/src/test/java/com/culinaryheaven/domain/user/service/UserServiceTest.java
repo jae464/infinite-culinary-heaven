@@ -1,6 +1,6 @@
 package com.culinaryheaven.domain.user.service;
 
-import com.culinaryheaven.domain.image.domain.ImageStorageClient;
+import com.culinaryheaven.domain.image.ImageStorageClient;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.dto.request.UserUpdateRequest;
 import com.culinaryheaven.domain.user.dto.response.UserInfoResponse;

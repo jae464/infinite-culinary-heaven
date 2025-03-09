@@ -1,7 +1,7 @@
 package com.culinaryheaven.domain.auth.infrastructure.google;
 
 import com.culinaryheaven.domain.auth.domain.OAuth2Type;
-import com.culinaryheaven.domain.auth.infrastructure.OAuth2Client;
+import com.culinaryheaven.domain.auth.OAuth2Client;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;

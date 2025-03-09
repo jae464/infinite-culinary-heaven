@@ -1,4 +1,4 @@
-package com.culinaryheaven.domain.image.domain;
+package com.culinaryheaven.domain.image;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

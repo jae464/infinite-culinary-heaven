@@ -3,7 +3,7 @@ package com.culinaryheaven.domain.recipe.service;
 import com.culinaryheaven.domain.contest.domain.Contest;
 import com.culinaryheaven.domain.contest.domain.TopicIngredient;
 import com.culinaryheaven.domain.contest.repository.ContestRepository;
-import com.culinaryheaven.domain.image.domain.ImageStorageClient;
+import com.culinaryheaven.domain.image.ImageStorageClient;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.dto.request.IngredientCreateRequest;
 import com.culinaryheaven.domain.recipe.dto.request.RecipeCreateRequest;
@@ -27,9 +27,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.Optional;

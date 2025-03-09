@@ -5,7 +5,7 @@ import com.culinaryheaven.domain.contest.dto.request.TopicIngredientCreateReques
 import com.culinaryheaven.domain.contest.dto.response.TopicIngredientResponse;
 import com.culinaryheaven.domain.contest.dto.response.TopicIngredientsResponse;
 import com.culinaryheaven.domain.contest.repository.TopicIngredientRepository;
-import com.culinaryheaven.domain.image.domain.ImageStorageClient;
+import com.culinaryheaven.domain.image.ImageStorageClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;

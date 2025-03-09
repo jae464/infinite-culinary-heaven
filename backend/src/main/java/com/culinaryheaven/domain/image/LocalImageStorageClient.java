@@ -1,4 +1,4 @@
-package com.culinaryheaven.domain.image.domain;
+package com.culinaryheaven.domain.image;
 
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
@@ -8,7 +8,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;

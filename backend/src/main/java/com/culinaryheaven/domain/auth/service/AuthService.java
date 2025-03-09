@@ -50,10 +50,6 @@ public class AuthService {
         else {
             throw new CustomException(ErrorCode.INVALID_OAUTH2_TYPE);
         }
-
-//        String accessToken = jwtTokenProvider.provideToken(oAuth2Id, TokenType.ACCESS, "ROLE_USER");
-//        String refreshToken = jwtTokenProvider.provideToken(oAuth2Id, TokenType.REFRESH, "ROLE_USER");
-
         User savedUser = userRepository.findByOauthId(oAuth2Id)
                 .orElseGet(() -> {
                     User user = User.builder()
@@ -86,6 +82,7 @@ public class AuthService {
 
     }
 
+    @Transactional(readOnly = true)
     public ReissueResponse reissue(ReissueRequest request) {
         try {
             if (jwtTokenProvider.validateRefreshToken(request.refreshToken())) {
