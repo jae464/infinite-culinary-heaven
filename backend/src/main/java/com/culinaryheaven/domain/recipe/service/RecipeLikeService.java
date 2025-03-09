@@ -4,23 +4,18 @@ import com.culinaryheaven.domain.recipe.domain.Recipe;
 import com.culinaryheaven.domain.recipe.domain.RecipeLike;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeLikeResponse;
 import com.culinaryheaven.domain.recipe.dto.response.RecipeLikesResponse;
-import com.culinaryheaven.domain.recipe.event.RecipeLikeEvent;
 import com.culinaryheaven.domain.recipe.repository.RecipeLikeRepository;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import com.culinaryheaven.global.util.SecurityUtil;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.core.ApplicationPushBuilder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +47,7 @@ public class RecipeLikeService {
         return RecipeLikeResponse.of(savedRecipeLike);
     }
 
+    @Transactional(readOnly = true)
     public RecipeLikesResponse getMyRecipeLikes(Pageable pageable, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
@@ -60,6 +56,7 @@ public class RecipeLikeService {
         return RecipeLikesResponse.of(recipeLikes);
     }
 
+    @Transactional
     public void unlikeRecipe(Long recipeId, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));

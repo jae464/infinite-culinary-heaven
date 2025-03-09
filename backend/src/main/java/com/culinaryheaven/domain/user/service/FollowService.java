@@ -39,6 +39,7 @@ public class FollowService {
         return FollowResponse.of(savedFollow);
     }
 
+    @Transactional
     public void unfollowUser(Long targetUserId, Long userId) {
         User sourceUser = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
         User targetUser = userRepository.findById(targetUserId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
@@ -46,6 +47,7 @@ public class FollowService {
         followRepository.delete(follow);
     }
 
+    @Transactional(readOnly = true)
     public FollowsResponse getFollows(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
         List<Follow> follows = followRepository.findBySource(user);

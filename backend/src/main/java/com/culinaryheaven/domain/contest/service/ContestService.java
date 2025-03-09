@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +24,7 @@ public class ContestService {
     private final ContestRepository contestRepository;
     private final TopicIngredientRepository topicIngredientRepository;
 
+    @Transactional
     public ContestResponse create(final ContestCreateRequest request) {
         TopicIngredient topicIngredient = topicIngredientRepository.findById(request.topicIngredientId())
                 .orElseThrow(() -> new CustomException(ErrorCode.TOPIC_INGREDIENT_NOT_FOUND)
@@ -34,11 +36,13 @@ public class ContestService {
         return ContestResponse.of(savedContest);
     }
 
+    @Transactional(readOnly = true)
     public ContestsResponse getAllContests(Pageable pageable) {
         Page<Contest> contests = contestRepository.findAll(pageable);
         return ContestsResponse.of(contests);
     }
 
+    @Transactional(readOnly = true)
     public ContestResponse getCurrentContest() {
         Contest contest = contestRepository.findContestsWithinCurrentDate(LocalDateTime.now()).orElseThrow(() ->
                 new CustomException(ErrorCode.CONTEST_NOT_FOUND)

@@ -7,9 +7,9 @@ import com.culinaryheaven.domain.user.dto.response.UserInfoResponse;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -19,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ImageStorageClient imageStorageClient;
 
+    @Transactional(readOnly = true)
     public UserInfoResponse getMyInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
@@ -27,6 +28,7 @@ public class UserService {
 
     }
 
+    @Transactional(readOnly = true)
     public UserInfoResponse getUserInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));

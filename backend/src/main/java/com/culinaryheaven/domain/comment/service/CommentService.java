@@ -53,6 +53,7 @@ public class CommentService {
 
     }
 
+    @Transactional(readOnly = true)
     public CommentsResponse getCommentsByRecipeId(Long recipeId) {
 
         List<Comment> comments = commentRepository.findByRecipeId(
@@ -81,6 +82,7 @@ public class CommentService {
         return CommentResponse.of(comment);
     }
 
+    @Transactional
     public void deleteCommentById(Long commentId, Long userId) {
         User user = userRepository.findById(
                 userId

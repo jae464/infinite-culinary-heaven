@@ -11,6 +11,7 @@ import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class RecipeReportService {
     private final RecipeRepository recipeRepository;
     private final RecipeReportRepository recipeReportRepository;
 
+    @Transactional
     public void report(RecipeReportCreateRequest request, Long userId) {
         Recipe recipe = recipeRepository.findById(request.recipeId()).orElseThrow(
                 () -> new CustomException(ErrorCode.RECIPE_NOT_FOUND)

@@ -146,6 +146,7 @@ public class RecipeService {
         return RecipeResponse.of(recipe, false, false, true);
     }
 
+    @Transactional(readOnly = true)
     public RecipeResponse getRecipeById(Long id, Long userId) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
         User currentUser = userRepository.findById(userId)
@@ -158,16 +159,19 @@ public class RecipeService {
         return RecipeResponse.of(recipe, isBookMarked, isLiked, isOwner);
     }
 
+    @Transactional(readOnly = true)
     public RecipesResponse getAllRecipes(Pageable pageable) {
         Page<Recipe> recipes = recipeRepository.findAll(pageable);
         return RecipesResponse.of(recipes);
     }
 
+    @Transactional(readOnly = true)
     public RecipesResponse getRecipesByContestId(Pageable pageable, Long id) {
         Page<Recipe> recipes = recipeRepository.findAllByContestId(pageable, id);
         return RecipesResponse.of(recipes);
     }
 
+    @Transactional(readOnly = true)
     public RecipesResponse getMyRecipes(Pageable pageable, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));

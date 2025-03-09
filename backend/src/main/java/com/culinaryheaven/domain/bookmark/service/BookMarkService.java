@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class BookMarkService {
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
 
+    @Transactional
     public BookMarkResponse addBookMark(Long recipeId, Long userId) {
 
         User user = userRepository.findById(
@@ -50,6 +52,7 @@ public class BookMarkService {
 
     }
 
+    @Transactional(readOnly = true)
     public BookMarksResponse getAllBookMarks(Pageable pageable, Long userId) {
 
         User user = userRepository.findById(
@@ -64,6 +67,7 @@ public class BookMarkService {
 
     }
 
+    @Transactional
     public void deleteBookMarkByRecipeId(Long recipeId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomException(ErrorCode.AUTHORIZATION_FAILED)
@@ -77,6 +81,7 @@ public class BookMarkService {
 
         bookMarkRepository.delete(bookMark);
     }
+
 
     private void validateBookMark(Long recipeId, Long userId) {
         boolean exists = bookMarkRepository.existsByRecipeIdAndUserId(recipeId, userId);

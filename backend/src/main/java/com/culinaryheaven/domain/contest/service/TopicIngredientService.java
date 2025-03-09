@@ -32,6 +32,7 @@ public class TopicIngredientService {
         return TopicIngredientResponse.of(savedTopicIngredient);
     }
 
+    @Transactional(readOnly = true)
     public TopicIngredientsResponse getAllTopicIngredients(
             Pageable pageable
     ) {
