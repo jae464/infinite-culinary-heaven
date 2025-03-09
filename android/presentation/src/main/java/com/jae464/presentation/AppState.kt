@@ -1,5 +1,6 @@
 package com.jae464.presentation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import com.jae464.presentation.register.navigation.navigateRecipeRegister
 import com.jae464.presentation.bookmark.navigation.navigateBookMark
 import com.jae464.presentation.contestdetail.navigation.navigateContestDetail
 import com.jae464.presentation.login.navigation.navigateLogin
+import com.jae464.presentation.main.MainTabRoute
 import com.jae464.presentation.main.Route
 import com.jae464.presentation.mypage.navigation.navigateMyLikes
 import com.jae464.presentation.mypage.navigation.navigateMyRecipe
@@ -43,6 +45,10 @@ class AppState(
         }
 
     fun navigate(tab: MainTab) {
+        if (isSameWithCurrent(tab.route)) {
+            return
+        }
+
         val navOptions = navOptions {
             popUpTo(MainTab.HOME.route) {
                 saveState = true
@@ -60,6 +66,10 @@ class AppState(
     }
 
     fun navigateToLogin() {
+        if (isSameWithCurrent(Route.Login)) {
+            return
+        }
+
         val navOptions = navOptions {
             popUpTo(navController.graph.findStartDestination().id) {
                 inclusive = true
@@ -71,6 +81,10 @@ class AppState(
     }
 
     fun navigateToLoginAfterLogout() {
+        if (isSameWithCurrent(Route.Login)) {
+            return
+        }
+
         val navOptions = navOptions {
             popUpTo(MainTab.HOME.route) {
                 inclusive = true
@@ -82,6 +96,10 @@ class AppState(
     }
 
     fun navigateSplashToHome() {
+        if (isSameWithCurrent(MainTabRoute.Home)) {
+            return
+        }
+
         val navOptions = navOptions {
             popUpTo(Route.Splash) {
                 inclusive = true
@@ -93,6 +111,10 @@ class AppState(
     }
 
     fun navigateLoginToHome() {
+        if (isSameWithCurrent(MainTabRoute.Home)) {
+            return
+        }
+
         val navOptions = navOptions {
             popUpTo(Route.Login) {
                 inclusive = true
@@ -104,43 +126,74 @@ class AppState(
     }
 
     fun navigateToRecipeDetail(recipeId: Long) {
+        if (isSameWithCurrent(Route.RecipeDetail(recipeId))) {
+            return
+        }
         navController.navigateRecipeDetail(recipeId)
     }
 
     fun navigateToRecipeRegister(recipeId: Long? = null) {
+        if (isSameWithCurrent(Route.RecipeRegister(recipeId))) {
+            return
+        }
         navController.navigateRecipeRegister(recipeId)
     }
 
     fun navigateToRecipeSearch(contestId: Long? = null) {
+        if (isSameWithCurrent(Route.RecipeSearch(contestId))) {
+            return
+        }
         navController.navigateRecipeSearch(contestId)
     }
 
     fun navigateToContestDetail(contestId: Long, contestTitle: String) {
+        if (isSameWithCurrent(Route.ContestDetail(contestId, contestTitle))) {
+            return
+        }
         navController.navigateContestDetail(contestId, contestTitle)
     }
 
     fun navigateToProfileEdit(nickname: String, profileImageUrl: String?) {
+        if (isSameWithCurrent(Route.ProfileEdit(nickname, profileImageUrl))) {
+            return
+        }
         navController.navigateProfileEdit(nickname, profileImageUrl)
     }
 
     fun navigateToMyRecipe() {
+        if (isSameWithCurrent(Route.MyRecipe)) {
+            return
+        }
         navController.navigateMyRecipe()
     }
 
     fun navigateToMyLikes() {
+        if (isSameWithCurrent(Route.MyLikes)) {
+            return
+        }
         navController.navigateMyLikes()
     }
 
     fun navigateToSetting() {
+        if (isSameWithCurrent(Route.Setting)) {
+            return
+        }
         navController.navigateSetting()
     }
 
     fun navigateToUserProfile(userId: Long) {
+        if (isSameWithCurrent(Route.UserProfile(userId))) {
+            return
+        }
         navController.navigateUserProfile(userId)
     }
 
     fun popBackStack() {
         navController.popBackStack()
+    }
+
+    private fun isSameWithCurrent(targetRoute: Route): Boolean {
+        return navController.currentDestination?.hasRoute(targetRoute::class) ?: false
     }
 
     @Composable
