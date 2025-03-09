@@ -30,7 +30,21 @@ class UserProfileViewModel @Inject constructor(
     val event = _event.asSharedFlow()
 
     init {
+        getMyUserId()
         fetchUserInfo()
+    }
+
+    private fun getMyUserId() {
+        viewModelScope.launch {
+            userRepository.getMyUserId()
+                .onSuccess { myUserId ->
+                    Log.d("UserProfileViewModel", "getMyUserId: $myUserId")
+                    _uiState.value = _uiState.value.copy(isMe = myUserId == userId.toString())
+                }
+                .onFailure {
+
+                }
+        }
     }
 
     private fun fetchUserInfo() {

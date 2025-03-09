@@ -9,4 +9,6 @@ interface UserRepository {
     suspend fun getUserInfo(userId: Long): Result<UserInfo>
     suspend fun updateProfile(nickname: String, image: File?): Result<UserInfo>
     suspend fun updateDeviceToken(token: String): Result<DeviceToken>
+    suspend fun saveMyUserId(userId: String)
+    suspend fun getMyUserId(): Result<String>
 }

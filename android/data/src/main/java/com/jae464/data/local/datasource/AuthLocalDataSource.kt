@@ -20,6 +20,7 @@ class AuthLocalDataSource @Inject constructor(
             preferences[ACCESS_TOKEN_KEY] = accessToken
         }
     }
+
     suspend fun saveRefreshToken(
         refreshToken: String
     ) {
@@ -47,8 +48,19 @@ class AuthLocalDataSource @Inject constructor(
         }
     }
 
+    suspend fun saveMyUserId(userId: String) {
+        dataStore.edit { preferences ->
+            preferences[MY_USER_ID_KEY] = userId
+        }
+    }
+
+    suspend fun getMyUserId(): String {
+        return dataStore.data.first()[MY_USER_ID_KEY] ?: ""
+    }
+
     companion object {
         private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
+        private val MY_USER_ID_KEY = stringPreferencesKey("my_user_id")
     }
 }

@@ -101,17 +101,34 @@ fun UserProfileScreen(
                         userInfo = uiState.userInfo,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Button(
-                        onClick = {},
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (uiState.isFollowing) Color.LightGray else Green10,
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Text(text = "팔로우", fontSize = 16.sp)
+
+                    if (uiState.isMe) {
+                        Button(
+                            onClick = {},
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.LightGray,
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Text(text = "프로필 수정", fontSize = 16.sp)
+                        }
+                    }
+                    else {
+                        Button(
+                            onClick = {},
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (uiState.isFollowing) Color.LightGray else Green10,
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Text(text = "팔로우", fontSize = 16.sp)
+                        }
                     }
                 }
             }
