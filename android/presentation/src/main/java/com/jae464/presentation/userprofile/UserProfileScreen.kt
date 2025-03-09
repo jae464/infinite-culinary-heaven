@@ -13,8 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +39,8 @@ import com.jae464.domain.model.UserInfo
 import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
+import com.jae464.presentation.ui.theme.Green10
+import com.jae464.presentation.ui.theme.Green20
 import com.jae464.presentation.util.ImageConstants
 import kotlinx.coroutines.launch
 
@@ -95,6 +100,19 @@ fun UserProfileScreen(
                     UserProfile(
                         userInfo = uiState.userInfo,
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = {},
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (uiState.isFollowing) Color.LightGray else Green10,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(text = "팔로우", fontSize = 16.sp)
+                    }
                 }
             }
         }
