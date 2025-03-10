@@ -8,6 +8,7 @@ import com.jae464.data.remote.model.request.UserUpdateRequest
 import com.jae464.data.remote.model.response.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.domain.model.DeviceToken
+import com.jae464.domain.model.Follow
 import com.jae464.domain.model.UserInfo
 import com.jae464.domain.repository.UserRepository
 import kotlinx.serialization.json.Json
@@ -84,6 +85,20 @@ class DefaultUserRepository @Inject constructor(
             }
         } else {
             Result.success(userId)
+        }
+    }
+
+    override suspend fun followUser(userId: Long): Result<Follow> {
+        return handleResponse {
+            userService.followUser(userId)
+        }.mapCatching { response ->
+            response.toDomain()
+        }
+    }
+
+    override suspend fun unfollowUser(userId: Long): Result<Unit> {
+        return handleResponse {
+            userService.unfollowUser(userId)
         }
     }
 
