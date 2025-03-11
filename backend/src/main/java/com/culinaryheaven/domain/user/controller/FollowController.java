@@ -16,7 +16,7 @@ public class FollowController {
 
     private final FollowService followService;
 
-    @PostMapping
+    @PostMapping("/{userId}")
     public ResponseEntity<FollowResponse> followUser(
             @Authenticated PrincipalUserInfo userInfo,
             @PathVariable Long userId
@@ -25,7 +25,7 @@ public class FollowController {
         return ResponseEntity.ok().body(followResponse);
     }
 
-    @GetMapping
+    @GetMapping("/{userId}")
     public ResponseEntity<FollowsResponse> getUserFollows(
             @PathVariable Long userId
     ) {
@@ -33,7 +33,8 @@ public class FollowController {
         return ResponseEntity.ok().body(followsResponse);
     }
 
-    @DeleteMapping
+
+    @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUserFollows(
             @Authenticated PrincipalUserInfo userInfo,
             @PathVariable Long userId
