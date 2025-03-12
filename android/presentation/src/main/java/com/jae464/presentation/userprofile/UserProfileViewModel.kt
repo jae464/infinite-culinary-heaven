@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.jae464.domain.model.FollowStatus
 import com.jae464.domain.repository.UserRepository
 import com.jae464.presentation.main.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +33,14 @@ class UserProfileViewModel @Inject constructor(
     init {
         getMyUserId()
         fetchUserInfo()
+        getFollowStatus()
+    }
+
+    fun handleIntent(intent: UserProfileIntent) {
+        when (intent) {
+            is UserProfileIntent.FollowUser -> followUser()
+            is UserProfileIntent.UnfollowUser -> unfollowUser()
+        }
     }
 
     private fun getMyUserId() {
@@ -55,6 +64,44 @@ class UserProfileViewModel @Inject constructor(
                 }
                 .onFailure {
                     _event.emit(UserProfileEvent.FetchUserInfoFailed)
+                }
+        }
+    }
+
+    private fun getFollowStatus() {
+        viewModelScope.launch {
+            userRepository.getFollowStatus(userId)
+                .onSuccess { followStatus ->
+                    Log.d("UserProfileViewModel", "getFollowStatus: $followStatus")
+                    _uiState.value = _uiState.value.copy(isFollowing = followStatus == FollowStatus.FOLLOWING)
+                }
+                .onFailure {
+                    Log.d("UserProfileViewModel", "${it.message}")
+                }
+
+        }
+    }
+
+    private fun followUser() {
+        viewModelScope.launch {
+            userRepository.followUser(userId)
+                .onSuccess {
+                    _uiState.value = _uiState.value.copy(isFollowing = true)
+                }
+                .onFailure {
+
+                }
+        }
+    }
+
+    private fun unfollowUser() {
+        viewModelScope.launch {
+            userRepository.unfollowUser(userId)
+                .onSuccess {
+                    _uiState.value = _uiState.value.copy(isFollowing = false)
+                }
+                .onFailure {
+
                 }
         }
     }

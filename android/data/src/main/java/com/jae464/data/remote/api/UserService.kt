@@ -3,6 +3,7 @@ package com.jae464.data.remote.api
 import com.jae464.data.remote.model.request.DeviceTokenUpdateRequest
 import com.jae464.data.remote.model.response.DeviceTokenResponse
 import com.jae464.data.remote.model.response.FollowResponse
+import com.jae464.data.remote.model.response.FollowStatusResponse
 import com.jae464.data.remote.model.response.UserInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,12 +39,22 @@ interface UserService {
         @Body request: DeviceTokenUpdateRequest
     ): Response<DeviceTokenResponse>
 
-    @POST("/users/follow/{userId}")
+    @POST("/users/follows/{userId}")
     suspend fun followUser(
         @Path("userId") userId: Long
     ): Response<FollowResponse>
 
-    @DELETE("/users/follow/{userId}")
+    @GET("/users/follows/status/{userId}")
+    suspend fun getFollowStatus(
+        @Path("userId") userId: Long
+    ): Response<FollowStatusResponse>
+
+    @GET("/users/follows/{userId}")
+    suspend fun getFollowers(
+        @Path("userId") userId: Long
+    ): Response<List<UserInfoResponse>>
+
+    @DELETE("/users/follows/{userId}")
     suspend fun unfollowUser(
         @Path("userId") userId: Long
     ): Response<Unit>

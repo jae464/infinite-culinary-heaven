@@ -9,6 +9,7 @@ import com.jae464.data.remote.model.response.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.domain.model.DeviceToken
 import com.jae464.domain.model.Follow
+import com.jae464.domain.model.FollowStatus
 import com.jae464.domain.model.UserInfo
 import com.jae464.domain.repository.UserRepository
 import kotlinx.serialization.json.Json
@@ -99,6 +100,33 @@ class DefaultUserRepository @Inject constructor(
     override suspend fun unfollowUser(userId: Long): Result<Unit> {
         return handleResponse {
             userService.unfollowUser(userId)
+        }
+    }
+
+    override suspend fun getFollowStatus(userId: Long): Result<FollowStatus> {
+        return handleResponse {
+            userService.getFollowStatus(userId)
+        }.mapCatching {
+            Log.d("DefaultUserRepository", "$it")
+            when (it.followStatus) {
+                "FOLLOWING" -> {
+                    FollowStatus.FOLLOWING
+                }
+                "NOT_FOLLOWING" -> {
+                    FollowStatus.NOT_FOLLOWING
+                }
+                else -> {
+                    throw Exception("Unknown follow status")
+                }
+            }
+        }
+    }
+
+    override suspend fun getFollowers(userId: Long): Result<List<UserInfo>> {
+        return handleResponse {
+            userService.getFollowers(userId)
+        }.mapCatching { response ->
+            response.map { it.toDomain() }
         }
     }
 

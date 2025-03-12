@@ -40,9 +40,7 @@ import com.jae464.presentation.component.HeavenTopAppBar
 import com.jae464.presentation.component.RoundedContentBox
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.ui.theme.Green10
-import com.jae464.presentation.ui.theme.Green20
 import com.jae464.presentation.util.ImageConstants
-import kotlinx.coroutines.launch
 
 @Composable
 fun UserProfileRoute(
@@ -66,6 +64,7 @@ fun UserProfileRoute(
 
     UserProfileScreen(
         uiState = uiState,
+        onIntent = viewModel::handleIntent,
         onBackClick = onBackClick
     )
 }
@@ -74,6 +73,7 @@ fun UserProfileRoute(
 @Composable
 fun UserProfileScreen(
     uiState: UserProfileUiState,
+    onIntent: (UserProfileIntent) -> Unit,
     onBackClick: () -> Unit
 ) {
     Column(
@@ -118,7 +118,14 @@ fun UserProfileScreen(
                     }
                     else {
                         Button(
-                            onClick = {},
+                            onClick = {
+                                if (uiState.isFollowing) {
+                                    onIntent(UserProfileIntent.UnfollowUser)
+                                }
+                                else {
+                                    onIntent(UserProfileIntent.FollowUser)
+                                }
+                            },
                             modifier = Modifier
                                 .fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
@@ -127,7 +134,7 @@ fun UserProfileScreen(
                             ),
                             shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text(text = "팔로우", fontSize = 16.sp)
+                            Text(text = if (uiState.isFollowing) "팔로우 해제" else "팔로우", fontSize = 16.sp)
                         }
                     }
                 }

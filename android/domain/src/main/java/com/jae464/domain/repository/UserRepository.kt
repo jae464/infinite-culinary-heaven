@@ -2,6 +2,7 @@ package com.jae464.domain.repository
 
 import com.jae464.domain.model.DeviceToken
 import com.jae464.domain.model.Follow
+import com.jae464.domain.model.FollowStatus
 import com.jae464.domain.model.UserInfo
 import java.io.File
 
@@ -14,4 +15,6 @@ interface UserRepository {
     suspend fun getMyUserId(): Result<String>
     suspend fun followUser(userId: Long): Result<Follow>
     suspend fun unfollowUser(userId: Long): Result<Unit>
+    suspend fun getFollowStatus(userId: Long): Result<FollowStatus>
+    suspend fun getFollowers(userId: Long): Result<List<UserInfo>>
 }
