@@ -1,6 +1,7 @@
 package com.culinaryheaven.domain.user.controller;
 
 import com.culinaryheaven.domain.user.dto.response.FollowResponse;
+import com.culinaryheaven.domain.user.dto.response.FollowStatusResponse;
 import com.culinaryheaven.domain.user.dto.response.FollowsResponse;
 import com.culinaryheaven.domain.user.service.FollowService;
 import com.culinaryheaven.global.annotation.Authenticated;
@@ -33,6 +34,14 @@ public class FollowController {
         return ResponseEntity.ok().body(followsResponse);
     }
 
+    @GetMapping("/status/{userId}")
+    public ResponseEntity<FollowStatusResponse> getUserFollowsStatus(
+            @Authenticated PrincipalUserInfo userInfo,
+            @PathVariable Long userId
+    ) {
+        FollowStatusResponse followStatusResponse = followService.getFollowStatus(userId, userInfo.userId());
+        return ResponseEntity.ok().body(followStatusResponse);
+    }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUserFollows(

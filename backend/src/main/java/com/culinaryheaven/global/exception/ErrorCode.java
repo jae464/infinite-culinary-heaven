@@ -34,6 +34,8 @@ public enum ErrorCode {
 
     // follow
     FOLLOW_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 팔로우입니다."),
+    SELF_FOLLOW_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "본인은 팔로우 할 수 없습니다."),
+    ALREADY_EXISTS_FOLLOW(HttpStatus.CONFLICT, "이미 존재하는 팔로우입니다."),
 
     // security
     INVALID_OAUTH2_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 입니다."),

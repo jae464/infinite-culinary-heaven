@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface FollowRepository extends JpaRepository<Follow, Long> {
     List<Follow> findBySource(User source);
     Optional<Follow> findBySourceAndTarget(User source, User target);
+    boolean existsBySourceAndTarget(User source, User target);
 }
