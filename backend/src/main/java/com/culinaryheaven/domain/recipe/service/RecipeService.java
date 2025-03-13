@@ -51,21 +51,8 @@ public class RecipeService {
         Map<String, MultipartFile> imageMap = images.stream()
                 .collect(Collectors.toMap(MultipartFile::getOriginalFilename, file -> file));
 
-        for (Map.Entry<String, MultipartFile> entry : imageMap.entrySet()) {
-            System.out.println(entry);
-            System.out.println(entry.getValue().getOriginalFilename());
-        }
-
-        System.out.println("Thumbnail Image from Request: " + request.thumbnailImage());
-        System.out.println("Available Keys in Image Map: " + imageMap.keySet());
-
-        MultipartFile thumbnailImageFile = imageMap.get(request.thumbnailImage());
-
-        System.out.println(thumbnailImageFile);
-
         String thumbnailUrl = imageStorageClient.uploadImage(imageMap.get(request.thumbnailImage()));
 
-//        User user = userRepository.findByOauthId(securityUtil.getUserOAuth2Id()).orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
         Recipe recipe = request.toEntity(user, thumbnailUrl, contest);
 

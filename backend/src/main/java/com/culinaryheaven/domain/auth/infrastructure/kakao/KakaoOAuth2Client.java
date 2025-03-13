@@ -41,7 +41,6 @@ public class KakaoOAuth2Client implements OAuth2Client {
                     request,
                     OAuth2UserInfoResponse.class
             );
-            System.out.println(response);
             if (response.getBody() == null) {
                 throw new CustomException(ErrorCode.KAKAO_INTERNAL_ERROR);
             }

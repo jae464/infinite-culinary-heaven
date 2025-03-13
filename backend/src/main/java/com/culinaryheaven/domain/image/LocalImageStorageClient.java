@@ -25,7 +25,6 @@ public class LocalImageStorageClient implements ImageStorageClient {
     @Override
     public String uploadImage(MultipartFile file) {
         try {
-            System.out.println("로컬에 업로드 합니다.");
             Path storageDir = Paths.get(imageStoragePath);
 
             if (Files.notExists(storageDir)) {
@@ -46,13 +45,10 @@ public class LocalImageStorageClient implements ImageStorageClient {
     @Override
     public Resource loadImage(String image) {
         try {
-            System.out.println("load image");
             Path filePath = Paths.get(imageStoragePath, image);
-            System.out.println(filePath.toAbsolutePath());
             return new UrlResource(filePath.toUri());
 
         } catch(MalformedURLException e) {
-            System.out.println(e.getMessage());
             throw new CustomException(ErrorCode.INVALID_IMAGE_URL);
         }
     }

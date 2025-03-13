@@ -15,7 +15,6 @@ public class CustomInterceptor implements HandlerInterceptor {
             final HttpServletResponse response,
             final Object handler
     ) {
-        System.out.println("CustomInterceptor preHandle");
         return true;
     }
 
@@ -26,6 +25,5 @@ public class CustomInterceptor implements HandlerInterceptor {
             final Object handler,
             @Nullable Exception ex
     ) {
-        System.out.println("CustomInterceptor afterCompletion");
     }
 }

@@ -16,7 +16,6 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
 
-
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 

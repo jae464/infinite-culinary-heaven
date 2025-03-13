@@ -21,9 +21,7 @@ public class ImageController {
     public ResponseEntity<Void> saveImage(
             @RequestPart MultipartFile file
     ) {
-        System.out.println("save image api");
-        String path = imageStorageClient.uploadImage(file);
-        System.out.println(path);
+        imageStorageClient.uploadImage(file);
         return ResponseEntity.ok().build();
     }
 
@@ -31,7 +29,6 @@ public class ImageController {
     public ResponseEntity<Resource> getImage(
             @RequestParam  String image
     ) {
-        System.out.println("get image api");
         Resource res = imageStorageClient.loadImage(image);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);

@@ -33,8 +33,6 @@ public class S3ImageStorageClient implements ImageStorageClient {
     public String uploadImage(MultipartFile file) {
 
         if (file == null) { return null; }
-
-        System.out.println("S3에 업로드 합니다.");
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         try {
             String contentType = file.getContentType();
@@ -43,15 +41,11 @@ public class S3ImageStorageClient implements ImageStorageClient {
             metadata.setContentType(contentType);
             metadata.setContentLength(file.getSize());
 
-            System.out.println("S3에 업로드 합니다.");
             s3Client.putObject(new PutObjectRequest(bucket, IMAGE_PATH + fileName, file.getInputStream(), metadata));
-            System.out.println("S3에 업로드 성공.");
 
         } catch (AmazonS3Exception e) {
-            System.out.println(e.getMessage());
             throw new CustomException(ErrorCode.IMAGE_SAVE_FAILED);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
         return s3Client.getUrl(bucket, IMAGE_PATH + fileName).toString();
