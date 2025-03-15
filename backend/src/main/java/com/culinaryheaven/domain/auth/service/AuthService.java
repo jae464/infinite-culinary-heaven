@@ -1,5 +1,7 @@
 package com.culinaryheaven.domain.auth.service;
 
+import com.culinaryheaven.domain.auth.OAuth2Client;
+import com.culinaryheaven.domain.auth.OAuth2ClientProvider;
 import com.culinaryheaven.domain.auth.domain.OAuth2Type;
 import com.culinaryheaven.domain.auth.domain.TokenType;
 import com.culinaryheaven.domain.auth.dto.request.AdminLoginRequest;
@@ -29,8 +31,7 @@ import java.util.UUID;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final KakaoOAuth2Client oAuth2Client; // todo OAuth2ClientProvider 구현후 타입 바꾸기 (OAuth2Client)
-    private final GoogleOAuth2Client googleOAuth2Client;
+    private final OAuth2ClientProvider oAuth2ClientProvider;
     private final JwtTokenProvider jwtTokenProvider;
     private static final String MEMBER_ROLE_CLAIM_KEY = "memberRole";
 
@@ -38,18 +39,9 @@ public class AuthService {
     public LoginResponse login(String oauth2Type, String oauth2AccessToken) {
 
         OAuth2Type oAuth2Type = OAuth2Type.from(oauth2Type);
+        OAuth2Client oAuth2Client = oAuth2ClientProvider.getClient(oAuth2Type);
+        String oAuth2Id = oAuth2Client.getOAuth2UserId(oauth2AccessToken);
 
-        String oAuth2Id;
-
-        if (oAuth2Type == OAuth2Type.KAKAO) {
-            oAuth2Id = oAuth2Client.getOAuth2UserId(oauth2AccessToken);
-        }
-        else if (oAuth2Type == OAuth2Type.GOOGLE) {
-            oAuth2Id = googleOAuth2Client.getOAuth2UserId(oauth2AccessToken);
-        }
-        else {
-            throw new CustomException(ErrorCode.INVALID_OAUTH2_TYPE);
-        }
         User savedUser = userRepository.findByOauthId(oAuth2Id)
                 .orElseGet(() -> {
                     User user = User.builder()

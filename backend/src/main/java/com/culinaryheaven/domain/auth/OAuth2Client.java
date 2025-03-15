@@ -4,7 +4,7 @@ import com.culinaryheaven.domain.auth.domain.OAuth2Type;
 
 public interface OAuth2Client {
 
-    OAuth2Type getOauthType();
+    OAuth2Type getOAuth2Type();
     String getOAuth2UserId(String accessToken);
 
 }

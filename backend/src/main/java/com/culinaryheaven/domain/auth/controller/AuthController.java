@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final SecurityUtil securityUtil;
 
     @PostMapping("/login/oauth2")
     public ResponseEntity<LoginResponse> oauth2Login(

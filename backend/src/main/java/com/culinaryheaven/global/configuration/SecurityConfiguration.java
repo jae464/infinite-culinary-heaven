@@ -39,13 +39,16 @@ public class SecurityConfiguration {
                 .sessionManagement(manage ->
                         manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/contests").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/contests").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/topic-ingredients").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/topic-ingredients").permitAll()
+                        /** 인증 O */
                         .requestMatchers(HttpMethod.POST, "/recipes").hasRole("USER")
                         .requestMatchers(HttpMethod.DELETE, "/recipes/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
+                        /** 어드민 */
+                        .requestMatchers(HttpMethod.POST, "/contests").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/topic-ingredients").hasRole("ADMIN")
+                        /** 인증 X */
+                        .requestMatchers(HttpMethod.GET, "/contests").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/topic-ingredients").permitAll()
                         .requestMatchers("/auth").permitAll()
                         .anyRequest().permitAll()
                 )

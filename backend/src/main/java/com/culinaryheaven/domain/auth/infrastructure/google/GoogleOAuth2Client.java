@@ -26,7 +26,7 @@ public class GoogleOAuth2Client implements OAuth2Client {
     private String clientId;
 
     @Override
-    public OAuth2Type getOauthType() {
+    public OAuth2Type getOAuth2Type() {
         return OAuth2Type.GOOGLE;
     }
 

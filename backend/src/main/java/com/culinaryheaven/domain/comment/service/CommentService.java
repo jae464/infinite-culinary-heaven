@@ -61,7 +61,6 @@ public class CommentService {
         );
 
         return CommentsResponse.of(comments);
-
     }
 
     @Transactional
