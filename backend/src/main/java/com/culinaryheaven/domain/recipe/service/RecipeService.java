@@ -159,7 +159,7 @@ public class RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public RecipesResponse getMyRecipes(Pageable pageable, Long userId) {
+    public RecipesResponse getUserRecipes(Pageable pageable, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTHORIZATION_FAILED));
 

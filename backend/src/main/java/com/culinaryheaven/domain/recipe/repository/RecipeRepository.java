@@ -20,5 +20,11 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             countQuery = "select count(r) from Recipe r where r.contest.id = :contestId")
     Page<Recipe> findAllByContestId(Pageable pageable, Long contestId);
     Page<Recipe> findByTitleContainingIgnoreCase(Pageable pageable, String keyword);
+    @Query(value = "select distinct r from Recipe r " +
+            "join fetch r.user u " +
+            "join fetch r.contest c " +
+            "join fetch c.topicIngredient ct " +
+            "where r.user.id = :userId",
+            countQuery = "select count(r) from Recipe r where r.user.id = :userId")
     Page<Recipe> findAllByUserId(Pageable pageable, Long userId);
 }

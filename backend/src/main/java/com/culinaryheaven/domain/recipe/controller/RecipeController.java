@@ -55,11 +55,15 @@ public class RecipeController {
     @GetMapping
     public ResponseEntity<RecipesResponse> getAllRecipes(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            @RequestParam(required = false) Long contestId
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) Long userId
     ) {
         RecipesResponse recipesResponse;
-        if (contestId == null) {
+        if (contestId == null && userId == null) {
             recipesResponse = recipeService.getAllRecipes(pageable);
+        }
+        else if (userId != null) {
+            recipesResponse = recipeService.getUserRecipes(pageable, userId);
         }
         else {
             recipesResponse = recipeService.getRecipesByContestId(pageable, contestId);
@@ -72,7 +76,7 @@ public class RecipeController {
             @Authenticated PrincipalUserInfo userInfo,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        RecipesResponse recipesResponse = recipeService.getMyRecipes(pageable, userInfo.userId());
+        RecipesResponse recipesResponse = recipeService.getUserRecipes(pageable, userInfo.userId());
         return ResponseEntity.ok().body(recipesResponse);
     }
 
