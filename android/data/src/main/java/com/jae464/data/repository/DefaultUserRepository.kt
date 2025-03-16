@@ -3,9 +3,11 @@ package com.jae464.data.repository
 import android.util.Log
 import com.jae464.data.local.datasource.AuthLocalDataSource
 import com.jae464.data.remote.api.UserService
-import com.jae464.data.remote.model.request.DeviceTokenUpdateRequest
-import com.jae464.data.remote.model.request.UserUpdateRequest
-import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.remote.model.request.devicetoken.DeviceTokenUpdateRequest
+import com.jae464.data.remote.model.request.user.UserUpdateRequest
+import com.jae464.data.remote.model.response.bookmark.toDomain
+import com.jae464.data.remote.model.response.devicetoken.toDomain
+import com.jae464.data.remote.model.response.user.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.domain.model.DeviceToken
 import com.jae464.domain.model.Follow

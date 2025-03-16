@@ -1,10 +1,9 @@
 package com.jae464.data.remote.api
 
-import com.jae464.data.remote.model.response.RecipeLikeResponse
-import com.jae464.data.remote.model.response.RecipeLikesResponse
-import com.jae464.data.remote.model.response.RecipePreviewResponse
-import com.jae464.data.remote.model.response.RecipePreviewsResponse
-import com.jae464.data.remote.model.response.RecipeResponse
+import com.jae464.data.remote.model.response.recipe.RecipeLikeResponse
+import com.jae464.data.remote.model.response.recipe.RecipeLikesResponse
+import com.jae464.data.remote.model.response.recipe.RecipePreviewsResponse
+import com.jae464.data.remote.model.response.recipe.RecipeResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

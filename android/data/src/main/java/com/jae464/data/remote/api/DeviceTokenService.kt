@@ -1,7 +1,7 @@
 package com.jae464.data.remote.api
 
-import com.jae464.data.remote.model.request.DeviceTokenUpdateRequest
-import com.jae464.data.remote.model.response.DeviceTokenResponse
+import com.jae464.data.remote.model.request.devicetoken.DeviceTokenUpdateRequest
+import com.jae464.data.remote.model.response.devicetoken.DeviceTokenResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.PATCH

@@ -1,8 +1,9 @@
 package com.jae464.data.repository
 
 import com.jae464.data.remote.api.DeviceTokenService
-import com.jae464.data.remote.model.request.DeviceTokenUpdateRequest
-import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.remote.model.request.devicetoken.DeviceTokenUpdateRequest
+import com.jae464.data.remote.model.response.bookmark.toDomain
+import com.jae464.data.remote.model.response.devicetoken.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.domain.model.DeviceToken
 import com.jae464.domain.repository.DeviceTokenRepository

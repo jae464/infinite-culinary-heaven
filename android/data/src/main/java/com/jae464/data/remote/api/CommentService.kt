@@ -1,9 +1,9 @@
 package com.jae464.data.remote.api
 
-import com.jae464.data.remote.model.request.CommentCreateRequest
-import com.jae464.data.remote.model.request.CommentUpdateRequest
-import com.jae464.data.remote.model.response.CommentResponse
-import com.jae464.data.remote.model.response.CommentsResponse
+import com.jae464.data.remote.model.request.comment.CommentCreateRequest
+import com.jae464.data.remote.model.request.comment.CommentUpdateRequest
+import com.jae464.data.remote.model.response.comment.CommentResponse
+import com.jae464.data.remote.model.response.comment.CommentsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

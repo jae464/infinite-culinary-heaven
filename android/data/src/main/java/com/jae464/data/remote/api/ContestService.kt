@@ -1,7 +1,7 @@
 package com.jae464.data.remote.api
 
-import com.jae464.data.remote.model.response.ContestResponse
-import com.jae464.data.remote.model.response.ContestsResponse
+import com.jae464.data.remote.model.response.contest.ContestResponse
+import com.jae464.data.remote.model.response.contest.ContestsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

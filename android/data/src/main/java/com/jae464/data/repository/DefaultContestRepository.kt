@@ -1,9 +1,9 @@
 package com.jae464.data.repository
 
 import com.jae464.data.remote.api.ContestService
-import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.remote.model.response.bookmark.toDomain
+import com.jae464.data.remote.model.response.contest.toDomain
 import com.jae464.data.util.handleResponse
-import com.jae464.data.util.makeErrorResponse
 import com.jae464.domain.model.Contest
 import com.jae464.domain.repository.ContestRepository
 import javax.inject.Inject

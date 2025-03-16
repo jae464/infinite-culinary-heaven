@@ -1,9 +1,8 @@
 package com.jae464.data.repository
 
-import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.jae464.data.local.datasource.BookMarkLocalDataSource
 import com.jae464.data.remote.api.BookMarkService
-import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.remote.model.response.bookmark.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.domain.model.BookMark
 import com.jae464.domain.repository.BookMarkRepository

@@ -1,8 +1,8 @@
 package com.jae464.data.remote.api
 
-import com.jae464.data.remote.model.request.LoginRequest
-import com.jae464.data.remote.model.request.RefreshTokenRequest
-import com.jae464.data.remote.model.response.LoginResponse
+import com.jae464.data.remote.model.request.auth.LoginRequest
+import com.jae464.data.remote.model.request.auth.RefreshTokenRequest
+import com.jae464.data.remote.model.response.auth.LoginResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

@@ -1,7 +1,7 @@
 package com.jae464.data.remote.api
 
-import com.jae464.data.remote.model.response.BookMarkResponse
-import com.jae464.data.remote.model.response.BookMarksResponse
+import com.jae464.data.remote.model.response.bookmark.BookMarkResponse
+import com.jae464.data.remote.model.response.bookmark.BookMarksResponse
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET

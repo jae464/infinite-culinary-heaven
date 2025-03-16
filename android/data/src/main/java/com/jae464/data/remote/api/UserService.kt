@@ -1,10 +1,10 @@
 package com.jae464.data.remote.api
 
-import com.jae464.data.remote.model.request.DeviceTokenUpdateRequest
-import com.jae464.data.remote.model.response.DeviceTokenResponse
-import com.jae464.data.remote.model.response.FollowResponse
-import com.jae464.data.remote.model.response.FollowStatusResponse
-import com.jae464.data.remote.model.response.UserInfoResponse
+import com.jae464.data.remote.model.request.devicetoken.DeviceTokenUpdateRequest
+import com.jae464.data.remote.model.response.devicetoken.DeviceTokenResponse
+import com.jae464.data.remote.model.response.user.FollowResponse
+import com.jae464.data.remote.model.response.user.FollowStatusResponse
+import com.jae464.data.remote.model.response.user.UserInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

@@ -2,9 +2,9 @@ package com.jae464.data.repository
 
 import com.jae464.data.local.datasource.AuthLocalDataSource
 import com.jae464.data.remote.api.AuthService
-import com.jae464.data.remote.model.request.LoginRequest
-import com.jae464.data.remote.model.request.RefreshTokenRequest
-import com.jae464.data.remote.model.response.toDomain
+import com.jae464.data.remote.model.request.auth.LoginRequest
+import com.jae464.data.remote.model.request.auth.RefreshTokenRequest
+import com.jae464.data.remote.model.response.auth.toDomain
 import com.jae464.data.util.handleResponse
 import com.jae464.domain.model.TokenInfo
 import com.jae464.domain.repository.AuthRepository
