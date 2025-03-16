@@ -36,7 +36,7 @@ public class UserService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
 
         int followerCount = followRepository.countByTarget(user);
-        int followingCount = followRepository.countByTarget(user);
+        int followingCount = followRepository.countBySource(user);
 
         return UserInfoResponse.of(user, followerCount, followingCount);
     }
