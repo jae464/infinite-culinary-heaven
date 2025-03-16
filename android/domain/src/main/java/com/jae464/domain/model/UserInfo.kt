@@ -4,4 +4,6 @@ data class UserInfo(
     val id: Long,
     val name: String,
     val profileImageUrl: String?,
+    val followerCount: Int?,
+    val followingCount: Int?
 )

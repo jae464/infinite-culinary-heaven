@@ -114,6 +114,13 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
         return Result.success(recipePreviews)
     }
 
+    override suspend fun getRecipePreviewsByUserId(
+        page: Int,
+        userId: Long
+    ): Result<List<RecipePreview>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getMyRecipePreviews(page: Int): Result<List<RecipePreview>> {
         TODO("Not yet implemented")
     }
@@ -132,7 +139,7 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
                         "누구나 쉽게 간편하게 만들 수 있어요.",
                 score = 5.0f,
                 writeInfo = UserInfo(
-                    1L, "ㅎㅎ", null
+                    1L, "ㅎㅎ", null, null, null
                 ),
                 ingredients = listOf(
                     Ingredient("감자", "2개"),

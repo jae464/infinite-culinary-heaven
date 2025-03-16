@@ -1,17 +1,27 @@
 package com.jae464.presentation.userprofile
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,10 +29,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +50,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.jae464.domain.model.UserInfo
 import com.jae464.presentation.component.HeavenTopAppBar
+import com.jae464.presentation.component.RecipeItem
 import com.jae464.presentation.component.RoundedContentBox
+import com.jae464.presentation.contestdetail.ContestDetailIntent
 import com.jae464.presentation.ui.theme.Gray20
 import com.jae464.presentation.ui.theme.Green10
 import com.jae464.presentation.util.ImageConstants
@@ -76,6 +91,21 @@ fun UserProfileScreen(
     onIntent: (UserProfileIntent) -> Unit,
     onBackClick: () -> Unit
 ) {
+    val listState = rememberLazyListState()
+
+    val isScrollingToEnd by remember(uiState.recipePreviews) {
+        derivedStateOf {
+            val lastVisibleItemIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            lastVisibleItemIndex >= uiState.recipePreviews.size - 2
+        }
+    }
+
+    LaunchedEffect(isScrollingToEnd) {
+        if (isScrollingToEnd && !uiState.isLoading && uiState.recipePreviews.size >= 20) {
+            Log.d("HomeScreen", "isScrollingToEnd Fetching")
+            onIntent(UserProfileIntent.FetchRecipePreviews)
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,7 +131,13 @@ fun UserProfileScreen(
                         userInfo = uiState.userInfo,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-
+                    UserFollowInfo(
+                        followerCount = uiState.userInfo.followerCount ?: 0,
+                        followingCount = uiState.userInfo.followingCount ?: 0,
+                        onClickFollowInfo = {},
+                        onClickFollowingInfo = {}
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
                     if (uiState.isMe) {
                         Button(
                             onClick = {},
@@ -141,6 +177,44 @@ fun UserProfileScreen(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
+        RoundedContentBox {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    text = "작성한 레시피",
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                if (uiState.recipePreviews.isEmpty() && !uiState.isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize().background(Color.LightGray)
+                    ) {
+                        Text(
+                            text = "작성한 레시피가 없습니다.",
+                            color = Color.Black,
+                            fontSize = 18.sp,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    state = listState,
+                ) {
+                    items(uiState.recipePreviews.size) { index ->
+                        RecipeItem(uiState.recipePreviews[index], onClickRecipe = {})
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            thickness = 0.5.dp
+                        )
+                    }
+                }
+            }
+
+        }
     }
 }
 
@@ -170,5 +244,58 @@ fun UserProfile(modifier: Modifier = Modifier, userInfo: UserInfo) {
             color = Color.DarkGray,
             fontSize = 12.sp
         )
+    }
+}
+
+@Composable
+fun UserFollowInfo(
+    modifier: Modifier = Modifier,
+    followerCount: Int,
+    followingCount: Int,
+    onClickFollowInfo: () -> Unit,
+    onClickFollowingInfo: () -> Unit
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        // 팔로워 정보
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .clickable { onClickFollowInfo() },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "팔로워",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp
+            )
+            Text(
+                text = followerCount.toString(),
+//                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp
+            )
+        }
+
+        // 팔로잉 정보
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .clickable { onClickFollowingInfo() },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "팔로잉",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp
+            )
+            Text(
+                text = followingCount.toString(),
+//                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp
+            )
+        }
     }
 }

@@ -21,7 +21,8 @@ interface RecipeService {
     suspend fun getRecipePreviews(
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 20,
-        @Query("contestId") contestId: Long
+        @Query("contestId") contestId: Long? = null,
+        @Query("userId") userId: Long? = null
     ): Response<RecipePreviewsResponse>
 
     @GET("/recipes/{recipeId}")

@@ -14,6 +14,8 @@ fun WriterInfoResponse.toDomain(): UserInfo {
     return UserInfo(
         id = id,
         name = nickname,
-        profileImageUrl = profileImageUrl
+        profileImageUrl = profileImageUrl,
+        followerCount = null,
+        followingCount = null
     )
 }

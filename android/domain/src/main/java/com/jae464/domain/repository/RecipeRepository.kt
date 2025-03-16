@@ -14,6 +14,7 @@ import java.io.File
 interface RecipeRepository {
     suspend fun getRecipePreviews(): Result<List<RecipePreview>>
     suspend fun getRecipePreviewsByContestId(page: Int, contestId: Long): Result<List<RecipePreview>>
+    suspend fun getRecipePreviewsByUserId(page: Int, userId: Long): Result<List<RecipePreview>>
     suspend fun getMyRecipePreviews(page: Int): Result<List<RecipePreview>>
     suspend fun getMyLikeRecipePreviews(page: Int): Result<List<RecipePreview>>
     suspend fun getRecipeById(id: Long): Result<Recipe>

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.jae464.domain.model.FollowStatus
+import com.jae464.domain.repository.RecipeRepository
 import com.jae464.domain.repository.UserRepository
 import com.jae464.presentation.main.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,12 +14,14 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val recipeRepository: RecipeRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -30,16 +33,21 @@ class UserProfileViewModel @Inject constructor(
     private val _event = MutableSharedFlow<UserProfileEvent>()
     val event = _event.asSharedFlow()
 
+    private var currentPage = 0
+    private var isLastPage = false
+
     init {
         getMyUserId()
         fetchUserInfo()
         getFollowStatus()
+        fetchRecipePreviews()
     }
 
     fun handleIntent(intent: UserProfileIntent) {
         when (intent) {
             is UserProfileIntent.FollowUser -> followUser()
             is UserProfileIntent.UnfollowUser -> unfollowUser()
+            is UserProfileIntent.FetchRecipePreviews -> fetchRecipePreviews()
         }
     }
 
@@ -72,7 +80,6 @@ class UserProfileViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.getFollowStatus(userId)
                 .onSuccess { followStatus ->
-                    Log.d("UserProfileViewModel", "getFollowStatus: $followStatus")
                     _uiState.value = _uiState.value.copy(isFollowing = followStatus == FollowStatus.FOLLOWING)
                 }
                 .onFailure {
@@ -82,11 +89,32 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
+    private fun fetchRecipePreviews() {
+        if (isLastPage || uiState.value.isLoading) return
+        _uiState.update { state -> state.copy(isLoading = true) }
+        viewModelScope.launch {
+            recipeRepository.getRecipePreviewsByUserId(page = currentPage, userId = userId)
+                .onSuccess { recipePreviews ->
+                    _uiState.update { state -> state.copy(recipePreviews = state.recipePreviews + recipePreviews, isLoading = false) }
+                    if (recipePreviews.isEmpty()) {
+                        isLastPage = true
+                    } else {
+                        currentPage++
+                    }
+                }
+                .onFailure {
+                    Log.e("UserProfileViewModel", "${it.message}")
+                    _uiState.update { state -> state.copy(isLoading = false) }
+                }
+        }
+    }
+
     private fun followUser() {
         viewModelScope.launch {
             userRepository.followUser(userId)
                 .onSuccess {
-                    _uiState.value = _uiState.value.copy(isFollowing = true)
+                    val followerCount = uiState.value.userInfo?.followerCount ?: 0
+                    _uiState.value = _uiState.value.copy(isFollowing = true, userInfo = _uiState.value.userInfo?.copy(followerCount = followerCount + 1))
                 }
                 .onFailure {
 
@@ -98,7 +126,8 @@ class UserProfileViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.unfollowUser(userId)
                 .onSuccess {
-                    _uiState.value = _uiState.value.copy(isFollowing = false)
+                    val followerCount = uiState.value.userInfo?.followerCount ?: 0
+                    _uiState.value = _uiState.value.copy(isFollowing = false, userInfo = _uiState.value.userInfo?.copy(followerCount = followerCount - 1))
                 }
                 .onFailure {
 

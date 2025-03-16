@@ -22,7 +22,6 @@ fun RoundedContentBox(
                 color = color,
                 shape = RoundedCornerShape(16.dp)
             )
-
     ) {
         Box(
             modifier = Modifier

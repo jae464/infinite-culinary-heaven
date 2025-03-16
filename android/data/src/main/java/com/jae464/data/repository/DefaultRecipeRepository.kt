@@ -45,6 +45,17 @@ class DefaultRecipeRepository @Inject constructor(
         }
     }
 
+    override suspend fun getRecipePreviewsByUserId(
+        page: Int,
+        userId: Long
+    ): Result<List<RecipePreview>> {
+        return handleResponse {
+            recipeService.getRecipePreviews(page = page, userId = userId)
+        }.mapCatching { response ->
+            response.toDomain()
+        }
+    }
+
     override suspend fun getMyRecipePreviews(page: Int): Result<List<RecipePreview>> {
         return handleResponse {
             recipeService.getMyRecipePreviews(page = page)

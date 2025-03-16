@@ -83,7 +83,7 @@ fun ContestHistoryScreen(
         )
         LazyColumn(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             state = listState

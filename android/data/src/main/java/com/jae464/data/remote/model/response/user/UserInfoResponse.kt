@@ -8,12 +8,16 @@ data class UserInfoResponse(
     val id: Long,
     val nickname: String,
     val profileImageUrl: String?,
+    val followerCount: Int?,
+    val followingCount: Int?
 )
 
 fun UserInfoResponse.toDomain(): UserInfo {
     return UserInfo(
         id = id,
         name = nickname,
-        profileImageUrl = profileImageUrl
+        profileImageUrl = profileImageUrl,
+        followerCount = followerCount,
+        followingCount = followingCount
     )
 }
