@@ -9,9 +9,6 @@ import com.culinaryheaven.domain.auth.dto.request.ReissueRequest;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
 import com.culinaryheaven.domain.auth.dto.response.ReissueResponse;
 import com.culinaryheaven.domain.auth.infrastructure.JwtTokenProvider;
-import com.culinaryheaven.domain.auth.infrastructure.dto.response.OAuth2UserInfoResponse;
-import com.culinaryheaven.domain.auth.infrastructure.google.GoogleOAuth2Client;
-import com.culinaryheaven.domain.auth.infrastructure.kakao.KakaoOAuth2Client;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.domain.user.util.NickNameGenerator;
@@ -22,8 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Slf4j
 @Service

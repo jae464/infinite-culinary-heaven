@@ -4,6 +4,7 @@ import com.culinaryheaven.domain.image.ImageStorageClient;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.dto.request.UserUpdateRequest;
 import com.culinaryheaven.domain.user.dto.response.UserInfoResponse;
+import com.culinaryheaven.domain.user.repository.FollowRepository;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
     private final ImageStorageClient imageStorageClient;
 
     @Transactional(readOnly = true)
@@ -33,7 +35,10 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
 
-        return UserInfoResponse.of(user);
+        int followerCount = followRepository.countByTarget(user);
+        int followingCount = followRepository.countByTarget(user);
+
+        return UserInfoResponse.of(user, followerCount, followingCount);
     }
 
     @Transactional
