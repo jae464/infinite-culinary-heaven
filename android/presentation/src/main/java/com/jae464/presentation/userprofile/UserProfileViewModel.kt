@@ -114,7 +114,10 @@ class UserProfileViewModel @Inject constructor(
             userRepository.followUser(userId)
                 .onSuccess {
                     val followerCount = uiState.value.userInfo?.followerCount ?: 0
-                    _uiState.value = _uiState.value.copy(isFollowing = true, userInfo = _uiState.value.userInfo?.copy(followerCount = followerCount + 1))
+                    _uiState.value = _uiState.value.copy(
+                        isFollowing = true,
+                        userInfo = _uiState.value.userInfo?.copy(followerCount = followerCount + 1)
+                    )
                 }
                 .onFailure {
 

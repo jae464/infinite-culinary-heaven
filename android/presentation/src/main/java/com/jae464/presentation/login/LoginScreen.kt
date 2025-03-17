@@ -9,24 +9,34 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.content.MediaType.Companion.Text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -95,35 +105,65 @@ fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.kakao_login_large_wide),
-                contentDescription = "kakao login",
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        kakaoLogin(
-                            context = context,
-                            onLoginSuccess = { onIntent(LoginIntent.KakaoLogin(it.accessToken)) }
-                        )
-                    },
-                contentScale = ContentScale.Crop
-            )
-            Image(
-                painter = painterResource(id = R.drawable.google_login),
-                contentDescription = "google login",
-                modifier = Modifier
-                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(color = Color(0xFFFEE500), shape = RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
                     .clickable {
                         googleLogin(
                             context = context,
                             onLoginSuccess = { onIntent(LoginIntent.GoogleLogin(it))}
                         )
-                    },
-                contentScale = ContentScale.Crop
-            )
+                    }
+                    .padding(horizontal = 18.dp, vertical = 16.dp),
+            ) {
+                Image(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    painter = painterResource(id = R.drawable.ic_kakao_logo),
+                    contentDescription = "kakao login",
+                    contentScale = ContentScale.FillBounds,
+                )
+                Text(
+                    text = "카카오 로그인",
+                    modifier = Modifier.align(Alignment.Center),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable {
+                        googleLogin(
+                            context = context,
+                            onLoginSuccess = { onIntent(LoginIntent.GoogleLogin(it))}
+                        )
+                    }
+                    .padding(horizontal = 12.dp, vertical = 6.dp),
+            ) {
+                Image(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    painter = painterResource(id = R.drawable.btn_google),
+                    contentDescription = "google login",
+                    contentScale = ContentScale.FillBounds,
+                )
+                Text(
+                    text = "구글 로그인",
+                    modifier = Modifier.align(Alignment.Center),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+
         }
     }
 }
