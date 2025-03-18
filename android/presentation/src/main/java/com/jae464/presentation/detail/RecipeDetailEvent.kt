@@ -7,4 +7,5 @@ sealed interface RecipeDetailEvent {
     data object LikeSuccess : RecipeDetailEvent
     data object UnlikeSuccess : RecipeDetailEvent
     data object EmptyComment : RecipeDetailEvent
+    data object FetchCommentsFail : RecipeDetailEvent
 }

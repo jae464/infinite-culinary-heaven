@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -114,15 +116,19 @@ fun RecipeDetailRoute(
                 }
 
                 is RecipeDetailEvent.LikeSuccess -> {
-                    Toast.makeText(context, "좋아요를 눌렀습니다.", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "좋아요를 눌렀습니다.", Toast.LENGTH_SHORT).show()
                 }
 
                 is RecipeDetailEvent.UnlikeSuccess -> {
-                    Toast.makeText(context, "좋아요를 해제했습니다.", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "좋아요를 해제했습니다.", Toast.LENGTH_SHORT).show()
                 }
 
                 is RecipeDetailEvent.EmptyComment -> {
                     Toast.makeText(context, "댓글이 비어있습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+                is RecipeDetailEvent.FetchCommentsFail -> {
+                    Toast.makeText(context, "댓글을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -260,33 +266,60 @@ fun RecipeDetailScreen(
                     onIntent(RecipeDetailIntent.ClearCommentEditMode)
                     showBottomSheet = false
                 },
-                modifier = Modifier.wrapContentHeight()
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .heightIn(min = minHeight, max = maxHeight)
                     .imePadding()
             ) {
                 Column(
+                    modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = minHeight, max = maxHeight)
-                            .padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(uiState.comments.size) {
-                            CommentItem(
-                                comment = uiState.comments[it],
-                                isOwner = uiState.myInfo?.id == uiState.comments[it].userInfo.id,
-                                onClickEdit = { commentId ->
-                                    focusRequester.requestFocus()
-                                    onIntent(RecipeDetailIntent.SetCommentEditMode(commentId))
-                                    onIntent(RecipeDetailIntent.UpdateCommentInput(uiState.comments[it].content))
-                                },
-                                onClickDelete = { commentId ->
-                                    deleteCommentId = commentId
-                                    showCommentDialog = true
-                                }
+                    if (uiState.isCommentsLoading) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .weight(1f)
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.Center)
                             )
+                        }
+
+                    } else if (uiState.comments.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .weight(1f)
+                        ) {
+                            Text(
+                                text = "아직 등록된 댓글이 없어요.",
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .weight(1f)
+                                .padding(horizontal = 16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            items(uiState.comments.size) {
+                                CommentItem(
+                                    comment = uiState.comments[it],
+                                    isOwner = uiState.myInfo?.id == uiState.comments[it].userInfo.id,
+                                    onClickEdit = { commentId ->
+                                        focusRequester.requestFocus()
+                                        onIntent(RecipeDetailIntent.SetCommentEditMode(commentId))
+                                        onIntent(RecipeDetailIntent.UpdateCommentInput(uiState.comments[it].content))
+                                    },
+                                    onClickDelete = { commentId ->
+                                        deleteCommentId = commentId
+                                        showCommentDialog = true
+                                    }
+                                )
+                            }
                         }
                     }
                     Row(
@@ -334,7 +367,7 @@ fun RecipeDetailScreen(
             confirmText = "삭제",
             cancelText = "취소",
             onDismissRequest = { showConfirmDialog = false },
-            onConfirm = { onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id))},
+            onConfirm = { onIntent(RecipeDetailIntent.DeleteRecipe(uiState.recipe.id)) },
             onCancel = { showConfirmDialog = false }
         )
     }

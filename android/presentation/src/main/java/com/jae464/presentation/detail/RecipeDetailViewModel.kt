@@ -142,10 +142,15 @@ class RecipeDetailViewModel @Inject constructor(
     }
 
     private fun fetchComments(recipeId: Long) {
+        _uiState.update { state -> state.copy(isCommentsLoading = true) }
         viewModelScope.launch {
             commentRepository.getCommentsByRecipeId(recipeId)
                 .onSuccess {
-                    _uiState.update { state -> state.copy(comments = it) }
+                    _uiState.update { state -> state.copy(comments = it, isCommentsLoading = false) }
+                }
+                .onFailure {
+                    _uiState.update { state -> state.copy(isCommentsLoading = false) }
+                    _event.emit(RecipeDetailEvent.FetchCommentsFail)
                 }
         }
     }
