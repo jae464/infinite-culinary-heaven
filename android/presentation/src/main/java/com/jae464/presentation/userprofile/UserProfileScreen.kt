@@ -60,6 +60,7 @@ import com.jae464.presentation.util.ImageConstants
 @Composable
 fun UserProfileRoute(
     userId: Long,
+    onClickRecipe: (Long) -> Unit,
     onBackClick: () -> Unit,
     viewModel: UserProfileViewModel = hiltViewModel()
 ) {
@@ -80,6 +81,7 @@ fun UserProfileRoute(
     UserProfileScreen(
         uiState = uiState,
         onIntent = viewModel::handleIntent,
+        onClickRecipe = onClickRecipe,
         onBackClick = onBackClick
     )
 }
@@ -89,6 +91,7 @@ fun UserProfileRoute(
 fun UserProfileScreen(
     uiState: UserProfileUiState,
     onIntent: (UserProfileIntent) -> Unit,
+    onClickRecipe: (Long) -> Unit,
     onBackClick: () -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -205,7 +208,10 @@ fun UserProfileScreen(
                     state = listState,
                 ) {
                     items(uiState.recipePreviews.size) { index ->
-                        RecipeItem(uiState.recipePreviews[index], onClickRecipe = {})
+                        RecipeItem(
+                            recipePreview = uiState.recipePreviews[index],
+                            onClickRecipe = onClickRecipe
+                        )
                         HorizontalDivider(
                             modifier = Modifier.padding(vertical = 8.dp),
                             thickness = 0.5.dp

@@ -14,6 +14,7 @@ fun NavController.navigateUserProfile(userId: Long) {
 }
 
 fun NavGraphBuilder.userProfileNavGraph(
+    onClickRecipe: (Long) -> Unit,
     onBackClick: () -> Unit
 ) {
     composable<Route.UserProfile>(
@@ -41,6 +42,7 @@ fun NavGraphBuilder.userProfileNavGraph(
 
         UserProfileRoute(
             userId = userId,
+            onClickRecipe = onClickRecipe,
             onBackClick = onBackClick
         )
 

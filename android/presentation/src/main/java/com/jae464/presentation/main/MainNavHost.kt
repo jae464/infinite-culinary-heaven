@@ -116,6 +116,7 @@ fun MainNavHost(
             onClickLogout = { appState.navigateToLoginAfterLogout() }
         )
         userProfileNavGraph(
+            onClickRecipe = { appState.navigateToRecipeDetail(it) },
             onBackClick = { appState.popBackStack() }
         )
     }
