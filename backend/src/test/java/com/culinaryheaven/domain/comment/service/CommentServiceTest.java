@@ -11,7 +11,6 @@ import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import com.culinaryheaven.global.util.SecurityUtil;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,9 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Sort;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,9 +37,6 @@ class CommentServiceTest {
 
     @Mock
     private CommentRepository commentRepository;
-
-    @Mock
-    private SecurityUtil securityUtil;
 
     @Mock
     private ApplicationEventPublisher publisher;

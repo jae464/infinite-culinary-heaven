@@ -9,7 +9,6 @@ import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import com.culinaryheaven.global.util.SecurityUtil;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,9 +38,6 @@ class BookMarkServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private SecurityUtil securityUtil;
 
     @InjectMocks
     private BookMarkService bookMarkService;

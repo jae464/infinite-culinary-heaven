@@ -7,7 +7,6 @@ import com.culinaryheaven.domain.user.dto.response.UserInfoResponse;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import com.culinaryheaven.global.util.SecurityUtil;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,9 +30,6 @@ class UserServiceTest {
 
     @Mock
     private ImageStorageClient imageStorageClient;
-
-    @Mock
-    private SecurityUtil securityUtil;
 
     @InjectMocks
     private UserService userService;

@@ -8,7 +8,6 @@ import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ public class DeviceTokenService {
 
     private final DeviceTokenRepository deviceTokenRepository;
     private final UserRepository userRepository;
-    private final SecurityUtil securityUtil;
 
     @Transactional
     public DeviceTokenResponse persist(DeviceTokenPersistRequest request, Long userId) {

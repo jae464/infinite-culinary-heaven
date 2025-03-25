@@ -5,15 +5,14 @@ import com.culinaryheaven.domain.comment.dto.request.CommentCreateRequest;
 import com.culinaryheaven.domain.comment.dto.request.CommentUpdateRequest;
 import com.culinaryheaven.domain.comment.dto.response.CommentResponse;
 import com.culinaryheaven.domain.comment.dto.response.CommentsResponse;
+import com.culinaryheaven.domain.comment.event.CommentEvent;
 import com.culinaryheaven.domain.comment.repository.CommentRepository;
 import com.culinaryheaven.domain.recipe.domain.Recipe;
-import com.culinaryheaven.domain.comment.event.CommentEvent;
 import com.culinaryheaven.domain.recipe.repository.RecipeRepository;
 import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
@@ -29,7 +28,6 @@ public class CommentService {
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
     private final CommentRepository commentRepository;
-    private final SecurityUtil securityUtil;
     private final ApplicationEventPublisher publisher;
 
     @Transactional

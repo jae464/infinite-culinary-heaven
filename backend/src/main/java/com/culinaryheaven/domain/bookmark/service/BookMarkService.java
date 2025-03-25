@@ -1,7 +1,6 @@
 package com.culinaryheaven.domain.bookmark.service;
 
 import com.culinaryheaven.domain.bookmark.domain.BookMark;
-import com.culinaryheaven.domain.bookmark.dto.request.BookMarkCreateRequest;
 import com.culinaryheaven.domain.bookmark.dto.response.BookMarkResponse;
 import com.culinaryheaven.domain.bookmark.dto.response.BookMarksResponse;
 import com.culinaryheaven.domain.bookmark.repository.BookMarkRepository;
@@ -11,11 +10,9 @@ import com.culinaryheaven.domain.user.domain.User;
 import com.culinaryheaven.domain.user.repository.UserRepository;
 import com.culinaryheaven.global.exception.CustomException;
 import com.culinaryheaven.global.exception.ErrorCode;
-import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +23,6 @@ public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
-    private final SecurityUtil securityUtil;
 
     @Transactional
     public BookMarkResponse addBookMark(Long recipeId, Long userId) {

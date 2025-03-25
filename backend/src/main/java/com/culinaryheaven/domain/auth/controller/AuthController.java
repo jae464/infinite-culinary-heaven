@@ -6,10 +6,12 @@ import com.culinaryheaven.domain.auth.dto.request.ReissueRequest;
 import com.culinaryheaven.domain.auth.dto.response.LoginResponse;
 import com.culinaryheaven.domain.auth.dto.response.ReissueResponse;
 import com.culinaryheaven.domain.auth.service.AuthService;
-import com.culinaryheaven.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
