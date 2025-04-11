@@ -74,10 +74,18 @@ public class AuthService {
         try {
             if (jwtTokenProvider.validateRefreshToken(request.refreshToken())) {
                 Claims claims = jwtTokenProvider.getClaimsFromToken(request.refreshToken(), TokenType.REFRESH);
+                String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
+
+                // todo admin 리프레쉬 토큰
+                if (role.equals("ROLE_ADMIN")) {
+                    String newAccessToken = jwtTokenProvider.provideToken("admin", TokenType.ACCESS, "ROLE_ADMIN");
+                    String newRefreshToken = jwtTokenProvider.provideToken("admin", TokenType.REFRESH, "ROLE_ADMIN");
+                    return new ReissueResponse(newAccessToken, newRefreshToken);
+                }
+
                 String userId = claims.getSubject();
                 Long paredUserId = Long.parseLong(userId);
                 userRepository.findById(paredUserId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUNT));
-                String role = claims.get(MEMBER_ROLE_CLAIM_KEY, String.class);
                 String newAccessToken = jwtTokenProvider.provideToken(userId, TokenType.ACCESS, role);
                 String newRefreshToken = jwtTokenProvider.provideToken(userId, TokenType.REFRESH, role);
                 return new ReissueResponse(newAccessToken, newRefreshToken);
@@ -89,4 +97,7 @@ public class AuthService {
             throw new CustomException(ErrorCode.AUTHORIZATION_FAILED);
         }
     }
+
 }
+
+

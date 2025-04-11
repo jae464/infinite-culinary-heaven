@@ -45,10 +45,13 @@ class AuthServiceTest {
 
     private FixtureMonkey fixtureMonkey;
 
+    private static final String MEMBER_ROLE_CLAIM_KEY = "memberRole";
+
     @BeforeEach
     void setUp() {
         fixtureMonkey = FixtureMonkey.builder()
                 .objectIntrospector(FieldReflectionArbitraryIntrospector.INSTANCE)
+                .defaultNotNull(true)
                 .build();
     }
 
@@ -105,6 +108,23 @@ class AuthServiceTest {
     }
 
     @Test
+    void 관리자_토큰_재발급_요청시_새로운_토큰_리턴한다() {
+        Claims claims = mock(Claims.class);
+        ReissueRequest request = new ReissueRequest("refreshToken");
+
+        when(jwtTokenProvider.validateRefreshToken(request.refreshToken())).thenReturn(true);
+        when(jwtTokenProvider.getClaimsFromToken(request.refreshToken(), TokenType.REFRESH)).thenReturn(claims);
+
+        when(claims.get(MEMBER_ROLE_CLAIM_KEY, String.class)).thenReturn("ROLE_ADMIN");
+        when(jwtTokenProvider.provideToken("admin", TokenType.ACCESS, "ROLE_ADMIN")).thenReturn("newAccessToken");
+        when(jwtTokenProvider.provideToken("admin", TokenType.REFRESH, "ROLE_ADMIN")).thenReturn("newRefreshToken");
+
+        ReissueResponse response = authService.reissue(request);
+        assertEquals("newAccessToken", response.accessToken());
+        assertEquals("newRefreshToken", response.refreshToken());
+    }
+
+    @Test
     void 엑세스_토큰_재발급_오청시_새로운_토큰을_리턴한다() {
         User user = fixtureMonkey.giveMeOne(User.class);
         // Given
@@ -117,7 +137,7 @@ class AuthServiceTest {
         when(jwtTokenProvider.validateRefreshToken(refreshToken)).thenReturn(true);
         when(jwtTokenProvider.getClaimsFromToken(refreshToken, TokenType.REFRESH)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(user.getId().toString());
-        when(claims.get("memberRole", String.class)).thenReturn("ROLE_USER");
+        when(claims.get(MEMBER_ROLE_CLAIM_KEY, String.class)).thenReturn("ROLE_USER");
 //        when(userRepository.findByOauthId("12345")).thenReturn(Optional.of(user));
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(jwtTokenProvider.provideToken(user.getId().toString(), TokenType.ACCESS, "ROLE_USER")).thenReturn(newAccessToken);
