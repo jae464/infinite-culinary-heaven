@@ -25,19 +25,17 @@ class DefaultBookMarkRepository @Inject constructor(
     }
 
     override suspend fun addBookMark(recipeId: Long): Result<Unit> {
-
         return handleResponse {
             bookMarkService.addBookMark(recipeId)
-        }.runCatching {
+        }.mapCatching {
             bookMarkLocalDataSource.addBookMarkedRecipeId(recipeId.toString())
         }
-
     }
 
     override suspend fun deleteBookMark(recipeId: Long): Result<Unit> {
         return handleResponse {
             bookMarkService.deleteBookMark(recipeId)
-        }.runCatching {
+        }.mapCatching {
             bookMarkLocalDataSource.deleteBookMarkedId(recipeId.toString())
         }
 
