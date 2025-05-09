@@ -7,7 +7,9 @@ import com.culinaryheaven.global.annotation.StartTimeLimit;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public record ContestCreateRequest(
 
@@ -20,26 +22,40 @@ public record ContestCreateRequest(
     String description,
 
     @NotNull
-    @StartTimeLimit
-    @Schema(description = "대회 시작 시간", example = "2024-11-18T00:00:00")
-    LocalDateTime startDate,
+    @Schema(description = "대회 시작 날짜", example = "2024-11-18")
+    LocalDate startDate,
+
+    @Schema(description = "대회 시작 시간", example = "00:00:00")
+    LocalTime startTime,
 
     @NotNull
-    @EndTimeLimit
-    @Schema(description = "대회 종료 시간", example = "2024-11-25T23:59:59")
-    LocalDateTime endDate,
+    @Schema(description = "대회 종료 날짜", example = "2024-11-25")
+    LocalDate endDate,
+
+    @Schema(description = "대회 종료 시간", example = "11:59:59")
+    LocalTime endTime,
 
     @NotNull
     @Schema(description = "주재료 아이디", example = "1")
     Long topicIngredientId
 ) {
     public Contest toEntity(TopicIngredient topicIngredient) {
+        LocalDateTime startDateTime = LocalDateTime.of(
+                startDate,
+                startTime != null ? startTime : LocalTime.MIDNIGHT
+        );
+
+        LocalDateTime endDateTime = LocalDateTime.of(
+                endDate,
+                endTime != null ? endTime : LocalTime.of(23, 59, 59)
+        );
+
         return Contest.builder()
                 .name(name)
                 .description(description)
                 .topicIngredient(topicIngredient)
-                .startDate(startDate)
-                .endDate(endDate)
+                .startDate(startDateTime)
+                .endDate(endDateTime)
                 .build();
     }
 }

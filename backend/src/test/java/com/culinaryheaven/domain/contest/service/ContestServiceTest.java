@@ -57,7 +57,7 @@ class ContestServiceTest {
                 .set("topicIngredient", topicIngredient)
                 .sample();
 
-        ContestCreateRequest request = new ContestCreateRequest(contest.getName(), contest.getDescription(), contest.getStartDate(), contest.getEndDate(), 1L);
+        ContestCreateRequest request = new ContestCreateRequest(contest.getName(), contest.getDescription(), contest.getStartDate().toLocalDate(), contest.getStartDate().toLocalTime(), contest.getEndDate().toLocalDate(), contest.getEndDate().toLocalTime(), 1L);
 
         when(topicIngredientRepository.findById(1L)).thenReturn(Optional.of(topicIngredient));
         when(contestRepository.save(any(Contest.class))).thenReturn(contest);
@@ -77,7 +77,7 @@ class ContestServiceTest {
         // Given
         Contest contest = fixtureMonkey.giveMeOne(Contest.class);
         TopicIngredient topicIngredient = fixtureMonkey.giveMeOne(TopicIngredient.class);
-        ContestCreateRequest request = new ContestCreateRequest(contest.getName(), contest.getDescription(), contest.getStartDate(), contest.getEndDate(), topicIngredient.getId());
+        ContestCreateRequest request = new ContestCreateRequest(contest.getName(), contest.getDescription(), contest.getStartDate().toLocalDate(), contest.getStartDate().toLocalTime(), contest.getEndDate().toLocalDate(), contest.getEndDate().toLocalTime(), topicIngredient.getId());
 
         when(topicIngredientRepository.findById(request.topicIngredientId())).thenReturn(Optional.empty());
 
