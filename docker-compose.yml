@@ -36,6 +36,13 @@ services:
       ]
     volumes:
       - db_data:/var/lib/mysql
+  redis:
+    image: redis:7.0.11
+    container_name: culinary-heaven-redis
+    ports:
+      - "6379:6379"
+    environment:
+      TZ: Asia/Seoul
 
 volumes:
   db_data:
