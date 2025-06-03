@@ -3,6 +3,8 @@ spring:
     active: local
     include:
       - cloud
+      - redis
+
 jwt:
   secret-access: culinaryheavenculinaryheavenculinaryheavenculinaryheavenculinaryheaven
   secret-refresh: culinaryheavenculinaryheavenculinaryheavenculinaryheavenculinaryheavenrefresh

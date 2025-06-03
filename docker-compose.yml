@@ -16,6 +16,7 @@ services:
       TZ: Asia/Seoul
     depends_on:
       - mysql
+      - redis
 
   mysql:
     image: mysql:8.0.33
